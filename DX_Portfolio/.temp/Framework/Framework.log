@@ -1,0 +1,87 @@
+﻿  Framework.cpp
+  AnimationRect.cpp
+  Rect.cpp
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\GeoMatries\Rect.cpp(182,9): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+  ShadedTexture.cpp
+  TextureRect.cpp
+  IndexBuffer.cpp
+  InputLayout.cpp
+  VertexBuffer.cpp
+  Texture2D.cpp
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Renders\Resources\Texture2D.cpp(59,11): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+  VertexType.cpp
+  IShader.cpp
+  PixelShader.cpp
+  VertexShader.cpp
+  States.cpp
+  Graphics.cpp
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Systems\Graphics.cpp(122,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  Keyboard.cpp
+  Mouse.cpp
+  Time.cpp
+  Window.cpp
+  Animator.cpp
+  BoundingBox.cpp
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Utilities\BoundingBox.cpp(63,5): warning C4838: 'int'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Utilities\BoundingBox.cpp(64,4): warning C4305: '초기화 중': 'int'에서 'float'(으)로 잘립니다.
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Utilities\BoundingBox.cpp(63,14): warning C4838: 'int'에서 'float'(으)로의 변환에는 축소 변환이 필요합니다.
+  DirectHelper.cpp
+  FileStream.cpp
+  Gui.cpp
+  Path.cpp
+  Random.cpp
+  String.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2541,23): warning C4244: '인수': '_Elem'에서 'const _Elem'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Elem=wchar_t
+          ]
+          and
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<_Iter>(_Iter,const _Iter,std::input_iterator_tag)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2552): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<_Iter>(_Iter,const _Iter,std::input_iterator_tag)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<_Iter>(const _Iter,const _Iter,std::forward_iterator_tag)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(2532): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<_Iter>(const _Iter,const _Iter,std::forward_iterator_tag)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(3260): message : 컴파일되는 함수 템플릿 인스턴스화 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<wchar_t*,0>(_Iter,_Iter,const _Alloc &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Iter=wchar_t *,
+              _Alloc=std::allocator<char>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\xstring(3260): message : 컴파일되는 함수 템플릿 인스턴스화 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<wchar_t*,0>(_Iter,_Iter,const _Alloc &)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Iter=wchar_t *,
+              _Alloc=std::allocator<char>
+          ]
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Utilities\String.cpp(156): message : 컴파일되는 함수 템플릿 인스턴스화 'std::basic_string<char,std::char_traits<char>,std::allocator<char>> &std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(const _Iter,const _Iter)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>
+          ]
+C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Utilities\String.cpp(156): message : 컴파일되는 함수 템플릿 인스턴스화 'std::basic_string<char,std::char_traits<char>,std::allocator<char>> &std::basic_string<char,std::char_traits<char>,std::allocator<char>>::assign<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(const _Iter,const _Iter)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>
+          ]
+  Framework.vcxproj -> C:\Users\ParASHute\Documents\GitHub\Portfolio\DX_Portfolio\_Out\Framework\Framework.lib

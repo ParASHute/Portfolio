@@ -16,9 +16,16 @@
 #include <unordered_map>
 #include <assert.h>
 
+#include <random>
+#include <functional>
+#include <fstream>
+
+
 using namespace std;
 
 //DirectX
+#include <DirectXTex/DirectXTex.h>
+#pragma comment(lib, "DirectXTex/DirectXTex.lib")
 #include <d3dcompiler.h>
 #include <d3d11.h>
 #include <D3DX10math.h>
@@ -66,10 +73,31 @@ typedef UINT		uint;
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[](p);	   (p) = nullptr; } }
 #define SAFE_RELEASE(p)		 { if(p) { (p)->Release(); (p) = nullptr; } }
 
+#include "Renders/Resources/ShaderBuffer.h"
+#include "Renders/Resources/GlobalBuffer.h"
+#include "Renders/Resources/VertexType.h"
+#include "Renders/Resources/Texture2D.h"
+
+#include "Renders/IA/IndexBuffer.h"
+#include "Renders/IA/InputLayout.h"
+#include "Renders/IA/VertexBuffer.h"
+#include "Renders/States.h"
+
+#include "Renders/Shaders/PixelShader.h"
+#include "Renders/Shaders/VertexShader.h"
+
+#include "Utilities/BoundingBox.h"
+
+#include "Utilities/DirectHelper.h"
+#include "Utilities/String.h"
+#include "Utilities/Path.h"
+#include "Utilities/FileStream.h"
+#include "Utilities/Random.h"
 
 #define WinMaxWidth 1280
 #define WinMaxHeight 720
 
 const wstring ShaderPath = L"../_Shaders/";
+const wstring TexturePath = L"../_Textures/";
 
 extern HWND handle;

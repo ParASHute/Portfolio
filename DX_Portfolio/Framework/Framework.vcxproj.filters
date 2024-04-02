@@ -8,6 +8,26 @@
     <ClCompile Include="Systems\Window.cpp" />
     <ClCompile Include="Utilities\Gui.cpp" />
     <ClCompile Include="Framework.cpp" />
+    <ClCompile Include="Utilities\Animator.cpp" />
+    <ClCompile Include="Utilities\BoundingBox.cpp" />
+    <ClCompile Include="Utilities\DirectHelper.cpp" />
+    <ClCompile Include="Utilities\FileStream.cpp" />
+    <ClCompile Include="Utilities\Path.cpp" />
+    <ClCompile Include="Utilities\Random.cpp" />
+    <ClCompile Include="Utilities\String.cpp" />
+    <ClCompile Include="Renders\States.cpp" />
+    <ClCompile Include="Renders\Shaders\IShader.cpp" />
+    <ClCompile Include="Renders\Shaders\PixelShader.cpp" />
+    <ClCompile Include="Renders\Shaders\VertexShader.cpp" />
+    <ClCompile Include="Renders\Resources\Texture2D.cpp" />
+    <ClCompile Include="Renders\Resources\VertexType.cpp" />
+    <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
+    <ClCompile Include="Renders\IA\InputLayout.cpp" />
+    <ClCompile Include="Renders\IA\VertexBuffer.cpp" />
+    <ClCompile Include="GeoMatries\AnimationRect.cpp" />
+    <ClCompile Include="GeoMatries\Rect.cpp" />
+    <ClCompile Include="GeoMatries\ShadedTexture.cpp" />
+    <ClCompile Include="GeoMatries\TextureRect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics.h" />
@@ -19,5 +39,27 @@
     <ClInclude Include="Utilities\SingletonBase.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Interfaces\IObject.h" />
+    <ClInclude Include="Utilities\Animator.h" />
+    <ClInclude Include="Utilities\BoundingBox.h" />
+    <ClInclude Include="Utilities\DirectHelper.h" />
+    <ClInclude Include="Utilities\FileStream.h" />
+    <ClInclude Include="Utilities\Path.h" />
+    <ClInclude Include="Utilities\Random.h" />
+    <ClInclude Include="Utilities\String.h" />
+    <ClInclude Include="Renders\States.h" />
+    <ClInclude Include="Renders\Shaders\IShader.h" />
+    <ClInclude Include="Renders\Shaders\PixelShader.h" />
+    <ClInclude Include="Renders\Shaders\VertexShader.h" />
+    <ClInclude Include="Renders\Resources\GlobalBuffer.h" />
+    <ClInclude Include="Renders\Resources\ShaderBuffer.h" />
+    <ClInclude Include="Renders\Resources\Texture2D.h" />
+    <ClInclude Include="Renders\Resources\VertexType.h" />
+    <ClInclude Include="Renders\IA\IndexBuffer.h" />
+    <ClInclude Include="Renders\IA\InputLayout.h" />
+    <ClInclude Include="Renders\IA\VertexBuffer.h" />
+    <ClInclude Include="GeoMatries\AnimationRect.h" />
+    <ClInclude Include="GeoMatries\Rect.h" />
+    <ClInclude Include="GeoMatries\ShadedTexture.h" />
+    <ClInclude Include="GeoMatries\TextureRect.h" />
   </ItemGroup>
 </Project>

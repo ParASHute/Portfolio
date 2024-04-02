@@ -21,7 +21,7 @@ AnimationRect::AnimationRect(Vector3 position, Vector3 size, float rotation)
 
 		SAFE_DELETE(srcTex);
 	}
-
+	
 	animator->SetCurrentAnimClip(L"RunD");
 
 	// Sampler
