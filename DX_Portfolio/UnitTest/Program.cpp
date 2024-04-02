@@ -3,14 +3,49 @@
 
 #include "Systems/Window.h"
 
+#include "TestScene/PlayerTest/PlayerTest.h"
+
 void Program::Init()
 {
-	
+	// CreatBuffer
+	{
+		vpb = new VPBuffer();
+
+		// view 행렬 설정
+		{
+			D3DXMatrixLookAtLH(
+				&view,
+				&Vector3(0, 0, 0),	// cam pos
+				&Vector3(0, 0, 1),	// cam Look at
+				&Vector3(0, 1, 0)	// cam's top
+			);
+
+			vpb->SetView(view);
+		}
+	}
+
+	// prohection matrix
+	{
+		D3DXMatrixOrthoOffCenterLH(
+			&proj,
+			0.0f,					// 좌측 끝				// x coord Min
+			(float)WinMaxWidth,		// 우측 끝				// x coord Max
+			0.0f,					// 최하단				// y coord Min
+			(float)WinMaxHeight,	// 최상단				// y coord Max
+			0, 1					// 최소 깊이, 최대 깊이	// z coord Min, Max
+		);
+		vpb->SetProj(proj);
+	}
+
+	// DemoSetting
+	{
+		Push(new pTest);
+	}
 }
 
 void Program::Destroy()
 {
-
+	SAFE_DELETE(vpb);
 
 	for (IObject* obj : objs)
 	{
@@ -27,7 +62,7 @@ void Program::Update()
 
 void Program::Render()
 {
-
+	vpb->SetVSBuffer(1);
 
 	for (IObject* obj : objs)
 		obj->Render();
@@ -35,6 +70,7 @@ void Program::Render()
 
 void Program::PostRender()
 {
+
 	for (IObject* obj : objs)
 		obj->PostRender();
 }

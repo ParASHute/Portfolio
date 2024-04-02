@@ -1,9 +1,11 @@
 ﻿  Framework.cpp
-  AnimationRect.cpp
-  Rect.cpp
-C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\Framework\GeoMatries\Rect.cpp(182,9): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
-  ShadedTexture.cpp
-  TextureRect.cpp
+  Inventory.cpp
+  Item.cpp
+  SpecialItem.cpp
+  Monster.cpp
+  Obstacle.cpp
+  Player.cpp
+C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\Framework\GameSources\Classes\Player.cpp(47,9): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
   IndexBuffer.cpp
   InputLayout.cpp
   VertexBuffer.cpp
@@ -14,6 +16,11 @@ C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Renders\Resourc
   PixelShader.cpp
   VertexShader.cpp
   States.cpp
+  AnimationRect.cpp
+  Rect.cpp
+C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Skeleton\Rect.cpp(148,9): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+  ShadedTexture.cpp
+  TextureRect.cpp
   Graphics.cpp
 C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Systems\Graphics.cpp(122,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   Keyboard.cpp
@@ -84,4 +91,5 @@ C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\Framework\Utilities\Strin
               _Elem=wchar_t,
               _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>
           ]
+Player.obj : warning LNK4006: "public: class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall Rect::MakeLable(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?MakeLable@Rect@@QAE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V23@@Z)이(가) Rect.obj에 이미 정의되어 있습니다. 초 정의가 무시됩니다.
   Framework.vcxproj -> C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\_Out\Framework\Framework.lib

@@ -11,6 +11,8 @@ public:
 	void Upadate();
 	void Render();
 
+	BoundingBox* GetCollision() { return collision; }
+
 private:
 	Animator* animator = nullptr;
 

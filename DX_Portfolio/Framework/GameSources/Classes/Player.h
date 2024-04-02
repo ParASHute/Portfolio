@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Skeleton/Rect.h"
+
 #include "Skeleton/AnimationRect.h"
 #include "Inventory.h"
 
@@ -16,6 +18,10 @@ public:
 	void Attack();
 	void Defence();
 
+	// ImGui
+	void GUI();
+	string MakeLable(string lable);
+
 	// 게터 & 세터
 	Vector3 GetPos() { return position; }
 	void SetPos(Vector3 position) { this->position = position; }
@@ -26,19 +32,39 @@ public:
 	float GetMaxHp() { return MaxHp; }
 	void SetMaxHP(float MaxHp) { this->MaxHp = MaxHp; }
 
+	BoundingBox* GetCollision() { return body->GetCollision() ; }
+
 private:
 	// 구성 변수
 	float Hp;
-	float MaxHp;
-	int Def;
-	int Att;
-	int MoveSpd;
+	float MaxHp = 3;
+	int Def = 5;
+	int Att = 0;
+	int MoveSpd = 100;
 	Inventory* inven;
 
 	// 트리거
-	bool bDef;
-	bool bAtt;
+	bool bDef = true;
+	bool bOpen = true; // ImGui 오픈용 트리거
+
+	// 움직임 제어용 트리거들
+	bool moveD = false; // 아래로 움직이는지
+	bool moveR = false;	// 위로 움직이는지
+	bool moveU = false; // 점프 중인지
+	bool G = true; // 중력 구현
 
 	// 게터 & 세터용
 	Vector3 position;
+	Vector3 size;
+
+	// 몸통 (에니매이션)
+	AnimationRect* body;
+
+	// 예비 몸통
+	Rect* spearBody;
 };
+
+/*
+	메니저가 몸통을 부여하는게 논리 구조상에 오류가 없을까?
+	 
+*/ 

@@ -9,7 +9,7 @@ AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCoun
 	float imageWidth = srcTex->GetWidth();
 	float imageHeight = srcTex->GetHeight();
 	
-	// 이에니멩;션이 그려져 있는 텍스처의 길이
+	// 에니메이션이 그려져 있는 텍스처의 길이
 	Vector2 clipSize = endPos - startPos;
 
 	// 특수경우에는 에셋 또는 코드를 수정해야 함
@@ -57,7 +57,6 @@ void Animator::Update()
 			currentFrameIndex++; // 프레임 인덱스 증가 (그릴 그림을 다음그림으로 변경)
 
 			// 프레임도 0index, 둘이 같아지면 0으로 초기화
-			// 이과정을 통해 내가 알고 있는 원통형의 그것이 되는거임
 			if (currentFrameIndex == currentClip->frameCount) currentFrameIndex = 0;
 
 			// 현재 실행할 그림을 위에서 지정한 번호의 그림으로 설정
@@ -65,7 +64,7 @@ void Animator::Update()
 			currentFrame = currentClip->keyFarmes[currentFrameIndex];
 		}
 
-		// 역재생 -> 이라도 짤라 넣는 순서는 역재생이 아닐때랑 동일하기 때문에 상관 ㄴㄴ
+		// 역재생 -> 이라도 짤라 넣는 순서는 역재생이 아닐때랑 동일하기 때문에 상관 없음
 		else {
 			currentFrameIndex--;
 
@@ -77,7 +76,7 @@ void Animator::Update()
 		deltaTime = 0.0f;
 	}
 
-	// 프레임 바뀔꺼 아니면 증가나 하셈 ㅇㅇ
+	// 프레임 바뀔꺼 아니면 증가
 	else deltaTime += Time::Delta();
 }
 
@@ -89,20 +88,7 @@ void Animator::AddAnimClip(AnimationClip* animClip)
 }
 
 void Animator::SetCurrentAnimClip(wstring clipName)
-{
-	/*
-	// 실행중인 클립은 없고, 애니메이션이 있을경우
-	if (currentClip == nullptr && CheckExist(clipName) == true)
-		currentClip = animClips.find(clipName)->second;
-	// 멥은 파인드 명령어와 키를 통해서 찾을수 있는데, 이걸 클립 네임으로 찾아서 
-	// 쿼런트 클립에 지금 실행될(호출해야될) 클립만 넣어주는거임
-	// 여기부분의 역할은 아래 조건문 검사식 부분에서 'currentClip->clipName == clipName'에서 터질수 있기 떄문이다.
-	// 따라서 이부분이 있어야 한다.
-	였지만... 터지면 살릴꺼임 --> 아래의 조건문을 수정하면서 살릴 이유가 없어짐
-	*/
-	
-	
-	
+{	
 	// 실행중인 클립이 있지만 실행할 클립과 같은 경우/*else*/
 	if (currentClip != nullptr) 
 		if(currentClip->clipName == clipName) return;

@@ -48,7 +48,7 @@ AnimationRect::AnimationRect(Vector3 position, Vector3 size, float rotation)
 
 AnimationRect::~AnimationRect()
 {
-	// SAFE_DELET(animator); --> ╟║╡Ш╫д го╦И емаЭ
+	// SAFE_DELET(animator);
 }
 
 void AnimationRect::Upadate()

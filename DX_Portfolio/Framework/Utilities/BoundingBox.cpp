@@ -29,7 +29,7 @@ void BoundingBox::UpdateCollisionData(const Matrix world, const Vector3 vertices
 		// CenterPos Vector Upadate (축 중심 확인)
 		{
 			data->centerPos = Vector3(
-				(edge->LT.x + edge->LB.x + edge->RT.x + edge->RB.x) * 0.25f,	// LT랑 RB값 평균 내는 거랑 같은데도 이렇게 하는건 가끔식 터지기 때문이다.(이유는 모름, 그냥 간간히 터짐..)
+				(edge->LT.x + edge->LB.x + edge->RT.x + edge->RB.x) * 0.25f,	// LT랑 RB값 평균 내는 거랑 같은데도 이렇게 하는건 가끔식 터지기 때문이다.
 				(edge->LT.y + edge->LB.y + edge->RT.y + edge->RB.y) * 0.25f,
 				0
 			);

@@ -17,7 +17,7 @@ ShadedTexture::~ShadedTexture()
 void ShadedTexture::Update()
 {
 	__super::Update();
-	// __super는 부모꺼만
+	// __super는 부모꺼만 사용가능
 }
 
 void ShadedTexture::Render()

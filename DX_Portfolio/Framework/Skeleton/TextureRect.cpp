@@ -11,10 +11,6 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation)
 
 		// 좌 하단
 		vertices[0].position = Vector3(-0.5f, -0.5f, 0.0f);
-		
-		// 그림 좌표계는 내가 알고 있는 컴퓨터의 좌표계를 사용함
-		// 하지만 쉐이더의 경우에는 절대적으로 그림을 0 부터 1까지만 그림(나중에 배울 예정)
-		// 그래서 그것에 맞춘 좌표계 치환(그림 크기가 끝에 맞춰서 그릴수 있게끔)의 개념으로서 uv를 사용한다 생각하면 된다
 		vertices[0].uv = Vector2(0, 1);
 
 		// 우상단
@@ -89,10 +85,6 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation, wstring
 
 		// 좌 하단
 		vertices[0].position = Vector3(-0.5f, -0.5f, 0.0f);
-
-		// 그림 좌표계는 내가 알고 있는 컴퓨터의 좌표계를 사용함
-		// 하지만 쉐이더의 경우에는 절대적으로 그림을 0 부터 1까지만 그림(나중에 배울 예정)
-		// 그래서 그것에 맞춘 좌표계 치환(그림 크기가 끝에 맞춰서 그릴수 있게끔)의 개념으로서 uv를 사용한다 생각하면 된다
 		vertices[0].uv = Vector2(0, 1);
 
 		// 우상단
@@ -157,26 +149,12 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation, wstring
 	}
 
 	// Rasterizer State
-	// Rasterizer는 버택스 쉐이더로 찍은 정점들의 사이와 내부를 채우는 역할을 함
-	// 이게 없으면 기본값으로 
 	{
 		D3D11_RASTERIZER_DESC desc;
 		ZeroMemory(&desc, sizeof(D3D11_RASTERIZER_DESC));
 
-		// CullMode는 그리지 않을 부분을 설정하는 것
-		// 'D3D11_CULL_BACK'은 뒷면은(반시계방향) 안그리겠다.
-		// 필요에 따라서 뒷면을 그리지 않는데, 가끔가다가 지혼자 그림
-		// 3d에서는 몰라도 2d에서는 필요없는 뒷면을 그려 
-		// 굳이 메모리를 잡아 먹게 할 필요는 없음
 		desc.CullMode = D3D11_CULL_BACK;
-
-
-		// FillMode는 채우는 방식을 설정하는 것
-		// 'D3D11_FILL_SOLID'는 전부 체우겠다는 뜻(빈공간 생성X)
-		// 하는 방식도있긴 하지만, 잘 안씀(디버깅 최적화 용으로만 씀)
 		desc.FillMode = D3D11_FILL_SOLID;
-
-		// 시계방향 설정(fals가 시계 방향 true는 당연히 반대로 반시계 방향)
 		desc.FrontCounterClockwise = false;
 
 		HRESULT hr = DEVICE->CreateRasterizerState(&desc, &rs);
@@ -268,8 +246,7 @@ void TextureRect::SetShader(wstring shaderPath)
 
 void TextureRect::SetImage(wstring imagePath)
 {
-	SAFE_RELEASE(srv); // 이게 NEW마냥 메모리 잡아 먹어서 지우면 메모리 사용량이 낮아짐
-	// SRV Extraction (그림 데이터 추츨)
+	SAFE_RELEASE(srv);
 	HRESULT hr = D3DX11CreateShaderResourceViewFromFile(
 		DEVICE,
 		imagePath.c_str(),
