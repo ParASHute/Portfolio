@@ -2,19 +2,24 @@
 #include "Player.h"
 
 Player::Player(Vector3 position, Vector3 size, float rotation)
+	: position(position), size(size)
 {
-
+	spearBody = new Rect(position, size);
 }
 
 Player::~Player()
 {
-
+	SAFE_DELETE(spearBody);
 }
 
 void Player::Update()
 {
 	Move();
 	// body->Update();
+
+	spearBody->SetPosition(position);
+	spearBody->SetSize(size);
+
 	spearBody->Update();
 }
 
@@ -85,6 +90,7 @@ void Player::GUI()
 		ImGui::SliderFloat2(MakeLable("Pos").c_str(), position, 0, WinMaxWidth);
 		ImGui::SliderFloat2(MakeLable("Size").c_str(), size, 0, WinMaxHeight);
 	}
+	ImGui::End();
 }
 
 string Player::MakeLable(string lable)

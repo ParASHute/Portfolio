@@ -27,5 +27,9 @@ void pTest::PostRender()
 
 void pTest::GUI()
 {
-	player->GUI();
+	ImGui::Begin("player"); 
+	{
+		player->GUI();
+	}
+	ImGui::End();
 }

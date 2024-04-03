@@ -27,6 +27,7 @@ public:
 	BoundingBox* GetCollision() { return collision; }
 	
 	Vector3 GetSize() { return size; }
+	void SetSize(Vector3 size) { this->size = size; }
 
 	Vector3 GetPosition() { return position; }
 	void SetPosition(Vector3 pos) { this->position = pos; }
