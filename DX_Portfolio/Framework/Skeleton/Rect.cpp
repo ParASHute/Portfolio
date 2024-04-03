@@ -206,7 +206,6 @@ string Rect::MakeLable(string lable)
 
 void Rect::UpdateWorld()
 {
-	
 	D3DXMatrixScaling(&S, size.x, size.y, size.z);
 	D3DXMatrixRotationZ(&R, rotation);
 	D3DXMatrixTranslation(&T, position.x, position.y, position.z);

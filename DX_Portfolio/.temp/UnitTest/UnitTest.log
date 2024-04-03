@@ -1,4 +1,0 @@
-﻿  Program.cpp
-Framework.lib(Rect.obj) : error LNK2005: "public: class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall Rect::MakeLable(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?MakeLable@Rect@@QAE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V23@@Z)이(가) Framework.lib(Player.obj)에 이미 정의되어 있습니다.
-Framework.lib(Player.obj) : error LNK2019: "public: class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall Player::MakeLable(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?MakeLable@Player@@QAE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V23@@Z)"public: void __thiscall Player::GUI(void)" (?GUI@Player@@QAEXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
-C:\Users\ADmin\Documents\GitHub\Portfolio\DX_Portfolio\_Out\UnitTest\UnitTest.exe : fatal error LNK1120: 1개의 확인할 수 없는 외부 참조입니다.

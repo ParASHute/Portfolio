@@ -87,7 +87,7 @@ void Player::GUI()
 	}
 }
 
-string Rect::MakeLable(string lable)
+string Player::MakeLable(string lable)
 {
 	// 자기 자신의 주소를 매계변수로 받은 라벨 뒤에 직접 적음
 	string Label = lable + "##" + to_string((uint)this);
