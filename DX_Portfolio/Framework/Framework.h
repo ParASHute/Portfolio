@@ -13,13 +13,12 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <string>
+#include <map>
 #include <unordered_map>
 #include <assert.h>
-
 #include <random>
 #include <functional>
 #include <fstream>
-
 
 using namespace std;
 
@@ -47,6 +46,8 @@ using namespace std;
 
 //////////////////////////////////////////
 
+#define CLEAR_COLOR 0xcff0cc;
+
 #include "Interfaces/IObject.h"
 
 #include "Utilities/SingletonBase.h"
@@ -64,6 +65,8 @@ typedef D3DXMATRIX  Matrix;
 typedef D3DXCOLOR   Color;
 typedef UINT		uint;
 
+#include "Utilities/DirectHelper.h"
+
 #define DEVICE Graphics::Get()->GetDevice()
 #define DC     Graphics::Get()->GetDC()
 
@@ -73,27 +76,26 @@ typedef UINT		uint;
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[](p);	   (p) = nullptr; } }
 #define SAFE_RELEASE(p)		 { if(p) { (p)->Release(); (p) = nullptr; } }
 
+#include "Renders/Resources/VertexType.h"
 #include "Renders/Resources/ShaderBuffer.h"
 #include "Renders/Resources/GlobalBuffer.h"
-#include "Renders/Resources/VertexType.h"
 #include "Renders/Resources/Texture2D.h"
 
-#include "Renders/IA/IndexBuffer.h"
-#include "Renders/IA/InputLayout.h"
 #include "Renders/IA/VertexBuffer.h"
+#include "Renders/IA/InputLayout.h"
+#include "Renders/IA/IndexBuffer.h"
 #include "Renders/States.h"
 
-#include "Renders/Shaders/PixelShader.h"
 #include "Renders/Shaders/VertexShader.h"
+#include "Renders/Shaders/PixelShader.h"
 
 #include "Utilities/BoundingBox.h"
-
-#include "Utilities/DirectHelper.h"
 #include "Utilities/String.h"
 #include "Utilities/Path.h"
 #include "Utilities/FileStream.h"
 #include "Utilities/Random.h"
 
+// 아래 숫자 바꾸면 크기 바뀜
 #define WinMaxWidth 1280
 #define WinMaxHeight 720
 

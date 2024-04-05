@@ -3,7 +3,7 @@
 
 #include "Systems/Window.h"
 
-#include "TestScene/PlayerTest/PlayerTest.h"
+#include "TestScene/PlayerTest/PlayerTest_Spear.h"
 
 void Program::Init()
 {
@@ -39,7 +39,7 @@ void Program::Init()
 
 	// DemoSetting
 	{
-		Push(new pTest);
+		//Push(new SpearPlayerTest);
 	}
 }
 

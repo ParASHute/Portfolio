@@ -4,12 +4,16 @@
 Player::Player(Vector3 position, Vector3 size, float rotation)
 	: position(position), size(size)
 {
-	spearBody = new Rect(position, size);
+	body = new AnimationRect(position, size);
+	// 에니메이터 추가 해야됨
+
+	AttRange = new AnimationRect(position, size);
+	// 여기도 추가해야됨
 }
 
 Player::~Player()
 {
-	SAFE_DELETE(spearBody);
+	SAFE_DELETE(body);
 }
 
 void Player::Update()
@@ -17,54 +21,56 @@ void Player::Update()
 	Move();
 	// body->Update();
 
-	spearBody->SetPosition(position);
-	spearBody->SetSize(size);
+	body->SetPosition(position);
+	body->SetSize(size);
 
-	spearBody->Update();
+	body->Update();
 }
 
 void Player::Render()
 {
 	// body->Render();
-	spearBody->Render();
+	body->Render();
 }
 
 void Player::Move()
 {
-	if (Keyboard::Get()->Press('w') || Keyboard::Get()->Press('W')) {
+	if (Keyboard::Get()->Press('W')) {
+		moveU = true;
 		position.y += MoveSpd * Time::Delta();
-		if (Keyboard::Get()->Press('s') || Keyboard::Get()->Press('S') && moveD == false) position.y -= (MoveSpd * 2) * Time::Delta();
+		if (Keyboard::Get()->Press('S') && moveD == false) position.y += MoveSpd * Time::Delta();
 	}
+	if (Keyboard::Get()->Up('W')) moveU = false;
 
-	else if (Keyboard::Get()->Press('s') || Keyboard::Get()->Press('S')) {
-		moveD = true; // 아래로 움직이는거 트루
+	else if (Keyboard::Get()->Press('S')) {
+		moveD = true;
 		position.y -= MoveSpd * Time::Delta();
+		if (Keyboard::Get()->Press('W') && moveU == false) position.y += (MoveSpd * 2) * Time::Delta();
 	}
-	// s키 떄면 아래로 움직이지 않으니 당연히 moveD도 flase가 되야함
-	if (Keyboard::Get()->Up('s') || Keyboard::Get()->Press('S')) moveD = false;
+	if (Keyboard::Get()->Up('S')) moveD = false;
 
-	if (Keyboard::Get()->Press('a') || Keyboard::Get()->Press('A')) {
-		position.x -= MoveSpd * Time::Delta();
-		if (Keyboard::Get()->Press('d') || Keyboard::Get()->Press('D') && moveR == false) position.x += (MoveSpd * 2) * Time::Delta();
-	}
-
-	else if (Keyboard::Get()->Press('D') || Keyboard::Get()->Press('d')) {
-		moveR == true;
+	if (Keyboard::Get()->Press('D') && moveU == false && moveD == false) {
+		moveR = true;
 		position.x += MoveSpd * Time::Delta();
+		if (Keyboard::Get()->Press('A') && moveL == false) position.x -= (MoveSpd * 2) * Time::Delta();
 	}
 
-	if (Keyboard::Get()->Up('D') || Keyboard::Get()->Up('d')) moveR = false;
+	else if (Keyboard::Get()->Press('A') && moveU == false && moveD == false) {
+		moveL == true;
+		position.x -= MoveSpd * Time::Delta();
+	}
+	if (Keyboard::Get()->Up('A')) moveL = false;
 
-	if (Keyboard::Get()->Press('L') || Keyboard::Get()->Press('l')) {
+	if (Keyboard::Get()->Press('L')) {
 		bDef = false;
 		Attack();
 	}
+	if (Keyboard::Get()->Up('L')) bDef = true;
 }
 
 void Player::Attack()
 {
-	// 플레이어 앞에 무색의 사각형 추가 이 랙트와 몬스터의 충돌시 삭제
-	// Rect();
+	
 }
 
 void Player::Defence()
@@ -82,7 +88,7 @@ void Player::Defence()
 
 void Player::GUI()
 {
-	// spearBody->GUI();
+	// body->GUI();
 
 	ImGui::Begin("Player", &bOpen); // 여기부터
 	{

@@ -1,31 +1,31 @@
 #include "stdafx.h"
-#include "PlayerTest.h"
+#include "PlayerTest_Spear.h"
 
-void pTest::Init()
+void SpearPlayerTest::Init()
 {
 	player = new Player({ 100,100,0 }, { 100,100,1 });
 }
 
-void pTest::Destroy()
+void SpearPlayerTest::Destroy()
 {
 	SAFE_DELETE(player);
 }
 
-void pTest::Update()
+void SpearPlayerTest::Update()
 {
 	player->Update();
 }
 
-void pTest::Render()
+void SpearPlayerTest::Render()
 {
 	player->Render();
 }
 
-void pTest::PostRender()
+void SpearPlayerTest::PostRender()
 {
 }
 
-void pTest::GUI()
+void SpearPlayerTest::GUI()
 {
 	ImGui::Begin("player"); 
 	{

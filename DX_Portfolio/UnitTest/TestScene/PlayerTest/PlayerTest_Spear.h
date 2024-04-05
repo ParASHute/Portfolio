@@ -2,7 +2,7 @@
 
 #include "GameSources/Classes/Player.h"
 
-class pTest : public IObject {
+class SpearPlayerTest : public IObject {
 public:
 	// IObject을(를) 통해 상속됨
 	virtual void Init() override;

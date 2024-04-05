@@ -48,10 +48,13 @@ private:
 	bool bOpen = true; // ImGui 오픈용 트리거
 
 	// 움직임 제어용 트리거들
+	bool moveU = false;	// 위로 움직이는지
 	bool moveD = false; // 아래로 움직이는지
-	bool moveR = false;	// 위로 움직이는지
-	bool moveU = false; // 점프 중인지
-	bool G = true; // 중력 구현
+	bool moveR = false; // 오른쪽으로 움직이는지
+	bool moveL = false; // 왼쪽으로 이동하는지
+
+	//bool moveU = false; // 점프 중인지
+	//bool G = true; // 중력 구현
 
 	// 게터 & 세터용
 	Vector3 position;
@@ -61,7 +64,7 @@ private:
 	AnimationRect* body;
 
 	// 예비 몸통
-	Rect* spearBody;
+	AnimationRect* AttRange;
 };
 
 /*
