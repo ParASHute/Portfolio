@@ -2,30 +2,69 @@
 
 #include "Skeleton/TextureRect.h"
 
-enum class ItemType {
-	HEART = 0,
-	ARROW,
-	BOME,
-	EMPTY_BOTTLE,
-	FULL_BOTTLE
-};
-
-class Item {
+class Arrow {
 public:
-	Item(Vector3 position, Vector3 size, float rotatioin = 0.0f);
-	~Item();
+	Arrow();
+	~Arrow();
 
-	void SetImage(ItemType type);
+	int GetCount() { return count; }
 
-	ItemType GetType() { return type; }
-	int GetItemCount() { return  itemCount; }
-
-	void SetType(ItemType type) { this->type = type; }
-	int SetItemCount(int itemCount) { this->itemCount = itemCount; }
+	BoundingBox* GetCollision() { return Image.GetCollision(); }
 
 private:
-	TextureRect image;
+	TextureRect Image;
+	
+	int count = 0;
+};
 
-	ItemType type;
-	int itemCount;
+class Bomb {
+public:
+	Bomb();
+	~Bomb();
+
+	int GetCount() { return count; }
+	BoundingBox* GetCollision() { return Image.GetCollision(); }
+
+private:
+	TextureRect Image;
+
+	int count = 0;
+};
+
+class Bottle {
+public:
+	Bottle();
+	~Bottle();
+
+	int GetCount() { return count; }
+	bool GetFull() { return full; }
+	BoundingBox* GetCollision() { return Image.GetCollision(); }
+
+private:
+	TextureRect Image;
+
+	bool full = false;
+	int count = 0;
+};
+
+class Heart {
+public:
+	Heart();
+	~Heart();
+
+	BoundingBox* GetCollision() { return Image.GetCollision(); }
+
+private:
+	TextureRect Image;
+};
+
+class Rooby {
+public:
+	Rooby();
+	~Rooby();
+
+	BoundingBox* GetCollision() { return Image.GetCollision(); }
+
+private:
+	TextureRect Image;
 };

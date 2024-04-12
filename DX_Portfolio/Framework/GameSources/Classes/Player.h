@@ -37,7 +37,7 @@ public:
 private:
 	// 구성 변수
 	float Hp;
-	float MaxHp = 3;
+	float MaxHp;
 	int Def = 5;
 	int Att = 0;
 	int MoveSpd = 100;
@@ -63,11 +63,10 @@ private:
 	// 몸통 (에니매이션)
 	AnimationRect* body;
 
-	// 예비 몸통
-	AnimationRect* AttRange;
-};
+	// 예비 몸통 -> 공격 모션 + 범위
+	AnimationRect* attMotion;
+	Rect attRange;
 
-/*
-	메니저가 몸통을 부여하는게 논리 구조상에 오류가 없을까?
-	 
-*/ 
+	// 방어 범위
+	Rect defenceRange;
+};

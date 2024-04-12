@@ -3,7 +3,7 @@
 
 #include "Systems/Window.h"
 
-#include "TestScene/PlayerTest/PlayerTest_Spear.h"
+#include "TestScene/00_PlayerTest/PlayerTest_Spear.h"
 
 void Program::Init()
 {
