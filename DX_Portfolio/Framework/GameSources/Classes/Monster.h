@@ -4,12 +4,12 @@
 #include "Item/Item.h"
 
 enum class MonsterType {
-
+	
 };
 
 class Monster{
 public:
-	Monster();
+	Monster(Vector3 position, Vector3 size, float rotation = 0.0f);
 	~Monster();
 
 	void Update();
@@ -40,7 +40,8 @@ private:
 	int Def = 5;
 	int Att = 0;
 	int MoveSpd = 100;
-	Item* DropItem;
+	Heart* DropItem1;
+	Rooby* DropItem2;
 
 	// Æ®¸®°Å
 	bool bDef = true;

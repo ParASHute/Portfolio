@@ -10,7 +10,7 @@ enum class OBSTACLE {
 
 class Obstacle {
 public:
-	Obstacle();
+	Obstacle(Vector3 position, Vector3 size, float rotation = 0.0f);
 	~Obstacle();
 
 	BoundingBox* GetCollision() { return Image->GetCollision(); }
@@ -19,5 +19,5 @@ public:
 
 private:
 	TextureRect* Image;
-	OBSTACLE type
+	OBSTACLE type;
 };

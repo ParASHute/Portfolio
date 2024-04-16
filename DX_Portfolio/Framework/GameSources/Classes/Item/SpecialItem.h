@@ -4,42 +4,36 @@
 
 class Sowrd {
 public:
-	Sowrd();
+	Sowrd(Vector3 position,Vector3 size, float rotation);
 	~Sowrd();
-
-	void SetImage();
 
 	bool GetPossessSowrd() { return false; }
 	void SetPossessSowrd(bool possessSowrd) { this->possessSowrd = possessSowrd; }
 
 private:
-	TextureRect Image;
+	TextureRect* Image;
 
 	bool possessSowrd = false;
 };
 
 class HeartPlate {
 public:
-	HeartPlate();
+	HeartPlate(Vector3 position, Vector3 size, float rotation);
 	~HeartPlate();
-
-	void SetImage();
 
 	int GetHeartPlateCount() { return heartPlateCount; }
 	void SetHeartPlateCount(int heartPlateCount) { this->heartPlateCount = heartPlateCount; }
 
 private:
-	TextureRect Image;
+	TextureRect* Image;
 
 	int heartPlateCount = 3;
 };
 
 class Bow {
 public:
-	Bow();
+	Bow(Vector3 position, Vector3 size, float rotation);
 	~Bow();
-
-	void SetImage();
 
 	bool GetUsable() { return usable; }
 	void SetUsavble(bool usable) { this->usable = usable; }
@@ -48,10 +42,10 @@ public:
 	void SetArrowCount(int arrowCount) { this->arrowCount = arrowCount; }
 
 	bool GetShootArrow() { return shootArrow; }
-	void SetArrowCount();
+	void SetShootArrow();
 
 private:
-	TextureRect Image;
+	TextureRect* Image;
 
 	bool usable = false;
 
@@ -61,10 +55,8 @@ private:
 
 class BombPorket {
 public:
-	BombPorket();
+	BombPorket(Vector3 position, Vector3 size, float rotation);
 	~BombPorket();
-
-	void SetImage();
 
 	bool GetUsable() { return usable; }
 	void SetUsable(bool usable) { this->usable = usable; }
@@ -72,11 +64,11 @@ public:
 	int GetBombCount() { return bombCount; }
 	void SetBombCount(int bombCount) { this->bombCount = bombCount; }
 
-	bool GetUseBomb() { return bombCount; }
+	bool GetUseBomb() { return useBomb; }
 	void SetUseBomb();
 
 private:
-	TextureRect Image;
+	TextureRect* Image;
 
 	bool usable = false;
 

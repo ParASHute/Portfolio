@@ -1,7 +1,12 @@
 #pragma once
 
-class Inventory {
+#include "Item/Item.h"
+#include "Item/SpecialItem.h"
+
+class Inventory : public SingletonBase<Inventory>{
 public:
+	friend SingletonBase<Inventory>;
+private:
 	Inventory();
 	~Inventory();
 

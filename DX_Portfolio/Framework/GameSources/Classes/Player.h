@@ -65,8 +65,8 @@ private:
 
 	// 예비 몸통 -> 공격 모션 + 범위
 	AnimationRect* attMotion;
-	Rect attRange;
+	Rect* attRange;
 
 	// 방어 범위
-	Rect defenceRange;
+	Rect* defenceRange;
 };

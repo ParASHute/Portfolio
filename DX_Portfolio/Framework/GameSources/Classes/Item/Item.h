@@ -4,67 +4,81 @@
 
 class Arrow {
 public:
-	Arrow();
+	Arrow(Vector3 position, Vector3 size, float rotation);
 	~Arrow();
 
 	int GetCount() { return count; }
 
-	BoundingBox* GetCollision() { return Image.GetCollision(); }
+	void SetIamge();
+
+	BoundingBox* GetCollision() { return Image->GetCollision(); }
 
 private:
-	TextureRect Image;
-	
+	TextureRect* Image;
+	string Type = "Arrow";
 	int count = 0;
 };
 
 class Bomb {
 public:
-	Bomb();
+	Bomb(Vector3 position, Vector3 size, float rotation);
 	~Bomb();
 
 	int GetCount() { return count; }
-	BoundingBox* GetCollision() { return Image.GetCollision(); }
+
+	void SetIamge();
+
+	BoundingBox* GetCollision() { return Image->GetCollision(); }
 
 private:
-	TextureRect Image;
-
+	TextureRect* Image;
+	string Type = "Bomb";
 	int count = 0;
 };
 
 class Bottle {
 public:
-	Bottle();
+	Bottle(Vector3 position, Vector3 size, float rotation);
 	~Bottle();
 
 	int GetCount() { return count; }
 	bool GetFull() { return full; }
-	BoundingBox* GetCollision() { return Image.GetCollision(); }
+	
+	void SetIamge();
+
+	BoundingBox* GetCollision() { return Image->GetCollision(); }
 
 private:
-	TextureRect Image;
-
+	TextureRect* Image;
+	string Type = "Bottle";
 	bool full = false;
 	int count = 0;
 };
 
 class Heart {
 public:
-	Heart();
+	Heart(Vector3 position, Vector3 size, float rotation);
 	~Heart();
 
-	BoundingBox* GetCollision() { return Image.GetCollision(); }
+	void SetIamge();
+
+	BoundingBox* GetCollision() { return Image->GetCollision(); }
 
 private:
-	TextureRect Image;
+	TextureRect* Image;
+	string Type = "Heart";
 };
 
 class Rooby {
 public:
-	Rooby();
+	Rooby(Vector3 position, Vector3 size, float rotation);
 	~Rooby();
 
-	BoundingBox* GetCollision() { return Image.GetCollision(); }
+	void SetIamge();
+
+	BoundingBox* GetCollision() { return Image->GetCollision(); }
 
 private:
-	TextureRect Image;
+	TextureRect* Image;
+	string Type = "Rooby";
 };

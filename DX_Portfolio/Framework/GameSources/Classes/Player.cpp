@@ -7,7 +7,7 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 	body = new AnimationRect(position, size);
 	// 에니메이터 추가 해야됨
 
-	AttRange = new AnimationRect(position, size);
+	//AttRange = new AnimationRect(position, size);
 	// 여기도 추가해야됨
 }
 
