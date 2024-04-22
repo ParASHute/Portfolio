@@ -45,6 +45,16 @@ using namespace std;
 #pragma comment(lib, "ImGui/ImGui.lib")
 
 //////////////////////////////////////////
+// FMOD
+#include "FMOD/inc/fmod.hpp"
+#ifdef _WIN64
+#pragma comment(lib, "FMOD/lib/x64/fmod_vc.lib")
+#else
+#pragma comment(lib, "FMOD/lib/x86/fmod_vc.lib")
+#endif
+
+//////////////////////////////////////////
+
 
 #define CLEAR_COLOR 0xcff0cc;
 
@@ -56,6 +66,7 @@ using namespace std;
 #include "Systems/Keyboard.h"
 #include "Systems/Mouse.h"
 #include "Systems/Time.h"
+#include "Systems/Sounds.h"
 
 #include "Utilities/Gui.h"
 
@@ -95,11 +106,17 @@ typedef UINT		uint;
 #include "Utilities/FileStream.h"
 #include "Utilities/Random.h"
 
+// 택스쳐 랙트를 포함하고 있기 떄문에 카매라 아래에 있어야 되는건 확실
+// 외에도 이거저거 많이 씀
+#include "Systems/Camera.h"
+
 // 아래 숫자 바꾸면 크기 바뀜
 #define WinMaxWidth 1280
 #define WinMaxHeight 720
 
 const wstring ShaderPath = L"../_Shaders/";
 const wstring TexturePath = L"../_Textures/";
+const wstring SoundPath = L"../_Sounds/";
+const string TilePath = "../_TileData/";
 
 extern HWND handle;

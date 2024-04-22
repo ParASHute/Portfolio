@@ -1,7 +1,7 @@
 #include "Framework.h"
 #include "Animator.h"
 
-AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCount, Vector2 startPos, Vector2 endPos, bool bReversed)
+AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCount, Vector2 startPos, Vector2 endPos, bool Down, bool bReversed)
 	:clipName(clipName), frameCount(frameCount), bReversed(bReversed)
 {
 	srv = srcTex->GetSRV();
@@ -12,10 +12,15 @@ AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCoun
 	// 에니메이션이 그려져 있는 텍스처의 길이
 	Vector2 clipSize = endPos - startPos;
 
-	// 특수경우에는 에셋 또는 코드를 수정해야 함
 	Vector2 frameSize;
-	frameSize.x = clipSize.x / frameCount;
-	frameSize.y = clipSize.y;
+	if (Down == false) {
+		frameSize.x = clipSize.x / frameCount;
+		frameSize.y = clipSize.y;
+	}
+	else {
+		frameSize.x = clipSize.x;
+		frameSize.y = clipSize.y / frameCount;
+	}
 
 	// 텍셀 프레임 -> UV상의 좌표를 알아낼수 있음
 	texelFrameSize.y = frameSize.x / imageWidth;

@@ -34,6 +34,11 @@
     <ClCompile Include="GameSources\Classes\Inventory.cpp" />
     <ClCompile Include="GameSources\Classes\Monster.cpp" />
     <ClCompile Include="GameSources\Classes\Obstacle.cpp" />
+    <ClCompile Include="Map\Tile.cpp" />
+    <ClCompile Include="Map\TileSet.cpp" />
+    <ClCompile Include="Map\TMap.cpp" />
+    <ClCompile Include="Systems\Camera.cpp" />
+    <ClCompile Include="Systems\Sounds.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics.h" />
@@ -73,5 +78,10 @@
     <ClInclude Include="GameSources\Classes\Inventory.h" />
     <ClInclude Include="GameSources\Classes\Monster.h" />
     <ClInclude Include="GameSources\Classes\Obstacle.h" />
+    <ClInclude Include="Map\Tile.h" />
+    <ClInclude Include="Map\TileSet.h" />
+    <ClInclude Include="Map\TMap.h" />
+    <ClInclude Include="Systems\Camera.h" />
+    <ClInclude Include="Systems\Sounds.h" />
   </ItemGroup>
 </Project>

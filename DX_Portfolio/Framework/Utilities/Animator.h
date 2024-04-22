@@ -5,7 +5,7 @@ class AnimationClip {
 public:
 	friend class Animator;
 
-	AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCount, Vector2 startPos, Vector2 endPos, bool bReversed = false);
+	AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCount, Vector2 startPos, Vector2 endPos, bool Down = false, bool bReversed = false);
 
 private:
 	wstring clipName = L"";
@@ -13,6 +13,7 @@ private:
 	UINT frameCount = 0;
 	ID3D11ShaderResourceView* srv = nullptr;
 	Vector2 texelFrameSize = Values::ZeroVec2;
+	bool Down = false;
 	bool bReversed = false;
 };
 

@@ -15,11 +15,9 @@ private:
 	void SetRooby(int rooby);
 
 private:
-	// 拳混(== 0), 气藕, 风厚
+	// 风厚(== 0), 劝, 气藕
 	int counter[3];
 
 	// 八(== 0), 劝, 气藕
-	bool usable[5];
-
-	int rooby = 0;
+	bool usable[3];
 };

@@ -23,6 +23,9 @@ public:
 	string MakeLable(string lable);
 
 	// 게터 & 세터
+	void SetAni(AnimType type);
+	void SetType(AnimType type) { this->type = type; }
+
 	Vector3 GetPos() { return position; }
 	void SetPos(Vector3 position) { this->position = position; }
 	
@@ -53,8 +56,7 @@ private:
 	bool moveR = false; // 오른쪽으로 움직이는지
 	bool moveL = false; // 왼쪽으로 이동하는지
 
-	//bool moveU = false; // 점프 중인지
-	//bool G = true; // 중력 구현
+	AnimType type = AnimType::Down;
 
 	// 게터 & 세터용
 	Vector3 position;

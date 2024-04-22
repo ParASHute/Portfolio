@@ -5,9 +5,26 @@
 
 enum class AnimType
 {
-	DOWN = 0,
-	LEFT_DOWN,
-	LEFT
+	// Idle
+	IdleD = 0,
+	IdleU,
+	IdleL,
+	IdleR,
+
+	// Move
+	Down,
+	Up,
+	Left,
+	Right,
+
+	// Att
+	AttD,
+	AttU,
+	AttL,
+	AttR,
+
+	Item,
+	Dead
 };
 
 class AnimationRect : public TextureRect {
@@ -27,5 +44,5 @@ private:
 	ID3D11SamplerState* sampler[2];
 	ID3D11BlendState* blend[2];
 
-	AnimType animType = AnimType::LEFT;
+	AnimType animType = AnimType::Down;
 };

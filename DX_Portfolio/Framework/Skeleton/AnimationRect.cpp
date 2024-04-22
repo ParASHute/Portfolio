@@ -63,34 +63,30 @@ AnimationRect::~AnimationRect()
 
 void AnimationRect::Update()
 {
+	/*
 	if (Keyboard::Get()->Press('S'))
 	{
-		animType = AnimType::DOWN;
-		if (Keyboard::Get()->Press('A'))
-		{
-			animType = AnimType::LEFT_DOWN;
-		}
+		animType = AnimType::Down;
 	}
 	else if (Keyboard::Get()->Press('A'))
 	{
-		animType = AnimType::LEFT;
+		animType = AnimType::Left;
 	}
 
 	switch (animType)
 	{
-	case AnimType::DOWN:
+	case AnimType::Down:
 		animator->SetCurrentAnimClip(L"RunD");
 		break;
-	case AnimType::LEFT_DOWN:
+	case AnimType::Left:
 		animator->SetCurrentAnimClip(L"RunLD");
-		break;
-	case AnimType::LEFT:
-		animator->SetCurrentAnimClip(L"RunL");
 		break;
 	default:
 		break;
 	}
 	// 여기 까지는 무브로 따로 빼거나, 지워서 플레이어한태 무브 주는게 좋음
+	*/
+	
 
 	animator->Update();
 

@@ -4,12 +4,16 @@
 #include "Item/Item.h"
 
 enum class MonsterType {
-	
+	BlueSmlime = 0,
+	PurpleSlime,
+	Orc,
+	Skeleton,
+	Boss
 };
 
 class Monster{
 public:
-	Monster(Vector3 position, Vector3 size, float rotation = 0.0f);
+	Monster(Vector3 position, Vector3 size, MonsterType type, float rotation = 0.0f);
 	~Monster();
 
 	void Update();
@@ -34,6 +38,8 @@ public:
 	BoundingBox* GetCollision() { return body->GetCollision(); }
 
 private:
+	MonsterType type;
+
 	// 구성 변수
 	float Hp;
 	float MaxHp = 3;
@@ -63,6 +69,6 @@ private:
 	// 몸통 (에니매이션)
 	AnimationRect* body;
 
-	// 예비 몸통
+	// 공격용
 	AnimationRect* AttRange;
 };

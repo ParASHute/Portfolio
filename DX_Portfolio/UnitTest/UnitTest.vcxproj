@@ -149,10 +149,14 @@
     <ClInclude Include="Program.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestScene\00_PlayerTest\PlayerTest_Spear.h" />
+    <ClInclude Include="TestScene\01_PlayerAnimationTest\01_PlayerAnimationTest.h" />
+    <ClInclude Include="TestScene\MakeMap\MakeMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="TestScene\00_PlayerTest\PlayerTest_Spear.cpp" />
+    <ClCompile Include="TestScene\01_PlayerAnimationTest\01_PlayerAnimationTest.cpp" />
+    <ClCompile Include="TestScene\MakeMap\MakeMap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

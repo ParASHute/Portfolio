@@ -4,9 +4,13 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="TestScene\00_PlayerTest\PlayerTest_Spear.h" />
+    <ClInclude Include="TestScene\MakeMap\MakeMap.h" />
+    <ClInclude Include="TestScene\01_PlayerAnimationTest\01_PlayerAnimationTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="TestScene\00_PlayerTest\PlayerTest_Spear.cpp" />
+    <ClCompile Include="TestScene\MakeMap\MakeMap.cpp" />
+    <ClCompile Include="TestScene\01_PlayerAnimationTest\01_PlayerAnimationTest.cpp" />
   </ItemGroup>
 </Project>
