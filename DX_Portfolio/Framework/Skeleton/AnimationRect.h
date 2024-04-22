@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include "TextureRect.h"
 #include "Utilities/Animator.h"

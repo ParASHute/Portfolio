@@ -39,8 +39,8 @@ public:
 
 private:
 	// 구성 변수
-	float Hp;
-	float MaxHp;
+	float Hp = 3;
+	float MaxHp =3;
 	int Def = 5;
 	int Att = 0;
 	int MoveSpd = 100;

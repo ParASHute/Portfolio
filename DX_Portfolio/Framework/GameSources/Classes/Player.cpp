@@ -6,103 +6,105 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 {
 	body = new AnimationRect(position, size);
 	
-	Texture2D* IdleSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* WalkSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* AttSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* ItemSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* DeadSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
+	Animator* ani = new Animator();
 
 	//Idle
-	AnimationClip* IdleD = new AnimationClip(L"IdleD", IdleSrcTex, 4,
+	Texture2D* srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Idle.png");
+	AnimationClip* IdleD = new AnimationClip(L"IdleD", srcTex, 4,
 		Values::ZeroVec2, 
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f });
+		{ srcTex->GetWidth() * 0.25f, srcTex->GetHeight() });
 
-	AnimationClip* IdleU = new AnimationClip(L"IdleU", IdleSrcTex, 4,
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f },
-		{ IdleSrcTex->GetWidth() * 0.25f, IdleSrcTex->GetHeight() * 0.25f * 2});
+	AnimationClip* IdleU = new AnimationClip(L"IdleU", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight()},
+		{ srcTex->GetWidth() * 0.25f * 2, srcTex->GetHeight() });
 
-	AnimationClip* IdleL = new AnimationClip(L"IdleL", IdleSrcTex, 4,
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f * 2},
-		{ IdleSrcTex->GetWidth() * 0.25f, IdleSrcTex->GetHeight() * 0.25f * 3});
+	AnimationClip* IdleL = new AnimationClip(L"IdleL", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() },
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight()});
 
-	AnimationClip* IdleR = new AnimationClip(L"IdleR", IdleSrcTex, 4,
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f * 3},
-		{ IdleSrcTex->GetWidth() * 0.25f, IdleSrcTex->GetHeight() * 0.25f * 4});
-
-
-
-	// Move
-	AnimationClip* MoveD = new AnimationClip(L"MoveD", WalkSrcTex, 4,
-		Values::ZeroVec2, { WalkSrcTex->GetWidth() * 0.25f, WalkSrcTex->GetHeight() }, true);
-
-	AnimationClip* MoveU = new AnimationClip(L"MoveU", WalkSrcTex, 4,
-		{ WalkSrcTex->GetWidth() * 0.25f, 0 }, 
-		{ WalkSrcTex->GetWidth() * 0.25f * 2 , WalkSrcTex->GetHeight() }, true);
-
-	AnimationClip* MoveL = new AnimationClip(L"MoveL", WalkSrcTex, 4,
-		{ WalkSrcTex->GetWidth() * 0.25f * 2 , 0}, 
-		{ WalkSrcTex->GetWidth() * 0.25f * 3, WalkSrcTex->GetHeight() }, true);
-
-	AnimationClip* MoveR = new AnimationClip(L"MoveR", WalkSrcTex, 4,
-		{ WalkSrcTex->GetWidth() * 0.25f * 3, 0 }, 
-		{ WalkSrcTex->GetWidth() * 0.25f * 4, WalkSrcTex->GetHeight() }, true);
-
-	// Att
-	AnimationClip* AttD = new AnimationClip(L"AttD", AttSrcTex, 4,
-		Values::ZeroVec2,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f });
-
-	AnimationClip* AttU = new AnimationClip(L"AttU", AttSrcTex, 4,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f },
-		{ AttSrcTex->GetWidth() * 0.25f, AttSrcTex->GetHeight() * 0.25f * 2 });
-
-	AnimationClip* AttL = new AnimationClip(L"AttL", AttSrcTex, 4,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f * 2 },
-		{ AttSrcTex->GetWidth() * 0.25f, AttSrcTex->GetHeight() * 0.25f * 3 });
-
-	AnimationClip* AttR = new AnimationClip(L"AttR", AttSrcTex, 4,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f * 3 },
-		{ AttSrcTex->GetWidth() * 0.25f, AttSrcTex->GetHeight() * 0.25f * 4 });
-
-	// Item
-	AnimationClip* Item = new AnimationClip(L"Item", ItemSrcTex, 4,
-		Values::ZeroVec2,
-		{ ItemSrcTex->GetWidth(), ItemSrcTex->GetHeight()});
-
-	// Dead
-	AnimationClip* Dead = new AnimationClip(L"Dead", DeadSrcTex, 4,
-		Values::ZeroVec2,
-		{ DeadSrcTex->GetWidth(), DeadSrcTex->GetHeight() });
-	
-	Animator* ani = new Animator();
+	AnimationClip* IdleR = new AnimationClip(L"IdleR", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight() },
+		{ srcTex->GetWidth() * 0.25f * 4, srcTex->GetHeight() });
 
 	ani->AddAnimClip(IdleD);
 	ani->AddAnimClip(IdleU);
 	ani->AddAnimClip(IdleL);
 	ani->AddAnimClip(IdleR);
 
+	SAFE_DELETE(srcTex);
+
+
+
+	// Move
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Walk.png");
+	AnimationClip* MoveD = new AnimationClip(L"MoveD", srcTex, 4,
+		Values::ZeroVec2, { srcTex->GetWidth() * 0.25f, srcTex->GetHeight() }, true);
+
+	AnimationClip* MoveU = new AnimationClip(L"MoveU", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f, 0 }, 
+		{ srcTex->GetWidth() * 0.25f * 2 , srcTex->GetHeight() }, true);
+
+	AnimationClip* MoveL = new AnimationClip(L"MoveL", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f * 2 , 0}, 
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight() }, true);
+
+	AnimationClip* MoveR = new AnimationClip(L"MoveR", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f * 3, 0 }, 
+		{ srcTex->GetWidth() * 0.25f * 4, srcTex->GetHeight() }, true);
+
 	ani->AddAnimClip(MoveD);
 	ani->AddAnimClip(MoveU);
 	ani->AddAnimClip(MoveL);
 	ani->AddAnimClip(MoveR);
+
+	SAFE_DELETE(srcTex);
+
+	// Att
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Attack.png");
+	AnimationClip* AttD = new AnimationClip(L"AttD", srcTex, 4,
+		Values::ZeroVec2,
+		{ srcTex->GetWidth() * 0.25f, srcTex->GetHeight() });
+
+	AnimationClip* AttU = new AnimationClip(L"AttU", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() * 0.25f },
+		{ srcTex->GetWidth() * 0.25f * 2, srcTex->GetHeight() });
+
+	AnimationClip* AttL = new AnimationClip(L"AttL", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() * 0.25f * 2 },
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight() });
+
+	AnimationClip* AttR = new AnimationClip(L"AttR", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() * 0.25f * 3 },
+		{ srcTex->GetWidth() * 0.25f * 4, srcTex->GetHeight() });
 
 	ani->AddAnimClip(AttD);
 	ani->AddAnimClip(AttU);
 	ani->AddAnimClip(AttL);
 	ani->AddAnimClip(AttR);
 
+	SAFE_DELETE(srcTex);
+
+	// Item
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Item.png");
+	AnimationClip* Item = new AnimationClip(L"Item", srcTex, 4,
+		Values::ZeroVec2,
+		{ srcTex->GetWidth(), srcTex->GetHeight()});
+
 	ani->AddAnimClip(Item);
 
+	SAFE_DELETE(srcTex);
+
+	// Dead
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Dead.png");
+	AnimationClip* Dead = new AnimationClip(L"Dead", srcTex, 4,
+		Values::ZeroVec2,
+		{ srcTex->GetWidth(), srcTex->GetHeight() });
 	ani->AddAnimClip(Dead);
+
+	SAFE_DELETE(srcTex);
 
 	body->SetAnimator(ani);
 	body->GetAnimator()->SetCurrentAnimClip(L"IdleD");
-
-	SAFE_DELETE(DeadSrcTex);
-	SAFE_DELETE(ItemSrcTex);
-	SAFE_DELETE(AttSrcTex);
-	SAFE_DELETE(WalkSrcTex);
-	SAFE_DELETE(IdleSrcTex);
 
 	body->SetPosition(position);
 	body->SetSize(size);
@@ -205,6 +207,7 @@ void Player::Move()
 		else if (type == AnimType::IdleU || type == AnimType::Up) type = AnimType::AttU;
 		else if (type == AnimType::IdleL || type == AnimType::Left) type = AnimType::AttL;
 		else if (type == AnimType::IdleR || type == AnimType::Right) type = AnimType::AttR;
+		SetAni(type);
 		bDef = false;
 		Attack();
 	}
