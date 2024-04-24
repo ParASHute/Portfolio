@@ -311,7 +311,7 @@ void Player::SetAni(AnimType type)
 		body->GetAnimator()->SetCurrentAnimClip(L"MoveR");
 	}break;
 
-	// Att
+	// Att -> 칼이 첫 포지션은 잘 잡는데 이동후 포지션을 못잡음
 	case AnimType::AttD:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttD");
 		attMotion->SetPosition(

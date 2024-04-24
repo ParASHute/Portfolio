@@ -70,8 +70,8 @@ float4 PS(PixelInput input) : SV_Target
 	{
 		color = color; // 그림을 그리겠다.
 		
-		if (color.r <= 0.01f && color.g <= 0.01f && color.b <= 0.01f)
-			discard;
+        if (color.r >= 1.00f && color.g <= 0.01f && color.b >= 1.00f) 
+            discard;
 
 	}
 	else

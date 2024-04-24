@@ -9,8 +9,24 @@ void MakeMap::Init()
 
 	Map = new TMap(width, height, spacing);
 
-	// TileSet::Get()->ChangeTileMap(TexturePath + L"타일 사용할거", 0, 0);
-	// 여기에 경로 새로운 경로가 한글이라서 문제
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/Bush-3.png", 1, 1);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/Bush-4.png", 1, 1);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/Grass-1.png", 1, 1);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/Stump.png", 1, 1);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/Tree-1-4.png", 1, 1);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/Tree-2-4.png", 1, 1);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/Tree-3-4.png", 1, 1);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetDesert.png", 20, 12);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetDungeon.png", 12, 4);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetField.png", 5,15);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetFloor.png", 11, 5);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetHole.png", 11, 5);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetHouse.png", 33, 23);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetInterior.png", 16, 20);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetInteriorFloor.png", 22, 17);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetNature.png", 24, 21);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetRelief.png", 20, 12);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetVillageAbandoned.png", 20, 12);
 }
 
 void MakeMap::Destroy()
