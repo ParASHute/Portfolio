@@ -130,9 +130,27 @@ void AnimationRect::Render()
 	__super::Render();
 }
 
+void AnimationRect::GUI(string Name)
+{
+	ImGui::Begin("GUI", &bOpen); // 여기부터
+	{
+		ImGui::Text(MakeLable(Name).c_str());
+		ImGui::SliderFloat2(MakeLable("Pos").c_str(), position, 0, WinMaxWidth);
+		ImGui::SliderFloat2(MakeLable("Size").c_str(), size, 0, WinMaxHeight);
+	}
+	ImGui::End();
+}
+
+string AnimationRect::MakeLable(string lable)
+{
+	string Label = lable + "##" + to_string((uint)this);
+
+	return Label;
+}
+
 void AnimationRect::SetAnimator(Animator* animator)
 {
 	// 에니메이터를 갈아 끼울때 메모리릭 방지를 위해서
-	SAFE_DELETE(animator);
+	SAFE_DELETE(this->animator);
 	this->animator = animator;
 }

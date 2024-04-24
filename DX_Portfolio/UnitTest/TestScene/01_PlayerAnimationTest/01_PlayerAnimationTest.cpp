@@ -3,7 +3,7 @@
 
 void PlayerAnimationTest::Init()
 {
-	player = new Player({ 100,100,0 }, { 100,100,1 });
+	player = new Player({ 200,200,0 }, { 100,100,1 });
 }
 
 void PlayerAnimationTest::Destroy()
@@ -27,4 +27,5 @@ void PlayerAnimationTest::PostRender()
 
 void PlayerAnimationTest::GUI()
 {
+	player->GUI();
 }

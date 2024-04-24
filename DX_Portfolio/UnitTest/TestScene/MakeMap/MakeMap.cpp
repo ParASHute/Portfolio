@@ -9,7 +9,8 @@ void MakeMap::Init()
 
 	Map = new TMap(width, height, spacing);
 
-	TileSet::Get()->ChangeTileMap(TexturePath + L"타일 사용할거", 0, 0);
+	// TileSet::Get()->ChangeTileMap(TexturePath + L"타일 사용할거", 0, 0);
+	// 여기에 경로 새로운 경로가 한글이라서 문제
 }
 
 void MakeMap::Destroy()

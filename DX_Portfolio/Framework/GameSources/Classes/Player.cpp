@@ -5,35 +5,37 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 	: position(position), size(size)
 {
 	body = new AnimationRect(position, size);
+
+	attMotion = new AnimationRect({ position.x - (position.x * 0.5f), position.y - (position.y * 0.5f), position.z }, { size.x * 0.5f, size.y * 0.5f, size.z });
 	
-	Texture2D* IdleSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* WalkSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* AttSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* ItemSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
-	Texture2D* DeadSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/");
+<<<<<<< HEAD
+	Texture2D* IdleSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Idle.png");
+	Texture2D* WalkSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Walk.png");
+	Texture2D* AttSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Attack.png");
+	Texture2D* ItemSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Item.png");
+	Texture2D* DeadSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Dead.png");
 
 	//Idle
-	AnimationClip* IdleD = new AnimationClip(L"IdleD", IdleSrcTex, 4,
+	AnimationClip* IdleD = new AnimationClip(L"IdleD", IdleSrcTex, 1,
 		Values::ZeroVec2, 
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f });
+		{ IdleSrcTex->GetWidth() * 0.25f, IdleSrcTex->GetHeight() });
 
-	AnimationClip* IdleU = new AnimationClip(L"IdleU", IdleSrcTex, 4,
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f },
-		{ IdleSrcTex->GetWidth() * 0.25f, IdleSrcTex->GetHeight() * 0.25f * 2});
+	AnimationClip* IdleU = new AnimationClip(L"IdleU", IdleSrcTex, 1,
+		{ IdleSrcTex->GetWidth() * 0.25f, 0 },
+		{ IdleSrcTex->GetWidth() * 0.25f * 2, IdleSrcTex->GetHeight() });
 
-	AnimationClip* IdleL = new AnimationClip(L"IdleL", IdleSrcTex, 4,
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f * 2},
-		{ IdleSrcTex->GetWidth() * 0.25f, IdleSrcTex->GetHeight() * 0.25f * 3});
+	AnimationClip* IdleL = new AnimationClip(L"IdleL", IdleSrcTex, 1,
+		{ IdleSrcTex->GetWidth() * 0.25f * 2, 0 },
+		{ IdleSrcTex->GetWidth() * 0.25f * 3, IdleSrcTex->GetHeight() });
 
-	AnimationClip* IdleR = new AnimationClip(L"IdleR", IdleSrcTex, 4,
-		{ IdleSrcTex->GetWidth(), IdleSrcTex->GetHeight() * 0.25f * 3},
-		{ IdleSrcTex->GetWidth() * 0.25f, IdleSrcTex->GetHeight() * 0.25f * 4});
-
-
+	AnimationClip* IdleR = new AnimationClip(L"IdleR", IdleSrcTex, 1,
+		{ IdleSrcTex->GetWidth() * 0.25f * 3, 0 },
+		{ IdleSrcTex->GetWidth() * 0.25f * 4, IdleSrcTex->GetHeight() });
 
 	// Move
 	AnimationClip* MoveD = new AnimationClip(L"MoveD", WalkSrcTex, 4,
-		Values::ZeroVec2, { WalkSrcTex->GetWidth() * 0.25f, WalkSrcTex->GetHeight() }, true);
+		Values::ZeroVec2, 
+		{ WalkSrcTex->GetWidth() * 0.25f, WalkSrcTex->GetHeight() }, true);
 
 	AnimationClip* MoveU = new AnimationClip(L"MoveU", WalkSrcTex, 4,
 		{ WalkSrcTex->GetWidth() * 0.25f, 0 }, 
@@ -48,69 +50,183 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 		{ WalkSrcTex->GetWidth() * 0.25f * 4, WalkSrcTex->GetHeight() }, true);
 
 	// Att
-	AnimationClip* AttD = new AnimationClip(L"AttD", AttSrcTex, 4,
+	AnimationClip* AttD = new AnimationClip(L"AttD", AttSrcTex, 1,
 		Values::ZeroVec2,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f });
+		{ AttSrcTex->GetWidth() * 0.25f, AttSrcTex->GetHeight() });
 
-	AnimationClip* AttU = new AnimationClip(L"AttU", AttSrcTex, 4,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f },
-		{ AttSrcTex->GetWidth() * 0.25f, AttSrcTex->GetHeight() * 0.25f * 2 });
+	AnimationClip* AttU = new AnimationClip(L"AttU", AttSrcTex, 1,
+		{ AttSrcTex->GetWidth() * 0.25f, 0 },
+		{ AttSrcTex->GetWidth() * 0.25f * 2, AttSrcTex->GetHeight() });
 
-	AnimationClip* AttL = new AnimationClip(L"AttL", AttSrcTex, 4,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f * 2 },
-		{ AttSrcTex->GetWidth() * 0.25f, AttSrcTex->GetHeight() * 0.25f * 3 });
+	AnimationClip* AttL = new AnimationClip(L"AttL", AttSrcTex, 1,
+		{ AttSrcTex->GetWidth() * 0.25f * 2, 0 },
+		{ AttSrcTex->GetWidth() * 0.25f * 3, AttSrcTex->GetHeight() });
 
-	AnimationClip* AttR = new AnimationClip(L"AttR", AttSrcTex, 4,
-		{ AttSrcTex->GetWidth(), AttSrcTex->GetHeight() * 0.25f * 3 },
-		{ AttSrcTex->GetWidth() * 0.25f, AttSrcTex->GetHeight() * 0.25f * 4 });
+	AnimationClip* AttR = new AnimationClip(L"AttR", AttSrcTex, 1,
+		{ AttSrcTex->GetWidth() * 0.25f * 3, 0 },
+		{ AttSrcTex->GetWidth() * 0.25f * 4 , AttSrcTex->GetHeight()});
 
 	// Item
-	AnimationClip* Item = new AnimationClip(L"Item", ItemSrcTex, 4,
+	AnimationClip* Item = new AnimationClip(L"Item", ItemSrcTex, 1,
 		Values::ZeroVec2,
 		{ ItemSrcTex->GetWidth(), ItemSrcTex->GetHeight()});
 
 	// Dead
-	AnimationClip* Dead = new AnimationClip(L"Dead", DeadSrcTex, 4,
+	AnimationClip* Dead = new AnimationClip(L"Dead", DeadSrcTex, 1,
 		Values::ZeroVec2,
 		{ DeadSrcTex->GetWidth(), DeadSrcTex->GetHeight() });
+
+	// Sword
+	Texture2D* SwordSrcTex = new Texture2D(TexturePath + L"Player/Sword/SpriteInHandD.png");
+	AnimationClip* SowrdD = new AnimationClip(L"SowrdD", SwordSrcTex, 1,
+		Values::ZeroVec2,
+		{ SwordSrcTex->GetWidth(), SwordSrcTex->GetHeight() });
+
+	SwordSrcTex = new Texture2D(TexturePath + L"Player/Sword/SpriteInHandU.png");
+	AnimationClip* SowrdU = new AnimationClip(L"SowrdU", SwordSrcTex, 1,
+		Values::ZeroVec2,
+		{ SwordSrcTex->GetWidth(), SwordSrcTex->GetHeight() });
+
+	SwordSrcTex = new Texture2D(TexturePath + L"Player/Sword/SpriteInHandL.png");
+	AnimationClip* SowrdL = new AnimationClip(L"SowrdL", SwordSrcTex, 1,
+		Values::ZeroVec2,
+		{ SwordSrcTex->GetWidth(), SwordSrcTex->GetHeight() });
+
+	SwordSrcTex = new Texture2D(TexturePath + L"Player/Sword/SpriteInHandR.png");
+	AnimationClip* SowrdR = new AnimationClip(L"SowrdR", SwordSrcTex, 1,
+		Values::ZeroVec2,
+		{ SwordSrcTex->GetWidth(), SwordSrcTex->GetHeight() });
 	
 	Animator* ani = new Animator();
+	Animator* attAni = new Animator();
+=======
+	Animator* ani = new Animator();
+
+	//Idle
+	Texture2D* srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Idle.png");
+	AnimationClip* IdleD = new AnimationClip(L"IdleD", srcTex, 4,
+		Values::ZeroVec2, 
+		{ srcTex->GetWidth() * 0.25f, srcTex->GetHeight() });
+
+	AnimationClip* IdleU = new AnimationClip(L"IdleU", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight()},
+		{ srcTex->GetWidth() * 0.25f * 2, srcTex->GetHeight() });
+
+	AnimationClip* IdleL = new AnimationClip(L"IdleL", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() },
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight()});
+
+	AnimationClip* IdleR = new AnimationClip(L"IdleR", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight() },
+		{ srcTex->GetWidth() * 0.25f * 4, srcTex->GetHeight() });
+>>>>>>> 54b21eb0be399b4bc9bd8eef135a037f5161be9f
 
 	ani->AddAnimClip(IdleD);
 	ani->AddAnimClip(IdleU);
 	ani->AddAnimClip(IdleL);
 	ani->AddAnimClip(IdleR);
 
+	SAFE_DELETE(srcTex);
+
+
+
+	// Move
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Walk.png");
+	AnimationClip* MoveD = new AnimationClip(L"MoveD", srcTex, 4,
+		Values::ZeroVec2, { srcTex->GetWidth() * 0.25f, srcTex->GetHeight() }, true);
+
+	AnimationClip* MoveU = new AnimationClip(L"MoveU", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f, 0 }, 
+		{ srcTex->GetWidth() * 0.25f * 2 , srcTex->GetHeight() }, true);
+
+	AnimationClip* MoveL = new AnimationClip(L"MoveL", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f * 2 , 0}, 
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight() }, true);
+
+	AnimationClip* MoveR = new AnimationClip(L"MoveR", srcTex, 4,
+		{ srcTex->GetWidth() * 0.25f * 3, 0 }, 
+		{ srcTex->GetWidth() * 0.25f * 4, srcTex->GetHeight() }, true);
+
 	ani->AddAnimClip(MoveD);
 	ani->AddAnimClip(MoveU);
 	ani->AddAnimClip(MoveL);
 	ani->AddAnimClip(MoveR);
+
+	SAFE_DELETE(srcTex);
+
+	// Att
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Attack.png");
+	AnimationClip* AttD = new AnimationClip(L"AttD", srcTex, 4,
+		Values::ZeroVec2,
+		{ srcTex->GetWidth() * 0.25f, srcTex->GetHeight() });
+
+	AnimationClip* AttU = new AnimationClip(L"AttU", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() * 0.25f },
+		{ srcTex->GetWidth() * 0.25f * 2, srcTex->GetHeight() });
+
+	AnimationClip* AttL = new AnimationClip(L"AttL", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() * 0.25f * 2 },
+		{ srcTex->GetWidth() * 0.25f * 3, srcTex->GetHeight() });
+
+	AnimationClip* AttR = new AnimationClip(L"AttR", srcTex, 4,
+		{ srcTex->GetWidth(), srcTex->GetHeight() * 0.25f * 3 },
+		{ srcTex->GetWidth() * 0.25f * 4, srcTex->GetHeight() });
 
 	ani->AddAnimClip(AttD);
 	ani->AddAnimClip(AttU);
 	ani->AddAnimClip(AttL);
 	ani->AddAnimClip(AttR);
 
+	SAFE_DELETE(srcTex);
+
+	// Item
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Item.png");
+	AnimationClip* Item = new AnimationClip(L"Item", srcTex, 4,
+		Values::ZeroVec2,
+		{ srcTex->GetWidth(), srcTex->GetHeight()});
+
 	ani->AddAnimClip(Item);
 
+	SAFE_DELETE(srcTex);
+
+	// Dead
+	srcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Dead.png");
+	AnimationClip* Dead = new AnimationClip(L"Dead", srcTex, 4,
+		Values::ZeroVec2,
+		{ srcTex->GetWidth(), srcTex->GetHeight() });
 	ani->AddAnimClip(Dead);
+
+<<<<<<< HEAD
+	attAni->AddAnimClip(SowrdD);
+	attAni->AddAnimClip(SowrdU);
+	attAni->AddAnimClip(SowrdL);
+	attAni->AddAnimClip(SowrdR);
+=======
+	SAFE_DELETE(srcTex);
+>>>>>>> 54b21eb0be399b4bc9bd8eef135a037f5161be9f
 
 	body->SetAnimator(ani);
 	body->GetAnimator()->SetCurrentAnimClip(L"IdleD");
 
+<<<<<<< HEAD
+	attMotion->SetAnimator(attAni);
+	attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdD"); 
+	
+
+	SAFE_DELETE(SwordSrcTex);
 	SAFE_DELETE(DeadSrcTex);
 	SAFE_DELETE(ItemSrcTex);
 	SAFE_DELETE(AttSrcTex);
 	SAFE_DELETE(WalkSrcTex);
 	SAFE_DELETE(IdleSrcTex);
 
+=======
+>>>>>>> 54b21eb0be399b4bc9bd8eef135a037f5161be9f
 	body->SetPosition(position);
 	body->SetSize(size);
 
 	body->UpdateWorld();
-
-	//AttRange = new AnimationRect(position, size);
-	// 여기도 추가해야됨
+	attMotion->UpdateWorld();
 }
 
 Player::~Player()
@@ -121,95 +237,134 @@ Player::~Player()
 void Player::Update()
 {
 	Move();
-	// body->Update();
+
+	if (bDef != true) {
+		Attack();
+		attMotion->Update();
+	}
 
 	body->SetPosition(position);
 	body->SetSize(size);
-
 	body->Update();
 }
 
 void Player::Render()
 {
-	// body->Render();
+	if (bDef != true) attMotion->Render();
 	body->Render();
 }
 
 void Player::Move()
 {
-	if (Keyboard::Get()->Press('W')) {
-		type = AnimType::Up;
-		SetAni(type);
-		moveU = true;
-		position.y += MoveSpd * Time::Delta();
-		if (Keyboard::Get()->Press('S') && moveD == false) {
+	if(bAtt == false){
+		if (Keyboard::Get()->Press('W')) {
 			type = AnimType::Up;
 			SetAni(type);
+			moveU = true;
 			position.y += MoveSpd * Time::Delta();
 		}
-	}
-	if (Keyboard::Get()->Up('W')) {
-		moveU = false;
-		type = AnimType::IdleU;
-		SetAni(type);
-	}
-
-	else if (Keyboard::Get()->Press('S')) {
-		type = AnimType::Down;
-		SetAni(type);
-		moveD = true;
-		position.y -= MoveSpd * Time::Delta();
-		if (Keyboard::Get()->Press('W') && moveU == false) {
-			type = AnimType::Up;
+		if (Keyboard::Get()->Up('W')) {
+			moveU = false;
+			type = AnimType::IdleU;
 			SetAni(type);
-			position.y += (MoveSpd * 2) * Time::Delta();
 		}
-	}
-	if (Keyboard::Get()->Up('S')) {
-		type = AnimType::IdleD;
-		SetAni(type);
-		moveD = false;
-	}
 
-	if (Keyboard::Get()->Press('D') && moveU == false && moveD == false) {
-		type = AnimType::Right;
-		SetAni(type);
-		moveR = true;
-		position.x += MoveSpd * Time::Delta();
-		if (Keyboard::Get()->Press('A') && moveL == false) {
+		else if (Keyboard::Get()->Press('S')) {
+			type = AnimType::Down;
+			SetAni(type);
+			moveD = false;
+			position.y -= MoveSpd * Time::Delta();
+			if (Keyboard::Get()->Press('W') && moveU == false) {
+				type = AnimType::Up;
+				SetAni(type);
+				position.y += (MoveSpd * 2) * Time::Delta();
+			}
+		}
+		if (Keyboard::Get()->Up('S')) {
+			type = AnimType::IdleD;
+			SetAni(type);
+			moveD = false;
+		}
+
+		if (Keyboard::Get()->Press('D') && moveU == false && moveD == false) {
+			type = AnimType::Right;
+			SetAni(type);
+			moveR = true;
+			position.x += MoveSpd * Time::Delta();
+			if (Keyboard::Get()->Press('A') && moveL == false) {
+				type = AnimType::Left;
+				SetAni(type);
+				position.x -= MoveSpd * Time::Delta();
+			}
+		}
+		if (Keyboard::Get()->Up('D')) {
+			type = AnimType::IdleR;
+			SetAni(type);
+			moveD = false;
+		}
+
+		else if (Keyboard::Get()->Press('A') && moveU == false && moveD == false) {
 			type = AnimType::Left;
 			SetAni(type);
-			position.x -= (MoveSpd * 2) * Time::Delta();
+			moveL == true;
+			position.x -= MoveSpd * Time::Delta();
 		}
-	}
-	if (Keyboard::Get()->Up('D')) {
-		type = AnimType::IdleR;
-		SetAni(type);
-		moveD = false;
-	}
-
-	else if (Keyboard::Get()->Press('A') && moveU == false && moveD == false) {
-		type = AnimType::Up;
-		SetAni(type);
-		moveL == true;
-		position.x -= MoveSpd * Time::Delta();
-	}
-	if (Keyboard::Get()->Up('A')) {
-		type = AnimType::IdleL;
-		SetAni(type);
-		moveL = false;
+		if (Keyboard::Get()->Up('A')) {
+			type = AnimType::IdleL;
+			SetAni(type);
+			moveL = false;
+		}
 	}
 
 	if (Keyboard::Get()->Press('L')) {
+<<<<<<< HEAD
+		if (type == AnimType::IdleD || type == AnimType::Down) {
+			type = AnimType::AttD;
+			SetAni(type);
+		}
+		else if (type == AnimType::IdleU || type == AnimType::Up) {
+			type = AnimType::AttU;
+			SetAni(type);
+		}
+		else if (type == AnimType::IdleL || type == AnimType::Left) {
+			type = AnimType::AttL;
+			SetAni(type);
+		}
+		else if (type == AnimType::IdleR || type == AnimType::Right) {
+			type = AnimType::AttR;
+			SetAni(type);
+		}
+		bAtt = true;
+=======
 		if (type == AnimType::IdleD || type == AnimType::Down) type = AnimType::AttD;
 		else if (type == AnimType::IdleU || type == AnimType::Up) type = AnimType::AttU;
 		else if (type == AnimType::IdleL || type == AnimType::Left) type = AnimType::AttL;
 		else if (type == AnimType::IdleR || type == AnimType::Right) type = AnimType::AttR;
+		SetAni(type);
+>>>>>>> 54b21eb0be399b4bc9bd8eef135a037f5161be9f
 		bDef = false;
-		Attack();
 	}
 
-	if (Keyboard::Get()->Up('L')) bDef = true;
+	if (Keyboard::Get()->Up('L')) {
+		if (type == AnimType::AttD) {
+			type = AnimType::IdleD;
+			SetAni(type);
+		}
+		else if (type == AnimType::AttU) {
+			type = AnimType::IdleU;
+			SetAni(type);
+		}
+		else if (type == AnimType::AttL) {
+			type = AnimType::IdleL;
+			SetAni(type);
+		}
+		else if (type == AnimType::AttR) {
+			type = AnimType::IdleR;
+			SetAni(type);
+		}
+		bAtt = false;
+		bDef = true;
+	}
 }
 
 void Player::SetAni(AnimType type)
@@ -252,18 +407,34 @@ void Player::SetAni(AnimType type)
 	// Att
 	case AnimType::AttD:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttD");
+		attMotion->SetPosition(
+			{ position.x - (position.x * 0.5f), position.y - (position.x * 0.5f), position.z }
+		);
+		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdD");
 	}break;
 
 	case AnimType::AttU:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttU");
+		attMotion->SetPosition(
+			{ position.x + (position.x * 0.5f), position.y + (position.x * 0.5f), position.z }
+		);
+		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdU");
 	}break;
 
 	case AnimType::AttL:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttL");
+		attMotion->SetPosition(
+			{ position.x - (position.x * 0.35f), position.y - (position.y * 0.1f), position.z }
+		);
+		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdL");
 	}break;
 
 	case AnimType::AttR:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttR");
+		attMotion->SetPosition(
+			{ position.x + (position.x * 0.35f), position.y, position.z }
+		);
+		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdR");
 	}break;
 
 	// Item
@@ -283,33 +454,23 @@ void Player::SetAni(AnimType type)
 
 void Player::Attack()
 {
-	
 }
 
 void Player::Defence()
 {
 	// bDef가 트루일땐 몬스터와 충돌시에도 Hp 변동 없음 + 플레이어 뒤로 밀림
-	if (bDef == true) {
-		
-	}
-
-	// 그외에는 몬스터와 충돌시 hp변동
-	else {
-		
+	if (bDef == false) {
+		Hp--;
+		if (Hp <= 0) {
+			type = AnimType::Dead;
+		}
 	}
 }
 
 void Player::GUI()
 {
-	// body->GUI();
-
-	ImGui::Begin("Player", &bOpen); // 여기부터
-	{
-		ImGui::Text(MakeLable("Player").c_str()); 
-		ImGui::SliderFloat2(MakeLable("Pos").c_str(), position, 0, WinMaxWidth);
-		ImGui::SliderFloat2(MakeLable("Size").c_str(), size, 0, WinMaxHeight);
-	}
-	ImGui::End();
+	body->GUI("Player");
+	attMotion->GUI("Motion");
 }
 
 string Player::MakeLable(string lable)

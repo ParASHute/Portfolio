@@ -1,7 +1,7 @@
 #include "Framework.h"
 #include "Animator.h"
 
-AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCount, Vector2 startPos, Vector2 endPos, bool Down, bool bReversed)
+AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT frameCount, Vector2 startPos, Vector2 endPos, bool Down, bool bReversed)
 	:clipName(clipName), frameCount(frameCount), bReversed(bReversed)
 {
 	srv = srcTex->GetSRV();
@@ -13,17 +13,19 @@ AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCoun
 	Vector2 clipSize = endPos - startPos;
 
 	Vector2 frameSize;
+
 	if (Down == false) {
 		frameSize.x = clipSize.x / frameCount;
 		frameSize.y = clipSize.y;
 	}
+
 	else {
 		frameSize.x = clipSize.x;
 		frameSize.y = clipSize.y / frameCount;
 	}
 
 	// 텍셀 프레임 -> UV상의 좌표를 알아낼수 있음
-	texelFrameSize.y = frameSize.x / imageWidth;
+	texelFrameSize.x = frameSize.x / imageWidth;
 	texelFrameSize.y = frameSize.y / imageHeight;
 
 	Vector2 texelStartPos;
@@ -32,11 +34,23 @@ AnimationClip::AnimationClip(wstring clipName, Texture2D* srcTex, UINT farmeCoun
 
 	Vector2 keyFrame;
 
-	for (UINT i = 0; i < frameCount; i++) {
-		keyFrame.x = texelStartPos.x + (texelFrameSize.x * i);
-		keyFrame.y = texelStartPos.y;
 
-		keyFarmes.push_back(keyFrame);
+	if (Down == false) {
+		for (UINT i = 0; i < frameCount; i++) {
+			keyFrame.x = texelStartPos.x + (texelFrameSize.x * i);
+			keyFrame.y = texelStartPos.y;
+
+			keyFarmes.push_back(keyFrame);
+		}
+	}
+
+	else {
+		for (UINT i = 0; i < frameCount; i++) {
+			keyFrame.x = texelStartPos.x;
+			keyFrame.y = texelStartPos.y + (texelFrameSize.x * i);
+
+			keyFarmes.push_back(keyFrame);
+		}
 	}
 }
 

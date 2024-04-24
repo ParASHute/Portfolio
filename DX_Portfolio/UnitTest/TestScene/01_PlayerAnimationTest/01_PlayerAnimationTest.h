@@ -13,5 +13,5 @@ public:
 	virtual void GUI() override;
 
 private:
-	Player* player;
+	Player* player = nullptr;
 };

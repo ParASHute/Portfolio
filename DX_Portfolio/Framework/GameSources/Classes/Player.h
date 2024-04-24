@@ -39,8 +39,8 @@ public:
 
 private:
 	// 구성 변수
-	float Hp;
-	float MaxHp;
+	float Hp = 3;
+	float MaxHp =3;
 	int Def = 5;
 	int Att = 0;
 	int MoveSpd = 100;
@@ -49,6 +49,7 @@ private:
 	// 트리거
 	bool bDef = true;
 	bool bOpen = true; // ImGui 오픈용 트리거
+	bool bAtt = false;
 
 	// 움직임 제어용 트리거들
 	bool moveU = false;	// 위로 움직이는지
@@ -67,8 +68,4 @@ private:
 
 	// 예비 몸통 -> 공격 모션 + 범위
 	AnimationRect* attMotion;
-	Rect* attRange;
-
-	// 방어 범위
-	Rect* defenceRange;
 };

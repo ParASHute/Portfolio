@@ -4,7 +4,8 @@
 TMap::TMap(uint width, uint height, uint spacing)
     : width(width), height(height), spacing(spacing)
 {
-    TileSet::Create();
+    tileSet = new TileSet();
+    //TileSet::Create();
 
     GenerateTileMap();
 
@@ -41,7 +42,8 @@ TMap::TMap(uint width, uint height, uint spacing)
 
 TMap::~TMap()
 {
-    TileSet::Delete();
+    SAFE_DELETE(tileSet);
+    //TileSet::Delete();
 
     // tiles x좌표 데이터 지우기
     for (uint y = 0; y < height; y++)
@@ -99,8 +101,8 @@ void TMap::Update()
         if (tile != nullptr)
         {
             tile->SetColor(Values::Red);
-            Vector2 startUV = TileSet::Get()->selectedStartUV;
-            Vector2 endUV = startUV + TileSet::Get()->texelTileSize;
+            Vector2 startUV = tileSet->selectedStartUV;
+            Vector2 endUV = startUV + tileSet->texelTileSize;
             tile->SetStartUV(startUV);
             tile->SetEndUV(endUV);
         }
@@ -117,7 +119,7 @@ void TMap::Render()
     vs->SetShader();
     ps->SetShader();
 
-    DC->PSSetShaderResources(0, 1, &TileSet::Get()->tileSRV);
+    DC->PSSetShaderResources(0, 1, &tileSet->tileSRV);
 
     for (uint y = 0; y < height; y++)
     {
@@ -158,7 +160,7 @@ void TMap::Render()
 
 void TMap::GUI()
 {
-    TileSet::Get()->GUI();
+    tileSet->GUI();
 }
 
 void TMap::GenerateTileMap()
@@ -207,10 +209,10 @@ void TMap::Save(string path)
         << to_string(spacing) << endl;
 
     string imagePath = "";
-    wstring tilePath = TileSet::Get()->GetTilePath();
+    wstring tilePath = tileSet->GetTilePath();
     imagePath.assign(tilePath.begin(), tilePath.end());
-    string xCount = to_string(TileSet::Get()->GetXCount());
-    string yCount = to_string(TileSet::Get()->GetYCount());
+    string xCount = to_string(tileSet->GetXCount());
+    string yCount = to_string(tileSet->GetYCount());
 
     fout << imagePath << ' ' << xCount <<
         ' ' << yCount << endl;
@@ -328,7 +330,7 @@ void TMap::Load(string path)
                 wstring temp = L"";
                 temp.assign(imagePath.begin(), imagePath.end());
 
-                TileSet::Get()->ChangeTileMap(temp,
+                tileSet->ChangeTileMap(temp,
                     xCount, yCount);
 
                 break;

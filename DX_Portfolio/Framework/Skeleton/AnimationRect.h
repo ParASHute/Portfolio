@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include "TextureRect.h"
 #include "Utilities/Animator.h"
@@ -34,6 +34,8 @@ public:
 
 	void Update();
 	void Render();
+	void GUI(string Name);
+	string MakeLable(string lable);
 
 	Animator* GetAnimator() { return animator; }
 	void SetAnimator(Animator* animator);

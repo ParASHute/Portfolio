@@ -9,6 +9,9 @@
 
 void Program::Init()
 {
+	States::Create();
+	Camera::Create();
+
 	// CreatBuffer
 	{
 		vpb = new VPBuffer();
@@ -42,8 +45,18 @@ void Program::Init()
 	// DemoSetting
 	{
 		//Push(new SpearPlayerTest);
+		
 		//Push(new MakeMap);
-		Push(new PlayerAnimationTest);
+		/*
+			MakeMap은 Texture2D.cpp 파일에 49번째줄 에러
+				-> 타일멥 택스쳐에서의 경로문제로 못받는거 같은데
+					아무리 확인해도 경로 문제는아님
+		*/
+		
+		//Push(new PlayerAnimationTest);
+		/*
+			이친구는 백터헤더 부분에서 아웃레인지 뜸... 이건 진짜 모르겠음 ㅠㅠ
+		*/
 	}
 }
 

@@ -1,9 +1,9 @@
 #pragma once
 
-class TileSet : public SingletonBase<TileSet>
+class TileSet
 {
 public:
-    friend class SingletonBase<TileSet>;
+    //friend class SingletonBase<TileSet>;
     friend class TMap;
 
     void GUI();
@@ -19,7 +19,7 @@ public:
     uint GetXCount() { return tileXCount; }
     uint GetYCount() { return tileYCount; }
 
-private:
+public: // 원래는 싱글턴이라 private
     TileSet();
     ~TileSet();
 

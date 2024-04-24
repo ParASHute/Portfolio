@@ -50,6 +50,8 @@ public:
 
     Tile* GetTile(Vector3 mPos);
 
+    TileSet* GetTileSet() { return tileSet; }
+
 private:
     
     vector<VertexTile> vertices;
@@ -78,4 +80,6 @@ private:
     D3D11_MAPPED_SUBRESOURCE subResource;
 
     Tile** tiles = nullptr;   
+    
+    TileSet* tileSet = nullptr;
 };
