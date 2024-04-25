@@ -70,6 +70,9 @@ private:
 
     IndexNumBuffer* inb = nullptr;
 
+    ID3D11SamplerState* sampler[2];
+    ID3D11BlendState* blend[2];
+
     uint width = 0;
     uint height = 0;
     uint spacing = 0;
@@ -82,4 +85,6 @@ private:
     Tile** tiles = nullptr;   
     
     TileSet* tileSet = nullptr;
+
+
 };

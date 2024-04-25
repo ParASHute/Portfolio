@@ -7,6 +7,7 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 	body = new AnimationRect(position, size);
 
 	attMotion = new AnimationRect({ position.x - (position.x * 0.5f), position.y - (position.y * 0.5f), position.z }, { size.x * 0.5f, size.y * 0.5f, size.z });
+	Sl = size.x * 0.5f + size.x * 0.25;
 	
 	Texture2D* IdleSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Idle.png");
 	Texture2D* WalkSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Walk.png");
@@ -315,7 +316,7 @@ void Player::SetAni(AnimType type)
 	case AnimType::AttD:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttD");
 		attMotion->SetPosition(
-			{ position.x - (position.x * 0.5f), position.y - (position.x * 0.5f), position.z }
+			{ position.x, position.y - Sl, position.z }
 		);
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdD");
 	}break;
@@ -323,7 +324,7 @@ void Player::SetAni(AnimType type)
 	case AnimType::AttU:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttU");
 		attMotion->SetPosition(
-			{ position.x + (position.x * 0.5f), position.y + (position.x * 0.5f), position.z }
+			{ position.x , position.y + Sl, position.z }
 		);
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdU");
 	}break;
@@ -331,7 +332,7 @@ void Player::SetAni(AnimType type)
 	case AnimType::AttL:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttL");
 		attMotion->SetPosition(
-			{ position.x - (position.x * 0.35f), position.y - (position.y * 0.1f), position.z }
+			{ position.x - Sl + 1, position.y - 1, position.z }
 		);
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdL");
 	}break;
@@ -339,7 +340,7 @@ void Player::SetAni(AnimType type)
 	case AnimType::AttR:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttR");
 		attMotion->SetPosition(
-			{ position.x + (position.x * 0.35f), position.y, position.z }
+			{ position.x + Sl, position.y, position.z }
 		);
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdR");
 	}break;

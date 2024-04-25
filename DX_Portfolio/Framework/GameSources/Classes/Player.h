@@ -68,4 +68,5 @@ private:
 
 	// 예비 몸통 -> 공격 모션 + 범위
 	AnimationRect* attMotion;
+	float Sl;
 };

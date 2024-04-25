@@ -26,6 +26,7 @@ void MakeMap::Init()
 	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetInteriorFloor.png", 22, 17);
 	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetNature.png", 24, 21);
 	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetRelief.png", 20, 12);
+	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetReliefUpSideDown.png", 20, 12);
 	//Map->GetTileSet()->ChangeTileMap(TexturePath + L"Map/usable/TilesetVillageAbandoned.png", 20, 12);
 }
 

@@ -38,6 +38,27 @@ TMap::TMap(uint width, uint height, uint spacing)
 
     inb = new IndexNumBuffer();
     inb->SetIndex(0);
+
+    // Sampler
+    {
+        D3D11_SAMPLER_DESC desc;
+        States::GetSamplerDesc(&desc);
+        States::CreateSampler(&desc, &sampler[0]);
+
+        // 선형보간
+        desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+        States::CreateSampler(&desc, &sampler[1]);
+    }
+
+    //Blend
+    {
+        D3D11_BLEND_DESC desc;
+        States::GetBlendDesc(&desc);
+        States::CreateBlend(&desc, &blend[0]);
+
+        desc.RenderTarget[0].BlendEnable = true;
+        States::CreateBlend(&desc, &blend[1]);
+    }
 }
 
 TMap::~TMap()
@@ -111,6 +132,9 @@ void TMap::Update()
 
 void TMap::Render()
 {
+    DC->PSSetSamplers(0, 1, &sampler[1]);
+    DC->OMSetBlendState(blend[1], nullptr, (UINT)0xFFFFFFFF);
+
     vb->SetIA();
     ib->SetIA();
     il->SetIA();

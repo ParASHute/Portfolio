@@ -1,59 +1,58 @@
-
 // VertexInput 구조체 정의
 struct VertexInput
 {
 	// position이라는 변수가 POSITION0 스트림의 위치에 대한 정보를 저장한다.
-	float4 position : POSITION0; // 정점 위치
-	float2 uv : TEXCOORD0; // uv좌표
-	float2 uv2 : TEXCOORD1;
-	float4 color : COLOR0;
-	uint index : INDEX0;
+    float4 position : POSITION0; // 정점 위치
+    float2 uv : TEXCOORD0; // uv좌표
+    float2 uv2 : TEXCOORD1;
+    float4 color : COLOR0;
+    uint index : INDEX0;
 };
 
 // PixelInput 구조체 정의
 struct PixelInput
 {
 	// SV는 시스템 상의 세멘틱 값
-	float4 position : SV_POSITION0; // 정점 위치
-	float2 uv : TEXCOORD0; // uv좌표
-	float2 uv2 : TEXCOORD1;
-	float4 color : COLOR0;
-	uint index : INDEX0;
+    float4 position : SV_POSITION0; // 정점 위치
+    float2 uv : TEXCOORD0; // uv좌표
+    float2 uv2 : TEXCOORD1;
+    float4 color : COLOR0;
+    uint index : INDEX0;
 };
 
 // 상수 버퍼 레지스터 b0에 할당된 월드 행렬을 저장하는 상수 버퍼
 cbuffer WorldBuffer : register(b0)
 {
-	matrix _world;
+    matrix _world;
 };
 
 // 상수 버퍼 레지스터 b1에 할당된 뷰 행렬과, 프로젝션 행렬을 저장하는 상수 버퍼
 cbuffer VPBuffer : register(b1)
 {
-	matrix _view;
-	matrix _projection;
+    matrix _view;
+    matrix _projection;
 };
 
 cbuffer IndexNumBuffer : register(b0)
 {
-	uint _index;
+    uint _index;
 }
 
 PixelInput VS(VertexInput input)
 {
-	PixelInput output;
+    PixelInput output;
 	
-	output.position = mul(input.position, _world); // 정점의 위치에 월드 행렬을 곱함
-	output.position = mul(output.position, _view); // 결과에 뷰 행렬을 곱함
-	output.position = mul(output.position, _projection); // 결과에 포르젝션 행렬을 곱함
+    output.position = mul(input.position, _world); // 정점의 위치에 월드 행렬을 곱함
+    output.position = mul(output.position, _view); // 결과에 뷰 행렬을 곱함
+    output.position = mul(output.position, _projection); // 결과에 포르젝션 행렬을 곱함
 	// 이 순서대로 행렬을 곱해주면 글로벌 공간상의 좌표를 알아낼수 있다.
 	
-	output.uv = input.uv;
-	output.uv2 = input.uv2;
-	output.color = input.color;
-	output.index = input.index;
+    output.uv = input.uv;
+    output.uv2 = input.uv2;
+    output.color = input.color;
+    output.index = input.index;
 
-	return output;
+    return output;
 }
 
 // 텍스처 데이터를 저장, 텍스처 슬롯 0번에 할당
@@ -64,30 +63,30 @@ SamplerState _samp : register(s0);
 
 float4 PS(PixelInput input) : SV_Target
 {
-	float4 color = _sourceTex.Sample(_samp, (float2) input.uv);
+    float4 color = _sourceTex.Sample(_samp, (float2) input.uv);
 	
-	if (input.uv.x > 0.0f || input.uv.y > 0.0f)
-	{
-		color = color; // 그림을 그리겠다.
+    if (input.uv.x > 0.0f || input.uv.y > 0.0f)
+    {
+        color = color; // 그림을 그리겠다.
 		
-        if (color.r >= 1.00f && color.g <= 0.01f && color.b >= 1.00f) 
+        if (color.r >= 0.99f && color.g <= 0.01f && color.b >= 0.99f)
             discard;
 
-	}
-	else
-		color = input.color; // 단색으로 칠하겠다.
+    }
+    else
+        color = input.color; // 단색으로 칠하겠다.
 	
 	// 마우스가 올라가있는 타일은
-		if (input.index == _index)
-		{
+    if (input.index == _index)
+    {
 		// 외각선을 빨갛게 칠하겠다.
-			if (input.uv2.x < 0.05f || input.uv2.x > 0.95f
+        if (input.uv2.x < 0.05f || input.uv2.x > 0.95f
 			|| input.uv2.y < 0.05f || input.uv2.y > 0.95f)
-				color = float4(1, 0, 0, 1);
-		}
+            color = float4(1, 0, 0, 1);
+    }
 	
-		return color;
-	}
+    return color;
+}
 
 /*
 Semantic : 세멘틱
