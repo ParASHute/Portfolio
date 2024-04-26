@@ -3,8 +3,9 @@
 
 #include "Systems/Window.h"
 
+#include "MakeMap/MakeMap.h"
+
 #include "TestScene/00_PlayerTest/PlayerTest_Spear.h"
-#include "TestScene/MakeMap/MakeMap.h"
 #include "TestScene/01_PlayerAnimationTest/01_PlayerAnimationTest.h"
 
 void Program::Init()

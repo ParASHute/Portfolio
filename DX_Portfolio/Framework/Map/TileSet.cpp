@@ -3,7 +3,7 @@
 
 TileSet::TileSet()
 {
-    tilePath = TexturePath + L"Map/Backgrounds/Tilesets/TilesetFloor.png";
+    tilePath = TileTexturePath + L"TilesetField.png";
 
     Texture2D* tex = new Texture2D(tilePath);
 
@@ -14,8 +14,8 @@ TileSet::TileSet()
     // X로 10개 Y로 10개
     // 이미지를 가로로 10등분 세로로 10등분 하여
     // GUI에 표시
-    tileXCount = 20;
-    tileYCount = 20;
+    tileXCount = 5;
+    tileYCount = 15;
 
     texelTileSize = Vector2(1 / (float)tileXCount,
         1 / (float)tileYCount);

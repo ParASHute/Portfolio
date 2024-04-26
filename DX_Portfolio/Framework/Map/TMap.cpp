@@ -274,7 +274,7 @@ void TMap::Load(string path)
     // tiles y좌표 데이터 지우기
     SAFE_DELETE_ARRAY(tiles);
 
-    char temp[256];
+    char temp[256]; 
 
     // Width, Height, Spacing 불러오기
     {
