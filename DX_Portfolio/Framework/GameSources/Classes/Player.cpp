@@ -7,7 +7,7 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 	body = new AnimationRect(position, size);
 
 	attMotion = new AnimationRect({ position.x - (position.x * 0.5f), position.y - (position.y * 0.5f), position.z }, { size.x * 0.5f, size.y * 0.5f, size.z });
-	Sl = size.x * 0.5f + size.x * 0.25;
+	swordLange = size.x * 0.5f + size.x * 0.25;
 	
 	Texture2D* IdleSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Idle.png");
 	Texture2D* WalkSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Walk.png");
@@ -143,11 +143,18 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 
 	body->UpdateWorld();
 	attMotion->UpdateWorld();
+
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; i++) {
+			bStay[i][j] = false;
+		}
+	}
 }
 
 Player::~Player()
 {
 	SAFE_DELETE(body);
+	SAFE_DELETE(attMotion);
 }
 
 void Player::Update()
@@ -174,6 +181,9 @@ void Player::Move()
 {
 	if(bAtt == false){
 		if (Keyboard::Get()->Press('W')) {
+			attMotion->SetPosition(
+				{ position.x , position.y + swordLange, position.z }
+			);
 			type = AnimType::Up;
 			SetAni(type);
 			moveU = true;
@@ -186,9 +196,12 @@ void Player::Move()
 		}
 
 		else if (Keyboard::Get()->Press('S')) {
+			attMotion->SetPosition(
+				{ position.x, position.y - swordLange, position.z }
+			);
 			type = AnimType::Down;
 			SetAni(type);
-			moveD = false;
+			moveD = true;
 			position.y -= MoveSpd * Time::Delta();
 			if (Keyboard::Get()->Press('W') && moveU == false) {
 				type = AnimType::Up;
@@ -202,24 +215,10 @@ void Player::Move()
 			moveD = false;
 		}
 
-		if (Keyboard::Get()->Press('D') && moveU == false && moveD == false) {
-			type = AnimType::Right;
-			SetAni(type);
-			moveR = true;
-			position.x += MoveSpd * Time::Delta();
-			if (Keyboard::Get()->Press('A') && moveL == false) {
-				type = AnimType::Left;
-				SetAni(type);
-				position.x -= MoveSpd * Time::Delta();
-			}
-		}
-		if (Keyboard::Get()->Up('D')) {
-			type = AnimType::IdleR;
-			SetAni(type);
-			moveD = false;
-		}
-
 		else if (Keyboard::Get()->Press('A') && moveU == false && moveD == false) {
+			attMotion->SetPosition(
+				{ position.x - swordLange + 1, position.y - 1, position.z }
+			);
 			type = AnimType::Left;
 			SetAni(type);
 			moveL == true;
@@ -230,6 +229,22 @@ void Player::Move()
 			SetAni(type);
 			moveL = false;
 		}
+
+		if (Keyboard::Get()->Press('D') && moveU == false && moveD == false) {
+			attMotion->SetPosition(
+				{ position.x + swordLange, position.y, position.z }
+			);
+			type = AnimType::Right;
+			SetAni(type);
+			moveR = true;
+			position.x += MoveSpd * Time::Delta();
+		}
+
+		if (Keyboard::Get()->Up('D')) {
+			type = AnimType::IdleR;
+			SetAni(type);
+			moveD = false;
+		}	
 	}
 
 	if (Keyboard::Get()->Press('L')) {
@@ -315,33 +330,23 @@ void Player::SetAni(AnimType type)
 	// Att -> 칼이 첫 포지션은 잘 잡는데 이동후 포지션을 못잡음
 	case AnimType::AttD:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttD");
-		attMotion->SetPosition(
-			{ position.x, position.y - Sl, position.z }
-		);
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdD");
 	}break;
 
 	case AnimType::AttU:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttU");
-		attMotion->SetPosition(
-			{ position.x , position.y + Sl, position.z }
-		);
+		
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdU");
 	}break;
 
 	case AnimType::AttL:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttL");
-		attMotion->SetPosition(
-			{ position.x - Sl + 1, position.y - 1, position.z }
-		);
+		
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdL");
 	}break;
 
 	case AnimType::AttR:{
 		body->GetAnimator()->SetCurrentAnimClip(L"AttR");
-		attMotion->SetPosition(
-			{ position.x + Sl, position.y, position.z }
-		);
 		attMotion->GetAnimator()->SetCurrentAnimClip(L"SowrdR");
 	}break;
 
@@ -358,6 +363,19 @@ void Player::SetAni(AnimType type)
 	default:
 		break;
 	}
+}
+
+void Player::setStay(int y, int x)
+{
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if (bStay[i][j] == true) {
+				bStay[i][j] = false;
+				break;
+			}
+		}
+	}
+	bStay[y][x] = true;
 }
 
 void Player::Attack()

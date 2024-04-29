@@ -34,6 +34,7 @@ public:
     // 타일이 깔린다.
     // spacing은 한 타일의 가로,세로 길이
     TMap(uint width, uint height, uint spacing);
+    TMap(uint width, uint height, uint spacing, wstring path);
     ~TMap();
 
     void Update();

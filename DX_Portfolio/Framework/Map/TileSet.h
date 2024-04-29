@@ -20,6 +20,7 @@ public:
     uint GetYCount() { return tileYCount; }
 
 public: // 원래는 싱글턴이라 private
+    TileSet(wstring path);
     TileSet();
     ~TileSet();
 

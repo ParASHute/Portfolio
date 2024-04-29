@@ -3,7 +3,7 @@
 #include "Skeleton/Rect.h"
 
 #include "Skeleton/AnimationRect.h"
-#include "Inventory.h"
+#include "Inventory/Inventory.h"
 
 class Player {
 public:
@@ -35,7 +35,12 @@ public:
 	float GetMaxHp() { return MaxHp; }
 	void SetMaxHP(float MaxHp) { this->MaxHp = MaxHp; }
 
+	bool GetStay() { return bStay; }
+	void setStay(int y, int x); 
+
 	BoundingBox* GetCollision() { return body->GetCollision() ; }
+
+	AnimationRect* GetAttMotion() { return attMotion; }
 
 private:
 	// 구성 변수
@@ -57,6 +62,12 @@ private:
 	bool moveR = false; // 오른쪽으로 움직이는지
 	bool moveL = false; // 왼쪽으로 이동하는지
 
+	// 위치 트리거
+	bool bStay[4][4];
+	bool D1 = false;
+	bool D2 = false;
+	bool hidden = false;
+
 	AnimType type = AnimType::Down;
 
 	// 게터 & 세터용
@@ -68,5 +79,5 @@ private:
 
 	// 예비 몸통 -> 공격 모션 + 범위
 	AnimationRect* attMotion;
-	float Sl;
+	float swordLange;
 };

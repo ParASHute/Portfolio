@@ -61,6 +61,66 @@ TMap::TMap(uint width, uint height, uint spacing)
     }
 }
 
+TMap::TMap(uint width, uint height, uint spacing, wstring path)
+    : width(width), height(height), spacing(spacing)
+{
+    tileSet = new TileSet(path);
+    //TileSet::Create();
+
+    GenerateTileMap();
+
+    vertices.assign(4, VertexTile());
+
+    vertices[0].position = Values::ZeroVec3;
+    vertices[1].position = Vector3(0.0f, (float)spacing, 0.0f);
+    vertices[2].position = Vector3((float)spacing, 0.0f, 0.0f);
+    vertices[3].position = Vector3((float)spacing, (float)spacing, 0.0f);
+
+    indices = { 0,1,2,2,1,3 };
+
+    vb = new VertexBuffer();
+    vb->Create(vertices, D3D11_USAGE_DYNAMIC);
+
+    ib = new IndexBuffer();
+    ib->Create(indices, D3D11_USAGE_IMMUTABLE);
+
+    vs = new VertexShader();
+    vs->Create(ShaderPath + L"VertexTile.hlsl", "VS");
+
+    ps = new PixelShader();
+    ps->Create(ShaderPath + L"VertexTile.hlsl", "PS");
+
+    il = new InputLayout();
+    il->Create(VertexTile::descs, VertexTile::count, vs->GetBlob());
+
+    wb = new WorldBuffer();
+    wb->SetWorld(world);
+
+    inb = new IndexNumBuffer();
+    inb->SetIndex(0);
+
+    // Sampler
+    {
+        D3D11_SAMPLER_DESC desc;
+        States::GetSamplerDesc(&desc);
+        States::CreateSampler(&desc, &sampler[0]);
+
+        // 선형보간
+        desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+        States::CreateSampler(&desc, &sampler[1]);
+    }
+
+    //Blend
+    {
+        D3D11_BLEND_DESC desc;
+        States::GetBlendDesc(&desc);
+        States::CreateBlend(&desc, &blend[0]);
+
+        desc.RenderTarget[0].BlendEnable = true;
+        States::CreateBlend(&desc, &blend[1]);
+    }
+}
+
 TMap::~TMap()
 {
     SAFE_DELETE(tileSet);

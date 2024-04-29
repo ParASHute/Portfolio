@@ -1,6 +1,26 @@
 #include "Framework.h"
 #include "TileSet.h"
 
+TileSet::TileSet(wstring path)
+{
+    tilePath = TileTexturePath + path;
+
+    Texture2D* tex = new Texture2D(tilePath);
+
+    tileSRV = tex->GetSRV();
+    SAFE_DELETE(tex);
+
+    // GUI에서 표현할 이미지 버튼의 X와 Y축 개수
+    // X로 10개 Y로 10개
+    // 이미지를 가로로 10등분 세로로 10등분 하여
+    // GUI에 표시
+    tileXCount = 5;
+    tileYCount = 15;
+
+    texelTileSize = Vector2(1 / (float)tileXCount,
+        1 / (float)tileYCount);
+}
+
 TileSet::TileSet()
 {
     tilePath = TileTexturePath + L"TilesetField.png";

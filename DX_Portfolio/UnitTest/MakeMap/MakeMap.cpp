@@ -7,18 +7,20 @@ void MakeMap::Init()
 	uint width = (WinMaxWidth * 2) / spacing;
 	uint height = (WinMaxHeight * 2) / spacing;
 
-	GrassLandBase = new TMap(width, height, spacing);
-	GrassLandBorderDown = new TMap(width, height, spacing);
-	GrassLandBorderLeft = new TMap(width, height, spacing);
-	GrassLandBorderRight = new TMap(width, height, spacing);
-	GrassLandBorderUp = new TMap(width, height, spacing);
+	LandBase = new TMap(width, height, spacing,L"TilesetField.png");
+	LandBorderDown = new TMap(width, height, spacing,L"TilesetNatureDown.png");
+	LandBorderLeft = new TMap(width, height, spacing, L"TilesetNatureLeft.png");
+	LandBorderRight = new TMap(width, height, spacing, L"TilesetNatureRight.png");
+	LandBorderUp = new TMap(width, height, spacing, L"TilesetNatureUP.png");
+	Obstacle = new TMap(width, height, spacing, L"TilesetNatureUP.png");
 
 
-	GrassLandBase->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetField.png", 5,15);
-	GrassLandBorderDown->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureDown.png", 24, 21);
-	GrassLandBorderLeft->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureLeft.png", 21, 24);
-	GrassLandBorderRight->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureRight.png", 21, 24);
-	GrassLandBorderUp->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureUP.png", 24, 21);
+	LandBase->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetField.png", 5,15);
+	LandBorderDown->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureDown.png", 24, 21);
+	LandBorderLeft->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureLeft.png", 21, 24);
+	LandBorderRight->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureRight.png", 21, 24);
+	LandBorderUp->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureUP.png", 24, 21);
+	Obstacle->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetNatureDown.png", 24, 21);
 
 
 	//Map->GetTileSet()->ChangeTileMap(TileTexturePath + L"Bush-3.png", 1, 1);
@@ -44,38 +46,42 @@ void MakeMap::Init()
 	//Map->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetReliefUpSideDown.png", 20, 12);
 	//Map->GetTileSet()->ChangeTileMap(TileTexturePath + L"TilesetVillageAbandoned.png", 20, 12);
 
-	GrassLandBase->Load(TilePath + "Field1-1/GrassLandBase.data");
-	GrassLandBorderDown->Load(TilePath + "Field1-1/GrassLandBorderDown.data");
-	GrassLandBorderLeft->Load(TilePath + "Field1-1/GrassLandBorderLeft.data");
-	GrassLandBorderRight->Load(TilePath + "Field1-1/GrassLandBorderRight.data");
-	GrassLandBorderUp->Load(TilePath + "Field1-1/GrassLandBorderUp.data");
+	LandBase->Load(TilePath + "Field1-1/GrassLandBase.data");
+	LandBorderDown->Load(TilePath + "Field1-1/GrassLandBorderDown.data");
+	LandBorderLeft->Load(TilePath + "Field1-1/GrassLandBorderLeft.data");
+	LandBorderRight->Load(TilePath + "Field1-1/GrassLandBorderRight.data");
+	LandBorderUp->Load(TilePath + "GrassLandBorder.data");
+	//Obstacle->Load(TilePath + "TilesetNatureDown.data");
 }
 
 void MakeMap::Destroy()
 {
-	SAFE_DELETE(GrassLandBorderUp);
-	SAFE_DELETE(GrassLandBorderRight);
-	SAFE_DELETE(GrassLandBorderLeft);
-	SAFE_DELETE(GrassLandBorderDown);
-	SAFE_DELETE(GrassLandBase);
+	SAFE_DELETE(Obstacle);
+	SAFE_DELETE(LandBorderUp);
+	SAFE_DELETE(LandBorderRight);
+	SAFE_DELETE(LandBorderLeft);
+	SAFE_DELETE(LandBorderDown);
+	SAFE_DELETE(LandBase);
 }
-
+ 
 void MakeMap::Update()
 {	
-	GrassLandBase->Update();
-	GrassLandBorderDown->Update();
-	GrassLandBorderLeft->Update();
-	GrassLandBorderRight->Update();
-	GrassLandBorderUp->Update();
+	LandBase->Update();
+	LandBorderDown->Update();
+	LandBorderLeft->Update();
+	LandBorderRight->Update();
+	LandBorderUp->Update();
+	Obstacle->Update();
 }
 
 void MakeMap::Render()
 {
-	GrassLandBase->Render();
-	GrassLandBorderDown->Render();
-	GrassLandBorderLeft->Render();
-	GrassLandBorderRight->Render();
-	GrassLandBorderUp->Render();
+	LandBase->Render();
+	LandBorderDown->Render();
+	LandBorderLeft->Render();
+	LandBorderRight->Render();
+	LandBorderUp->Render();
+	Obstacle->Render();
 }
 
 void MakeMap::PostRender()
@@ -85,9 +91,10 @@ void MakeMap::PostRender()
 
 void MakeMap::GUI()
 {
-	//GrassLandBase->GUI();
-	//GrassLandBorderDown->GUI();
-	//GrassLandBorderLeft->GUI();
-	//GrassLandBorderRight->GUI();
-	//GrassLandBorderUp->GUI();
+	//LandBase->GUI();
+	//LandBorderDown->GUI();
+	//LandBorderLeft->GUI();
+	//LandBorderRight->GUI();
+	//LandBorderUp->GUI();
+	Obstacle->GUI();
 }

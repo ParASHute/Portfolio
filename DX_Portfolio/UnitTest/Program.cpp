@@ -45,10 +45,10 @@ void Program::Init()
 
 	// DemoSetting
 	{
-		Push(new MakeMap);	
+		//Push(new MakeMap);	
 		
 		//Push(new SpearPlayerTest);
-		//Push(new PlayerAnimationTest);
+		Push(new PlayerAnimationTest);
 	}
 }
 
