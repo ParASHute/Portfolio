@@ -14,6 +14,7 @@ enum class MonsterType {
 class Monster{
 public:
 	Monster(Vector3 position, Vector3 size, MonsterType type, float rotation = 0.0f);
+	Monster(Vector3 position, Vector3 size, float rotation = 0.0f);
 	~Monster();
 
 	void Update();
@@ -29,6 +30,8 @@ public:
 	Vector3 GetPos() { return position; }
 	void SetPos(Vector3 position) { this->position = position; }
 
+	void SetMonsterType();
+
 	float GetHP() { return Hp; }
 	void SetHp(float Hp) { this->Hp = Hp; }
 
@@ -36,6 +39,9 @@ public:
 	void SetMaxHP(float MaxHp) { this->MaxHp = MaxHp; }
 
 	BoundingBox* GetCollision() { return body->GetCollision(); }
+
+	// 기능
+	void MakeAni();
 
 private:
 	MonsterType type;
@@ -68,7 +74,4 @@ private:
 
 	// 몸통 (에니매이션)
 	AnimationRect* body;
-
-	// 공격용
-	AnimationRect* AttRange;
 };
