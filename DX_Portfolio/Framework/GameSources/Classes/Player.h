@@ -15,8 +15,6 @@ public:
 	void Update();
 	void Render();
 	void Move();
-	void Attack();
-	void Defence();
 
 	// ImGui
 	void GUI();
@@ -32,7 +30,7 @@ public:
 	float GetHP() { return Hp; }
 	void SetHp(float Hp) { this->Hp = Hp; }
 
-	float GetMaxHp() { return MaxHp; }
+	int GetMaxHp() { return MaxHp; }
 	void SetMaxHP(float MaxHp) { this->MaxHp = MaxHp; }
 
 	bool GetStay() { return bStay; }
@@ -42,19 +40,32 @@ public:
 
 	AnimationRect* GetAttMotion() { return attMotion; }
 
+	AnimType GetAnimType() { return type; }
+
+	bool GetAttTrigger() { return bAtt; }
+	bool GetEquipmentSword() { return equipmentSword; }
+	bool GetDefenceTrigger() { return bDef; }
+
+	float GetSwordRange() { return swordRange; }
+	
+	/*
+	bool GetMoveL() { return moveL; }
+	*/
+
 private:
 	// 구성 변수
 	float Hp = 3;
-	float MaxHp =3;
+	int MaxHp =3;
 	int Def = 5;
 	int Att = 0;
 	int MoveSpd = 100;
 	Inventory* inven;
 
 	// 트리거
+	bool equipmentSword = false;
 	bool bDef = true;
-	bool bOpen = true; // ImGui 오픈용 트리거
 	bool bAtt = false;
+	bool bOpen = true; // ImGui 오픈용 트리거
 
 	// 움직임 제어용 트리거들
 	bool moveU = false;	// 위로 움직이는지
@@ -79,5 +90,5 @@ private:
 
 	// 예비 몸통 -> 공격 모션 + 범위
 	AnimationRect* attMotion;
-	float swordLange;
+	float swordRange;
 };

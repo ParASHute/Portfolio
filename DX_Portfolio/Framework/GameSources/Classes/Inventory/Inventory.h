@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Item/Item.h"
-#include "Item/SpecialItem.h"
+#include "../Item/Item.h"
+#include "../Item/SpecialItem.h"
 
 class Inventory : public SingletonBase<Inventory>{
 public:

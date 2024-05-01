@@ -7,7 +7,7 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 	body = new AnimationRect(position, size);
 
 	attMotion = new AnimationRect({ position.x - (position.x * 0.5f), position.y - (position.y * 0.5f), position.z }, { size.x * 0.5f, size.y * 0.5f, size.z });
-	swordLange = size.x * 0.5f + size.x * 0.25;
+	swordRange = size.x * 0.5f + size.x * 0.25;
 	
 	Texture2D* IdleSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Idle.png");
 	Texture2D* WalkSrcTex = new Texture2D(TexturePath + L"Player/SeparateAnim/Walk.png");
@@ -145,7 +145,7 @@ Player::Player(Vector3 position, Vector3 size, float rotation)
 	attMotion->UpdateWorld();
 
 	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; i++) {
+		for (int j = 0; j < 4; j++) {
 			bStay[i][j] = false;
 		}
 	}
@@ -162,7 +162,6 @@ void Player::Update()
 	Move();
 
 	if (bDef != true) {
-		Attack();
 		attMotion->Update();
 	}
 
@@ -182,7 +181,7 @@ void Player::Move()
 	if(bAtt == false){
 		if (Keyboard::Get()->Press('W')) {
 			attMotion->SetPosition(
-				{ position.x , position.y + swordLange, position.z }
+				{ position.x , position.y + swordRange, position.z }
 			);
 			type = AnimType::Up;
 			SetAni(type);
@@ -197,7 +196,7 @@ void Player::Move()
 
 		else if (Keyboard::Get()->Press('S')) {
 			attMotion->SetPosition(
-				{ position.x, position.y - swordLange, position.z }
+				{ position.x, position.y - swordRange, position.z }
 			);
 			type = AnimType::Down;
 			SetAni(type);
@@ -217,7 +216,7 @@ void Player::Move()
 
 		else if (Keyboard::Get()->Press('A') && moveU == false && moveD == false) {
 			attMotion->SetPosition(
-				{ position.x - swordLange + 1, position.y - 1, position.z }
+				{ position.x - swordRange + 1, position.y - 1, position.z }
 			);
 			type = AnimType::Left;
 			SetAni(type);
@@ -232,7 +231,7 @@ void Player::Move()
 
 		if (Keyboard::Get()->Press('D') && moveU == false && moveD == false) {
 			attMotion->SetPosition(
-				{ position.x + swordLange, position.y, position.z }
+				{ position.x + swordRange, position.y, position.z }
 			);
 			type = AnimType::Right;
 			SetAni(type);
@@ -376,21 +375,6 @@ void Player::setStay(int y, int x)
 		}
 	}
 	bStay[y][x] = true;
-}
-
-void Player::Attack()
-{
-}
-
-void Player::Defence()
-{
-	// bDef가 트루일땐 몬스터와 충돌시에도 Hp 변동 없음 + 플레이어 뒤로 밀림
-	if (bDef == false) {
-		Hp--;
-		if (Hp <= 0) {
-			type = AnimType::Dead;
-		}
-	}
 }
 
 void Player::GUI()
