@@ -8,6 +8,7 @@ public:
 	~Arrow();
 
 	int GetCount() { return count; }
+	void SetCount(int count) { this->count = count; }
 
 	void SetIamge();
 
@@ -25,6 +26,7 @@ public:
 	~Bomb();
 
 	int GetCount() { return count; }
+	void SetCount(int count) { this->count = count; }
 
 	void SetIamge();
 
@@ -33,25 +35,6 @@ public:
 private:
 	TextureRect* Image;
 	string Type = "Bomb";
-	int count = 0;
-};
-
-class Bottle {
-public:
-	Bottle(Vector3 position, Vector3 size, float rotation);
-	~Bottle();
-
-	int GetCount() { return count; }
-	bool GetFull() { return full; }
-	
-	void SetIamge();
-
-	BoundingBox* GetCollision() { return Image->GetCollision(); }
-
-private:
-	TextureRect* Image;
-	string Type = "Bottle";
-	bool full = false;
 	int count = 0;
 };
 
@@ -74,6 +57,9 @@ public:
 	Rooby(Vector3 position, Vector3 size, float rotation);
 	~Rooby();
 
+	int GetCount() { return count; }
+	void SetCount(int count) { this->count = count; }
+
 	void SetIamge();
 
 	BoundingBox* GetCollision() { return Image->GetCollision(); }
@@ -81,4 +67,5 @@ public:
 private:
 	TextureRect* Image;
 	string Type = "Rooby";
+	int count = 0;
 };

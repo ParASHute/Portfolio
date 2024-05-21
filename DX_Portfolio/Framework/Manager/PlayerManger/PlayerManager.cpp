@@ -1,9 +1,9 @@
 #include "Framework.h"
 #include "PlayerManager.h"
 
-PlayerManager::PlayerManager()
+PlayerManager::PlayerManager(Player* player)
 {
-	player = new Player({32,32,0}, {100,100,1});
+	this->player = player;
 	for (int i = 0; i < 20; i++) {
 		Heart[i]->SetImage(TexturePath + L"Item/Hearts_Red_1.png");
 		/*

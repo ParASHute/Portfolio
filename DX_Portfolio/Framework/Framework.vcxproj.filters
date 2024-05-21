@@ -40,6 +40,7 @@
     <ClCompile Include="Systems\Camera.cpp" />
     <ClCompile Include="Systems\Sounds.cpp" />
     <ClCompile Include="Manager\PlayerManger\PlayerManager.cpp" />
+    <ClCompile Include="Manager\ItemManager\ItemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics.h" />
@@ -85,5 +86,6 @@
     <ClInclude Include="Systems\Camera.h" />
     <ClInclude Include="Systems\Sounds.h" />
     <ClInclude Include="Manager\PlayerManger\PlayerManager.h" />
+    <ClInclude Include="Manager\ItemManager\ItemManager.h" />
   </ItemGroup>
 </Project>

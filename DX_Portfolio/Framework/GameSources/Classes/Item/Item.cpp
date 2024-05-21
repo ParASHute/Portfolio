@@ -31,21 +31,6 @@ void Bomb::SetIamge()
 	Image->SetImage(TexturePath + L"파일 명");
 }
 
-Bottle::Bottle(Vector3 position, Vector3 size, float rotation)
-{
-	Image = new TextureRect(position, size);
-}
-
-Bottle::~Bottle()
-{
-	SAFE_DELETE(Image);
-}
-
-void Bottle::SetIamge()
-{
-	Image->SetImage(TexturePath + L"파일 명");
-}
-
 Heart::Heart(Vector3 position, Vector3 size, float rotation)
 {
 	Image = new TextureRect(position, size);

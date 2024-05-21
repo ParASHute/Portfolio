@@ -10,7 +10,7 @@ public:
 	friend SingletonBase<PlayerManager>;
 
 private:
-	PlayerManager();
+	PlayerManager(Player* player);
 	~PlayerManager();
 
 	void Update();

@@ -161,10 +161,7 @@ void Player::Update()
 {
 	Move();
 
-	if (bDef != true) {
-		attMotion->Update();
-	}
-
+	attMotion->Update();
 	body->SetPosition(position);
 	body->SetSize(size);
 	body->Update();
@@ -267,7 +264,7 @@ void Player::Move()
 		bDef = false;
 	}
 
-	if (Keyboard::Get()->Up('L')) {
+	if (Keyboard::Get()->Up('L') && canAtt == true) {
 		if (type == AnimType::AttD) {
 			type = AnimType::IdleD;
 			SetAni(type);

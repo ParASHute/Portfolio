@@ -36,6 +36,8 @@ public:
 	bool GetStay() { return bStay; }
 	void setStay(int y, int x); 
 
+	void SetCanAtt(bool canAtt) { this->canAtt = canAtt; }
+
 	BoundingBox* GetCollision() { return body->GetCollision() ; }
 
 	AnimationRect* GetAttMotion() { return attMotion; }
@@ -62,6 +64,7 @@ private:
 	Inventory* inven;
 
 	// Æ®¸®°Å
+	bool canAtt = false;
 	bool equipmentSword = false;
 	bool bDef = true;
 	bool bAtt = false;
