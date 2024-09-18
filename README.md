@@ -22,7 +22,8 @@
     -> 공격 중에 점프하는 것 방지
 
     공격중일때 안끊긴다
-    ->PlayNecCombo에서 ComboEnable을 Branch로 검사해야되는데, ComboAreaEnable을 검사하고 있어서 같은 공격을 계속(수정완)
+    ->PlayNecCombo에서 ComboEnable을 Branch로 검사해야되는데, 
+    ComboAreaEnable을 검사하고 있어서 같은 공격을 계속(수정완)
 
     게임 타임이용한 블릿타임 만들기
 
