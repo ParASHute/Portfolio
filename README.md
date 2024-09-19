@@ -1,4 +1,4 @@
-# [BluePrint Portfolio](https://youtu.be/32_RRKNF_kI)
+# [BluePrint Portfolio](https://youtu.be/kCPOy8IhQ5k)
 
 ### Too long, Check README.md('24.08.07)
         :
