@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "WeaponData.h"
-#include "Components/SceneComponent.h"
+#include "Components/ActorComponent.h"	// 씬 컴포넌트로 잘못 생성시 헤더파일과 부모클래스를 바꾸면 된다.
 #include "Portfolio/Data/Structs.h"
 
 #include "WeaponComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PORTFOLIO_API UWeaponComponent : public USceneComponent
+class PORTFOLIO_API UWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
 

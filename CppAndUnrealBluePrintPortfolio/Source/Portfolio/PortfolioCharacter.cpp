@@ -11,11 +11,14 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 
+#include "GameplayAbilitySpec.h"
+#include "Weapon/MyAbilitySystemComponent.h"
+
+
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
 // APortfolioCharacter
-
 APortfolioCharacter::APortfolioCharacter()
 {
 	// Set size for collision capsule
@@ -47,19 +50,49 @@ APortfolioCharacter::APortfolioCharacter()
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	// Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); 
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
 	WeaponComponent=CreateDefaultSubobject<UWeaponComponent>(TEXT("WeaponComponent"));
+
+	AbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }
 
 void APortfolioCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	if(AbilitySystemComponent != nullptr)
+	{
+		AttributeSetVar = AbilitySystemComponent->GetSet<UMyAttributeSet>();
+		if(AttributeSetVar != nullptr)
+		{
+			const_cast<UMyAttributeSet*>(AttributeSetVar)->HealthChangeDelegate.AddDynamic(this,
+				&APortfolioCharacter::OnHealthChangeNative);
+
+			InitializeAttribute();
+			AddStartupEffects();
+		}
+
+		
+	}
+}
+
+void APortfolioCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+}
+
+void APortfolioCharacter::DestroyCharacter()
+{
+	Destroy();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -93,6 +126,31 @@ void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+void APortfolioCharacter::Death()
+{
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->GravityScale = 0;
+	GetCharacterMovement()->Velocity = FVector(0);
+
+	if(IsValid(AbilitySystemComponent))
+	{
+		AbilitySystemComponent->CancelAbilities();
+
+		FGameplayTag DeathEffectTag = FGameplayTag::RequestGameplayTag(FName("Death"));
+		AbilitySystemComponent->AddLooseGameplayTag(DeathEffectTag);
+
+		FGameplayTagContainer GameplayTag{ DeathEffectTag };
+		bool bSuccess = AbilitySystemComponent->TryActivateAbilitiesByTag(GameplayTag);
+
+		if(bSuccess == false)
+			FinishDeath();
+	}
+}
+
+void APortfolioCharacter::FinishDeath()
+{
 }
 
 void APortfolioCharacter::Move(const FInputActionValue& Value)
@@ -129,4 +187,221 @@ void APortfolioCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Maked Function
+void APortfolioCharacter::SetRagDoll()
+{
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("IgnoreOnlyPawn"));
+	
+	FTimerHandle TimerHandle;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &APortfolioCharacter::DestroyCharacter, 3.0f, false);
+}
+
+
+void APortfolioCharacter::CameraLock(bool cameraHold)
+{
+	if(!cameraHold)
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = !cameraHold;
+		bUseControllerRotationYaw = cameraHold;
+	}
+}
+
+void APortfolioCharacter::CameraUnLock(bool cameraHold)
+{
+	if(cameraHold)
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = cameraHold;
+		bUseControllerRotationYaw = !cameraHold;
+	}
+}
+
+void APortfolioCharacter::SetCameraRelativeYpos(float Ypos)
+{
+	// CameraComponent의 컴포넌트를 가져와 유효한지 확인
+	if (UCameraComponent* CameraComponent = FindComponentByClass<UCameraComponent>())
+	{
+		// 현재 위치를 가져와서 Y축만 업데이트
+		FVector NewLocation = CameraComponent->GetRelativeLocation();
+		NewLocation.Y = Ypos;
+
+		// 상대 위치 업데이트
+		CameraComponent->SetRelativeLocation(NewLocation);
+	}
+}
+
+class UMyAbilitySystemComponent* APortfolioCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+void APortfolioCharacter::InitializeAttribute()
+{
+	if(!IsValid(AbilitySystemComponent))
+	{
+		return;
+	}
+	if(!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAbility."),*FString(__func__));
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle SpecHandle =
+		AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, 1, EffectContext);
+	
+	if(SpecHandle.IsValid())
+	{
+		AbilitySystemComponent->ApplyGameplayEffectSpecToTarget
+			(*SpecHandle.Data.Get(), AbilitySystemComponent);
+	}
+}
+
+void APortfolioCharacter::AddStartupEffects()
+{
+	if(!IsValid(AbilitySystemComponent)
+		|| GetLocalRole() != ROLE_Authority
+		|| AbilitySystemComponent->StartUpEffectApplied)
+	{
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	for(TSubclassOf<UGameplayEffect>GameplayEffect : StartupEffects)
+	{
+		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec
+		(GameplayEffect, 1, EffectContext);
+
+		if(SpecHandle.IsValid())
+		{
+			AbilitySystemComponent->ApplyGameplayEffectSpecToTarget
+			(*SpecHandle.Data.Get(), AbilitySystemComponent);
+		}
+	}
+
+	AbilitySystemComponent->StartUpEffectApplied = true;
+}
+
+void APortfolioCharacter::InitializedAbilityMulti
+	(TArray<TSubclassOf<UGameplayAbility>> AbilityToAcquire,int32 AbilityLevel)
+{
+	if(HasAuthority())
+	{
+		for (TSubclassOf<UGameplayAbility> AbilityItem : AbilityToAcquire)
+			InitializedAbility(AbilityItem,AbilityLevel);
+	}
+}
+
+void APortfolioCharacter::InitializedAbility(TSubclassOf<UGameplayAbility> AbilityToGet,
+	int32 AbilityLevel)
+{
+	if(HasAuthority())
+	{
+		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(AbilityToGet, AbilityLevel));
+	}
+}
+
+void APortfolioCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	if(AbilitySystemComponent != nullptr)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this,this);
+		InitializedAbilityMulti(InitAbilities,1);
+	}
+}
+
+void APortfolioCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	if(AbilitySystemComponent!=nullptr)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	}
+}
+
+void APortfolioCharacter::RemoveAbilityWithTags(FGameplayTagContainer TagContainer)
+{
+	TArray<FGameplayAbilitySpec*> MatchingAbilitySpecs;
+
+	AbilitySystemComponent->GetActivatableGameplayAbilitySpecsByAllMatchingTags(
+		TagContainer, MatchingAbilitySpecs, true);
+
+	for(FGameplayAbilitySpec* spec : MatchingAbilitySpecs)
+		AbilitySystemComponent->ClearAbility(spec->Handle);
+}
+
+void APortfolioCharacter::ChangeAbilityLevelWithTags(FGameplayTagContainer TagContainer, int32 Level)
+{
+	TArray<FGameplayAbilitySpec*> MatchingAbilitySpecs;
+
+	AbilitySystemComponent->GetActivatableGameplayAbilitySpecsByAllMatchingTags(
+		TagContainer, MatchingAbilitySpecs, true);
+
+	for(FGameplayAbilitySpec* spec : MatchingAbilitySpecs)
+		spec->Level = Level;
+}
+
+void APortfolioCharacter::CancleAbilityWithTags(FGameplayTagContainer WithTag, FGameplayTagContainer WithoutTags)
+{
+	AbilitySystemComponent->CancelAbilities(&WithTag, &WithoutTags);
+}
+
+void APortfolioCharacter::AddLoosGamePlayTag(FGameplayTag TagToAdd)
+{
+	AbilitySystemComponent->AddLooseGameplayTag(TagToAdd);
+	AbilitySystemComponent->SetTagMapCount(TagToAdd, 1);
+}
+
+void APortfolioCharacter::RemoveLoosGamePlayTag(FGameplayTag TagToRemove)
+{
+	AbilitySystemComponent->RemoveLooseGameplayTag(TagToRemove);
+}
+
+void APortfolioCharacter::OnHealthChangeNative(float Health, int32 StatckCount)
+{
+	OnHealthChanged(Health, StatckCount);
+	if(Health <= 0)
+	{
+		if(AbilitySystemComponent->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("Death"))) == false)
+		{
+			Death();
+		}
+	}
+}
+
+void APortfolioCharacter::OnHealthChanged(float Health, int32 StatckCount)
+{
+	if(Health <= 0)
+	{
+		SetRagDoll();
+		Death();
+	}
+}
+
+void APortfolioCharacter::HealthValues(float& Health, float& MaxHealth)
+{
+	if(AttributeSetVar)
+	{
+		Health = AttributeSetVar->GetHealth();
+		MaxHealth = AttributeSetVar->GetMaxHealth();
+	}
+}
+
+float APortfolioCharacter::GetHealth() const
+{
+	return AttributeSetVar->GetHealth();
+}
+
+float APortfolioCharacter::GetMaxHealth() const
+{
+	return AttributeSetVar->GetMaxHealth();
 }
