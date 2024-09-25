@@ -57,39 +57,51 @@ class APortfolioCharacter : public ACharacter
 	UWeaponComponent* WeaponComponent;
 
 public:
+	// 어빌리티 시스템 컴포넌트 추가
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
 
+	// 어빌리티 시스템 컴포넌트 게터
 	virtual class UMyAbilitySystemComponent* GetAbilitySystemComponent() const;
 
+	// 캐릭터 관련 정보
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	const class UMyAttributeSet* AttributeSetVar;
 
+	// 스킬관련 게임 어빌리티(에디터에서 게임 플레이가 아닐때만 세팅가능)
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	TArray<TSubclassOf<class UGameplayAbility>> InitAbilities;
 
 protected:
+	// 초기 캐릭터 능력치 세팅(비긴플레이에서 세팅, 추후 컨트롤러로 보내서 HUD세팅까지 할 예정)
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	TSubclassOf<class UGameplayEffect> DefaultAttributes;
 
+	// 기본 체력, 마력 회복
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;
 
 public:
 	virtual void InitializeAttribute();
 	virtual void AddStartupEffects();
+// 스킬 관련 함수들
 
+	// 스킬 어려개 넣기
 	UFUNCTION(BlueprintCallable,Category="GAS")
 	void InitializedAbilityMulti
 	(TArray<TSubclassOf<UGameplayAbility>> AbilityToAcquire,int32 AbilityLevel);
-	
+
+	// 스킬 하나만 넣는 것
 	UFUNCTION(BlueprintCallable,Category="GAS")
 	void InitializedAbility(TSubclassOf<UGameplayAbility> AbilityToGet,
 		int32 AbilityLevel);
 
+	// 플레이어가 해당 캐릭터를 조종 시작했을 때
 	virtual void PossessedBy(AController* NewController) override;
+	// 캐릭터 스텟 변경
 	virtual void OnRep_PlayerState() override;
-
+	
+// 테그 추가, 삭제 관련	
 	UFUNCTION(BlueprintCallable,Category="GAS")
 	void RemoveAbilityWithTags(FGameplayTagContainer TagContainer);
 
@@ -109,12 +121,16 @@ public:
 public:
 	APortfolioCharacter();
 
+// 속성 관련
+	// 체력 변경시 호출될 함수
 	UFUNCTION()
 	virtual void OnHealthChangeNative(float Health, int32 StatckCount);
 
+	// 블루프린트에서 내 체력 확인가능하도록
 	UFUNCTION(BlueprintCallable,Category="GAS")
 	void OnHealthChanged(float Health, int32 StatckCount);
 
+	// 현재 체력을 바로 뽑아줌
 	UFUNCTION(BlueprintCallable,Category="GAS")
 	void HealthValues(float& Health, float& MaxHealth);
 
@@ -127,8 +143,10 @@ public:
 	
 protected:
 
+	// 죽었을때
 	virtual void Death();
 
+	// 중금 어빌리티 세팅 안했을때
 	UFUNCTION(BlueprintCallable,Category="GAS")
 	void FinishDeath();
 

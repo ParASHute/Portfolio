@@ -69,11 +69,14 @@ void APortfolioCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	// 생성자 내부에서 어빌리티 컴포넌트가 제대로 할당이 됐다면
 	if(AbilitySystemComponent != nullptr)
 	{
+		// 데이터 에셋 에디터에서 넣은 UMyAttributeSet타입 GetSet 
 		AttributeSetVar = AbilitySystemComponent->GetSet<UMyAttributeSet>();
-		if(AttributeSetVar != nullptr)
+		if(AttributeSetVar != nullptr)	// 위에서 할당한 값이 제대로 할당 됐다면
 		{
+			//  델리게이트로 HP변경시 호출
 			const_cast<UMyAttributeSet*>(AttributeSetVar)->HealthChangeDelegate.AddDynamic(this,
 				&APortfolioCharacter::OnHealthChangeNative);
 
@@ -136,14 +139,16 @@ void APortfolioCharacter::Death()
 
 	if(IsValid(AbilitySystemComponent))
 	{
+		// 실행중인 어빌리티 다 취소
 		AbilitySystemComponent->CancelAbilities();
-
+		// 죽음 태그 추가ㅣ
 		FGameplayTag DeathEffectTag = FGameplayTag::RequestGameplayTag(FName("Death"));
+		// TryActivate실행 되면 테그가 들어가긴함
 		AbilitySystemComponent->AddLooseGameplayTag(DeathEffectTag);
 
+		// Death태그가 초기 설정한 어빌리티에 있을때 실행
 		FGameplayTagContainer GameplayTag{ DeathEffectTag };
 		bool bSuccess = AbilitySystemComponent->TryActivateAbilitiesByTag(GameplayTag);
-
 		if(bSuccess == false)
 			FinishDeath();
 	}
@@ -300,10 +305,10 @@ void APortfolioCharacter::InitializedAbilityMulti
 	}
 }
 
-void APortfolioCharacter::InitializedAbility(TSubclassOf<UGameplayAbility> AbilityToGet,
-	int32 AbilityLevel)
+void APortfolioCharacter::InitializedAbility
+	(TSubclassOf<UGameplayAbility> AbilityToGet,int32 AbilityLevel)
 {
-	if(HasAuthority())
+	if(HasAuthority()) // 온라인 상태에서 내가 조종하는 캐릭터를 확읺
 	{
 		AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(AbilityToGet, AbilityLevel));
 	}
@@ -314,7 +319,9 @@ void APortfolioCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	if(AbilitySystemComponent != nullptr)
 	{
+		// 어빌리티 시스템에서 해당 시스템을 사용하는 엑터를 불러 오게 전달
 		AbilitySystemComponent->InitAbilityActorInfo(this,this);
+		// 에디터에서 설정한 스킬(전부 : LEVEL == 1)
 		InitializedAbilityMulti(InitAbilities,1);
 	}
 }
