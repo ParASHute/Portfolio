@@ -26,6 +26,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void EndAttack();
 
 private:
 	// Default Scene Root Component
@@ -33,7 +34,7 @@ private:
 	USceneComponent* DefaultSceneRoot;
 	// Skeletal Mesh Component
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components",meta=(AllowPrivateAccess=true))
-	UStaticMeshComponent* StaticMesh;
+	USkeletalMeshComponent* SkeletalMesh;
 	// Box Collision Component
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components",meta=(AllowPrivateAccess=true))
 	UBoxComponent* Box;

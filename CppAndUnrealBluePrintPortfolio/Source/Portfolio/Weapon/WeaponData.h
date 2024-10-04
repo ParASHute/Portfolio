@@ -18,6 +18,16 @@ class PORTFOLIO_API UWeaponData : public UPrimaryDataAsset
 public:
 	UWeaponData();
 
+	FName GetHandleSocketName();
+	FName GetHolsterSocketName();
+
+	FAttack GetAttackMontage(int Index);
+
+	FMontage GetUnequipMontage();
+	FMontage GetEquipMontage();
+
+	TSubclassOf<ABaseWeapon> GetWeapon();
+
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Socket",meta=(AllowPrivateAccess=true))
 	FName HandleSocketName;
@@ -42,8 +52,8 @@ private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Projectile",meta=(AllowPrivateAccess=true))
 	bool LockCamera;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Projectile",meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	TSubclassOf<ABaseWeapon> WeaponClass;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Projectile",meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	EWeaponType WeaponType;
 };

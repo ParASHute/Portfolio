@@ -244,6 +244,11 @@ class UMyAbilitySystemComponent* APortfolioCharacter::GetAbilitySystemComponent(
 	return AbilitySystemComponent;
 }
 
+class UWeaponComponent* APortfolioCharacter::GetWeaponComponent() const
+{
+	return WeaponComponent;
+}
+
 void APortfolioCharacter::InitializeAttribute()
 {
 	if(!IsValid(AbilitySystemComponent))
@@ -398,14 +403,14 @@ void APortfolioCharacter::HealthValues(float& Health, float& MaxHealth)
 {
 	if(AttributeSetVar)
 	{
-		Health = AttributeSetVar->GetHealth();
+		Health = AttributeSetVar->GetCurrentHealth();
 		MaxHealth = AttributeSetVar->GetMaxHealth();
 	}
 }
 
-float APortfolioCharacter::GetHealth() const
+float APortfolioCharacter::GetCurrentHealth() const
 {
-	return AttributeSetVar->GetHealth();
+	return AttributeSetVar->GetCurrentHealth();
 }
 
 float APortfolioCharacter::GetMaxHealth() const

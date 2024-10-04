@@ -11,8 +11,20 @@ USTRUCT(BlueprintType)
 struct FWeaponPair	// 순환 참조 방지를 위한 스트럭트 분리
 {
 	GENERATED_BODY()
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UWeaponData* DataAsset;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UWeaponData> DataAsset;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ABaseWeapon* WeaponPointer;
+};
+
+USTRUCT(BlueprintType)
+struct FWeaponNotify
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ABaseWeapon* RequestWeapon;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName SocketName;
 };

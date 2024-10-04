@@ -44,3 +44,8 @@ void ABaseProjectile::Tick(float DeltaTime)
 
 }
 
+UProjectileMovementComponent* ABaseProjectile::GetProjectileMovementComponent()
+{
+	return ProjectileMovement;
+}
+

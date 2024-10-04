@@ -10,6 +10,7 @@
 #include "WeaponComponent.generated.h"
 
 
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PORTFOLIO_API UWeaponComponent : public UActorComponent
 {
@@ -25,13 +26,57 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent
+	(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	// Getter
+	bool GetDrawing();
+
+	// Notities
+	UFUNCTION(BlueprintPure, Category = "Notify")
+	FWeaponNotify GetRequest();
+	UFUNCTION(BlueprintPure, Category = "Notify")
+	FWeaponNotify GetCurrent();
+	UFUNCTION(BlueprintCallable, Category = "Notify")
+	void SetEndEquip();
+	UFUNCTION(BlueprintCallable, Category = "Notify")
+	void  SetEndUnequip();
+	UFUNCTION(BlueprintCallable, Category = "Notify")
+	void EndAttack();
+	UFUNCTION(BlueprintCallable, Category = "Notify")
+	void ComboDetectsStart();
+	UFUNCTION(BlueprintCallable, Category = "Notify")
+	void ComboDetectsEnd();
+	UFUNCTION(BlueprintCallable, Category = "Notify")
+	void PlayNextCombo();
+
+	// Function Called in Notify
+	UFUNCTION(BlueprintCallable, Category = "Equip")
+	void SpawnWeapons();
+	UFUNCTION(BlueprintCallable, Category = "Equip")
+	ABaseWeapon* SpawnWeapon(UWeaponData* inWeaponData);
+	UFUNCTION(BlueprintCallable, Category = "Equip")
+	void AttachWeapon(ABaseWeapon* inWeaponPointer, FName inSocketName);
+	UFUNCTION(BlueprintCallable, Category = "Equip")
+	void SelectWeapon(EWeaponType inWeaponslot);
+	UFUNCTION(BlueprintCallable, Category = "Equip")
+	void UnEquipCurrentWeapon();
+	UFUNCTION(BlueprintCallable, Category = "Equip")
+	void EquipWeapon(UWeaponData* inWeaponDataAsset,ABaseWeapon* inWeaponPtr);
+
+	
+	
 private:
+	// TSubclassOf<UWeaponData>으로 하지 않으면 블루 프린트에서 안들어가짐
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="DataAsset",meta=(AllowPrivateAccess=true))
 	UWeaponData* CurrentWeaponDataAsset;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="DataAsset",meta=(AllowPrivateAccess=true))
 	UWeaponData* RequestWeaponDataAsset;
+
+	// CurrentWeaponDataAsset와 RequestWeaponDataAsset의 함수 호출등의 이유로 필요한 변수
+	//UWeaponData* CurrenDataAsset;
+	//UWeaponData* RequestDataAsset;
+	//ABaseWeapon* test;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="WeaponPointer",meta=(AllowPrivateAccess=true))
 	ABaseWeapon* CurrentWeapon;

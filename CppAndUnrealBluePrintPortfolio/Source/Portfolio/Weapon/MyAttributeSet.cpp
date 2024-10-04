@@ -13,23 +13,23 @@ UMyAttributeSet::UMyAttributeSet()
 
 void UMyAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UMyAttributeSet, Health, OldHealth);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UMyAttributeSet, CurrentHealth, OldHealth);
 }
 
 void UMyAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME_CONDITION_NOTIFY(UMyAttributeSet, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UMyAttributeSet, CurrentHealth, COND_None, REPNOTIFY_Always);
 }
 
 void UMyAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
-	if(Data.EvaluatedData.Attribute == GetHealthAttribute())
+	if(Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
-		SetHealth(FMath::Clamp(GetHealth(),0.0f,100.0f));
-		HealthChangeDelegate.Broadcast(GetHealth(),Data.EffectSpec.StackCount);
+		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(),0.0f,1000.0f));
+		HealthChangeDelegate.Broadcast(GetCurrentHealth(),Data.EffectSpec.StackCount);
 	}
 }
 

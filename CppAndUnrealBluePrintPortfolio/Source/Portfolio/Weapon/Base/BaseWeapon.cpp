@@ -16,12 +16,12 @@ ABaseWeapon::ABaseWeapon()
 	RootComponent = DefaultSceneRoot;
 
 	// Set Skeletal Mesh Component
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
-	StaticMesh->SetupAttachment(RootComponent); // Attach RootComponent
+	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMesh");
+	SkeletalMesh->SetupAttachment(RootComponent); // Attach RootComponent
 
 	// Set Box Collision Component
 	Box = CreateDefaultSubobject<UBoxComponent>("Box");
-	Box->SetupAttachment(StaticMesh); // Attach StaticMesh
+	Box->SetupAttachment(SkeletalMesh); // Attach StaticMesh
 	Box->SetCollisionProfileName(TEXT("OverlapAllDynamic")); // SetCollisionProfile
 
 	// Set OwnerCharacter
@@ -56,5 +56,9 @@ void ABaseWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABaseWeapon::EndAttack()
+{
 }
 

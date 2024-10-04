@@ -53,16 +53,13 @@ class APortfolioCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	// 웨폰 컴포넌트 추가
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	UWeaponComponent* WeaponComponent;
 
-public:
 	// 어빌리티 시스템 컴포넌트 추가
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
-
-	// 어빌리티 시스템 컴포넌트 게터
-	virtual class UMyAbilitySystemComponent* GetAbilitySystemComponent() const;
 
 	// 캐릭터 관련 정보
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
@@ -72,6 +69,13 @@ public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	TArray<TSubclassOf<class UGameplayAbility>> InitAbilities;
 
+public:
+	// 어빌리티 시스템 컴포넌트 게터
+	virtual class UMyAbilitySystemComponent* GetAbilitySystemComponent() const;
+
+	// 웨폰 컴포넌트 게터
+	virtual class UWeaponComponent* GetWeaponComponent() const;
+	
 protected:
 	// 초기 캐릭터 능력치 세팅(비긴플레이에서 세팅, 추후 컨트롤러로 보내서 HUD세팅까지 할 예정)
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
@@ -135,7 +139,7 @@ public:
 	void HealthValues(float& Health, float& MaxHealth);
 
 	UFUNCTION(BlueprintCallable,Category="GAS")
-	float GetHealth() const;
+	float GetCurrentHealth() const;
 
 	UFUNCTION(BlueprintCallable,Category="GAS")
 	float GetMaxHealth() const;

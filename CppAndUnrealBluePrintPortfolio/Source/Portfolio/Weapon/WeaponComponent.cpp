@@ -2,6 +2,12 @@
 
 
 #include "WeaponComponent.h"
+#include <map>
+#include "K2Node_SpawnActorFromClass.h"
+#include "VisualizeTexture.h"
+#include "CookOnTheSide/CookOnTheFlyServer.h"
+#include "Portfolio/PortfolioCharacter.h"
+#include "UniversalObjectLocators/UniversalObjectLocatorUtils.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()
@@ -11,6 +17,8 @@ UWeaponComponent::UWeaponComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+
+	
 }
 
 
@@ -18,9 +26,22 @@ UWeaponComponent::UWeaponComponent()
 void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 	
+	// Set OwnerPlayer
+	OwnerCharacter = Cast<APortfolioCharacter>(GetOwner());
+	
+	SpawnWeapons();
+	
+	// AttachWeapons
+	for(auto& temp : Weapons)
+	{
+		if(IsValid(temp.Value.DataAsset) && IsValid(temp.Value.WeaponPointer))
+		{
+			AttachWeapon
+			(temp.Value.WeaponPointer, NewObject<UWeaponData>(temp.Value.DataAsset)->GetHolsterSocketName());
+		}
+	}
+
 }
 
 
@@ -32,3 +53,191 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
+
+// Notify
+bool UWeaponComponent::GetDrawing()
+{
+	return Drawing;
+}
+
+FWeaponNotify UWeaponComponent::GetRequest()
+{
+	FWeaponNotify Request;
+	
+	Request.RequestWeapon = RequestWeapon;
+	Request.SocketName = RequestWeaponDataAsset->GetHandleSocketName();
+	
+	return Request;
+}
+
+FWeaponNotify UWeaponComponent::GetCurrent()
+{
+	FWeaponNotify Current;
+
+	Current.RequestWeapon = RequestWeapon;
+	Current.SocketName = RequestWeaponDataAsset->GetHandleSocketName();
+	
+	return Current;
+}
+
+void UWeaponComponent::SetEndEquip()
+{
+	CurrentWeapon = RequestWeapon;
+	CurrentWeaponDataAsset = RequestWeaponDataAsset;
+	RequestWeapon = nullptr;
+	RequestWeaponDataAsset = nullptr;
+	Swapping = false;
+	CanAttack = true;
+}
+
+void UWeaponComponent::SetEndUnequip()
+{
+	CurrentWeapon = nullptr;
+	CurrentWeaponDataAsset = nullptr;
+	Swapping = false;
+	CanAttack = true;
+}
+
+void UWeaponComponent::EndAttack()
+{
+	CanAttack = true;
+	CurrentWeapon->EndAttack();
+	if(IsValid(FireProjectile))
+	{
+		FVector velocity;
+		velocity = FireProjectile->GetProjectileMovementComponent()->Velocity;
+		if(velocity.IsNearlyZero(0.0001))
+		{
+			FireProjectile->K2_DestroyActor();
+		}
+	}
+}
+
+void UWeaponComponent::ComboDetectsStart()
+{
+	ComboAreaEnable = true;
+}
+
+void UWeaponComponent::ComboDetectsEnd()
+{
+	ComboAreaEnable = false;
+}
+
+void UWeaponComponent::PlayNextCombo()
+{
+	if(Combo)
+	{
+		ComboAreaEnable = false;
+		UAnimMontage* montage = RequestWeaponDataAsset->GetAttackMontage(ComboIndex).Montage;
+		float playRate = RequestWeaponDataAsset->GetAttackMontage(ComboIndex).PlayRate;
+		
+		if(IsValid(montage))
+		{
+			OwnerCharacter->PlayAnimMontage(montage, playRate);
+		}
+	}
+}
+
+void UWeaponComponent::SpawnWeapons()
+{
+	TMap<EWeaponType,FWeaponPair> Temp;
+	
+	for(auto& temp : Weapons)
+	{
+		ABaseWeapon* SpawnedWeapon = SpawnWeapon(NewObject<UWeaponData>(temp.Value.DataAsset));
+		Temp.Add(temp.Key,{temp.Value.DataAsset, SpawnedWeapon});
+	}
+	// Temp에 있는 값을 넣기 전에, 혹시 몰라서 Weapons에 있는 데이터들을 지움
+	Weapons.Empty();
+	// Temp에 있는 값(혹은 값들)을 Weapons에 넣음
+	Weapons = Temp;
+}
+
+ABaseWeapon* UWeaponComponent::SpawnWeapon(UWeaponData* inWeaponData)
+{
+	ABaseWeapon* OutWeapon = nullptr;
+	AActor* Owner = GetOwner();
+
+	
+	// MakeTransFrom
+	FVector Location(0.0f, 0.0f, 0.0f);  
+	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	FVector Scale(1.0f, 1.0f, 1.0f);
+	FTransform SpawnTransform;
+	// FQuat는 쿼터니언(4원수)로 만들어주는 용도
+	SpawnTransform.SetRotation(FQuat(Rotation));
+	SpawnTransform.SetLocation(Location);
+	SpawnTransform.SetScale3D(Scale);
+	
+	if(IsValid(inWeaponData))
+	{
+		// SpawnActor from Class
+		OutWeapon = GetWorld()->SpawnActor<ABaseWeapon>(inWeaponData->GetWeapon());
+	}
+
+	return OutWeapon;
+}
+
+void UWeaponComponent::AttachWeapon(ABaseWeapon* inWeaponPointer, FName inSocketName)
+{
+	// target->AttachToComponetn(Parent, FAttachmentTransformRules::KeepRelativeTransform, SoketName);
+	inWeaponPointer->AttachToComponent
+	(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, inSocketName);
+}
+
+void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot)
+{
+	if(Swapping == false)
+	{
+		if(IsValid(CurrentWeapon))
+		{
+			if(Weapons.Find(inWeaponslot))
+			{
+				if(CurrentWeapon == Weapons.Find(inWeaponslot)->WeaponPointer)
+				{
+					UnEquipCurrentWeapon();
+				}
+				else
+				{
+					AttachWeapon(CurrentWeapon, RequestWeaponDataAsset->GetHolsterSocketName());
+					if(Weapons.Find(inWeaponslot))
+					{
+						EquipWeapon(NewObject<UWeaponData>(Weapons.Find(inWeaponslot)->DataAsset)
+							, Weapons.Find(inWeaponslot)->WeaponPointer);
+					}
+				}
+			}
+		}
+		else
+		{
+			if(Weapons.Find(inWeaponslot))
+			{
+				EquipWeapon(NewObject<UWeaponData>(Weapons.Find(inWeaponslot)->DataAsset)
+					, Weapons.Find(inWeaponslot)->WeaponPointer);
+			}
+		}
+	}
+}
+
+void UWeaponComponent::UnEquipCurrentWeapon()
+{
+	if(IsValid(RequestWeaponDataAsset->GetUnequipMontage().Montage))
+	{
+		OwnerCharacter->PlayAnimMontage
+		(RequestWeaponDataAsset->GetUnequipMontage().Montage,
+			RequestWeaponDataAsset->GetUnequipMontage().PlayRate);
+	}
+}
+
+void UWeaponComponent::EquipWeapon(UWeaponData* inWeaponDataAsset,ABaseWeapon* inWeaponPtr)
+{
+	if(IsValid(inWeaponDataAsset->GetEquipMontage().Montage))
+	{
+		RequestWeapon = inWeaponPtr;
+		RequestWeaponDataAsset = inWeaponDataAsset;
+		OwnerCharacter->PlayAnimMontage
+		(inWeaponDataAsset->GetEquipMontage().Montage,
+			inWeaponDataAsset->GetEquipMontage().PlayRate);
+		Swapping = true;
+	}
+}
