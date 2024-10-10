@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
 #include "Weapon/WeaponComponent.h"
+#include "PortfolioCharacter.h"
 #include "MyAnimInstance.generated.h"
 
 UCLASS()
@@ -15,13 +16,16 @@ public:
 	// 애니메이션에서는 isvalid를 통해서 컴포넌트와 클래스를 검사하는 것 보다는 이미 여기서 nullptr넣고 시작하자
 	UMyAnimInstance();
 	virtual void NativeUpdateAnimation(float DeltaTime) override;
+	
 	void SetBlendSpace();
 	void SetDamageCauserDirection();
 	void SetHandleLoation();
 	void SetAimRotation();;
-	
 
 private:
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
+	APortfolioCharacter* OwnerCharacter;
+	
 	// Components
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Component",meta=(AllowPrivateAccess=true))
 	UWeaponComponent* WeaponComponent;
@@ -41,11 +45,17 @@ private:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
 	FVector DamageCauserLocation;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
-	APortfolioCharacter* OwnerCharacter;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
+	FVector HandleLocation;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
+	FRotator AimRotation;
+	
 	// ABP_Character
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	bool DrawBow;
+
+	/*
+	 애님 인스턴스는 같은 스캘래탈 매쉬를 공유하는 것끼리만 상속
 	// ABP_Bow
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	bool DrawingBow;
@@ -53,4 +63,5 @@ private:
 	FVector HandleLocation;
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	FRotator AimRotation;
+	*/
 };

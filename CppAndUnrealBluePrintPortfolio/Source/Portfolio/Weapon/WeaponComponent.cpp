@@ -3,7 +3,10 @@
 
 #include "WeaponComponent.h"
 #include <map>
+
+#include "BlueprintEditor.h"
 #include "K2Node_SpawnActorFromClass.h"
+#include "ShaderPrintParameters.h"
 #include "VisualizeTexture.h"
 #include "CookOnTheSide/CookOnTheFlyServer.h"
 #include "Portfolio/PortfolioCharacter.h"
@@ -29,7 +32,8 @@ void UWeaponComponent::BeginPlay()
 	
 	// Set OwnerPlayer
 	OwnerCharacter = Cast<APortfolioCharacter>(GetOwner());
-	
+
+	// 무기 스폰
 	SpawnWeapons();
 	
 	// AttachWeapons
@@ -38,10 +42,9 @@ void UWeaponComponent::BeginPlay()
 		if(IsValid(temp.Value.DataAsset) && IsValid(temp.Value.WeaponPointer))
 		{
 			AttachWeapon
-			(temp.Value.WeaponPointer, NewObject<UWeaponData>(temp.Value.DataAsset)->GetHolsterSocketName());
+			(temp.Value.WeaponPointer, temp.Value.DataAsset->GetHolsterSocketName());
 		}
 	}
-
 }
 
 
@@ -55,28 +58,38 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 
 // Notify
-bool UWeaponComponent::GetDrawing()
+bool UWeaponComponent::GetDrawing() const
 {
 	return Drawing;
 }
 
-FWeaponNotify UWeaponComponent::GetRequest()
+EWeaponType UWeaponComponent::GetWeaponType() const
+{
+	if(IsValid(CurrentWeaponDataAsset))
+		return CurrentWeaponDataAsset->GetWeaponType();
+
+	else
+		return EWeaponType::None;
+}
+
+ABaseWeapon* UWeaponComponent::GetCurrentWeapon() const
+{
+	return CurrentWeapon;
+}
+
+FWeaponNotify UWeaponComponent::GetRequest() const
 {
 	FWeaponNotify Request;
-	
 	Request.RequestWeapon = RequestWeapon;
 	Request.SocketName = RequestWeaponDataAsset->GetHandleSocketName();
-	
 	return Request;
 }
 
-FWeaponNotify UWeaponComponent::GetCurrent()
+FWeaponNotify UWeaponComponent::GetCurrent() const
 {
 	FWeaponNotify Current;
-
-	Current.RequestWeapon = RequestWeapon;
-	Current.SocketName = RequestWeaponDataAsset->GetHandleSocketName();
-	
+	Current.RequestWeapon = CurrentWeapon;
+	Current.SocketName = CurrentWeaponDataAsset->GetHolsterSocketName();
 	return Current;
 }
 
@@ -141,11 +154,14 @@ void UWeaponComponent::PlayNextCombo()
 void UWeaponComponent::SpawnWeapons()
 {
 	TMap<EWeaponType,FWeaponPair> Temp;
-	
+
 	for(auto& temp : Weapons)
 	{
-		ABaseWeapon* SpawnedWeapon = SpawnWeapon(NewObject<UWeaponData>(temp.Value.DataAsset));
-		Temp.Add(temp.Key,{temp.Value.DataAsset, SpawnedWeapon});
+		if(IsValid(temp.Value.DataAsset->GetWeaponClass()))
+		{
+			ABaseWeapon* SpawnedWeapon = SpawnWeapon(temp.Value.DataAsset);
+			Temp.Add(temp.Key,{temp.Value.DataAsset, SpawnedWeapon});
+		}
 	}
 	// Temp에 있는 값을 넣기 전에, 혹시 몰라서 Weapons에 있는 데이터들을 지움
 	Weapons.Empty();
@@ -156,31 +172,38 @@ void UWeaponComponent::SpawnWeapons()
 ABaseWeapon* UWeaponComponent::SpawnWeapon(UWeaponData* inWeaponData)
 {
 	ABaseWeapon* OutWeapon = nullptr;
-	AActor* Owner = GetOwner();
-
 	
-	// MakeTransFrom
 	FVector Location(0.0f, 0.0f, 0.0f);  
 	FRotator Rotation(0.0f, 0.0f, 0.0f);
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = OwnerCharacter;
+	
+	/*
+	// MakeTransFrom
 	FVector Scale(1.0f, 1.0f, 1.0f);
 	FTransform SpawnTransform;
 	// FQuat는 쿼터니언(4원수)로 만들어주는 용도
 	SpawnTransform.SetRotation(FQuat(Rotation));
 	SpawnTransform.SetLocation(Location);
 	SpawnTransform.SetScale3D(Scale);
+	*/
 	
 	if(IsValid(inWeaponData))
 	{
 		// SpawnActor from Class
-		OutWeapon = GetWorld()->SpawnActor<ABaseWeapon>(inWeaponData->GetWeapon());
+		OutWeapon = GetWorld()->SpawnActor<ABaseWeapon>(inWeaponData->GetWeaponClass(),Location,Rotation,SpawnParams);
 	}
+	
 
 	return OutWeapon;
 }
 
 void UWeaponComponent::AttachWeapon(ABaseWeapon* inWeaponPointer, FName inSocketName)
 {
-	// target->AttachToComponetn(Parent, FAttachmentTransformRules::KeepRelativeTransform, SoketName);
+	/*
+		AttachToComponent의 사용 방법
+		target->AttachToComponent(Parent, FAttachmentTransformRules::KeepRelativeTransform, FName);
+	 */ 
 	inWeaponPointer->AttachToComponent
 	(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, inSocketName);
 }
@@ -199,10 +222,10 @@ void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot)
 				}
 				else
 				{
-					AttachWeapon(CurrentWeapon, RequestWeaponDataAsset->GetHolsterSocketName());
+					AttachWeapon(CurrentWeapon, CurrentWeaponDataAsset->GetHolsterSocketName());
 					if(Weapons.Find(inWeaponslot))
 					{
-						EquipWeapon(NewObject<UWeaponData>(Weapons.Find(inWeaponslot)->DataAsset)
+						EquipWeapon(Weapons.Find(inWeaponslot)->DataAsset
 							, Weapons.Find(inWeaponslot)->WeaponPointer);
 					}
 				}
@@ -212,20 +235,22 @@ void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot)
 		{
 			if(Weapons.Find(inWeaponslot))
 			{
-				EquipWeapon(NewObject<UWeaponData>(Weapons.Find(inWeaponslot)->DataAsset)
+				EquipWeapon(Weapons.Find(inWeaponslot)->DataAsset
 					, Weapons.Find(inWeaponslot)->WeaponPointer);
 			}
+			
 		}
 	}
 }
 
 void UWeaponComponent::UnEquipCurrentWeapon()
 {
-	if(IsValid(RequestWeaponDataAsset->GetUnequipMontage().Montage))
+	if(IsValid(CurrentWeaponDataAsset->GetUnequipMontage().Montage))
 	{
 		OwnerCharacter->PlayAnimMontage
-		(RequestWeaponDataAsset->GetUnequipMontage().Montage,
-			RequestWeaponDataAsset->GetUnequipMontage().PlayRate);
+		(CurrentWeaponDataAsset->GetUnequipMontage().Montage,
+			CurrentWeaponDataAsset->GetUnequipMontage().PlayRate);
+		Swapping = false;
 	}
 }
 
@@ -238,6 +263,6 @@ void UWeaponComponent::EquipWeapon(UWeaponData* inWeaponDataAsset,ABaseWeapon* i
 		OwnerCharacter->PlayAnimMontage
 		(inWeaponDataAsset->GetEquipMontage().Montage,
 			inWeaponDataAsset->GetEquipMontage().PlayRate);
-		Swapping = true;
+		Swapping = false;
 	}
 }

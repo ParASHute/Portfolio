@@ -9,8 +9,12 @@ UENUM(BlueprintType)
 enum class EWeaponType : uint8
 {
 	None	UMETA(DisplayName = "None"),
+
 	Sword	UMETA(DisplayName = "Sword"),
 	Bow		UMETA(DisplayName = "Bow"),
+	Shield	UMETA(DisplayName = "Shield"),
+	
+	Max		UMETA(DisplayName = "Max"),
 };
 
 UENUM(BlueprintType)

@@ -13,7 +13,7 @@ struct FWeaponPair	// 순환 참조 방지를 위한 스트럭트 분리
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UWeaponData> DataAsset;
+	UWeaponData* DataAsset;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	ABaseWeapon* WeaponPointer;
 };

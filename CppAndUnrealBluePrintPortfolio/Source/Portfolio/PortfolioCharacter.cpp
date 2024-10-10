@@ -209,20 +209,14 @@ void APortfolioCharacter::SetRagDoll()
 
 void APortfolioCharacter::CameraLock(bool cameraHold)
 {
-	if(!cameraHold)
-	{
 		GetCharacterMovement()->bOrientRotationToMovement = !cameraHold;
 		bUseControllerRotationYaw = cameraHold;
-	}
 }
 
 void APortfolioCharacter::CameraUnLock(bool cameraHold)
 {
-	if(cameraHold)
-	{
 		GetCharacterMovement()->bOrientRotationToMovement = cameraHold;
 		bUseControllerRotationYaw = !cameraHold;
-	}
 }
 
 void APortfolioCharacter::SetCameraRelativeYpos(float Ypos)
@@ -249,12 +243,19 @@ class UWeaponComponent* APortfolioCharacter::GetWeaponComponent() const
 	return WeaponComponent;
 }
 
+void APortfolioCharacter::HoldCamera(bool CameraHold)
+{
+	GetCharacterMovement()->bOrientRotationToMovement =!CameraHold;
+	bUseControllerRotationYaw = CameraHold;
+}
+
 void APortfolioCharacter::InitializeAttribute()
 {
 	if(!IsValid(AbilitySystemComponent))
 	{
 		return;
 	}
+	// 빨간색 로그 출력부
 	if(!DefaultAttributes)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAbility."),*FString(__func__));

@@ -30,13 +30,16 @@ public:
 	(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// Getter
-	bool GetDrawing();
+	bool GetDrawing() const;
+	EWeaponType GetWeaponType() const;
+	ABaseWeapon* GetCurrentWeapon() const;
+	
 
 	// Notities
 	UFUNCTION(BlueprintPure, Category = "Notify")
-	FWeaponNotify GetRequest();
+	FWeaponNotify GetRequest() const;
 	UFUNCTION(BlueprintPure, Category = "Notify")
-	FWeaponNotify GetCurrent();
+	FWeaponNotify GetCurrent() const;
 	UFUNCTION(BlueprintCallable, Category = "Notify")
 	void SetEndEquip();
 	UFUNCTION(BlueprintCallable, Category = "Notify")
@@ -54,7 +57,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Equip")
 	void SpawnWeapons();
 	UFUNCTION(BlueprintCallable, Category = "Equip")
-	ABaseWeapon* SpawnWeapon(UWeaponData* inWeaponData);
+	ABaseWeapon* SpawnWeapon(UWeaponData*inWeaponData);
 	UFUNCTION(BlueprintCallable, Category = "Equip")
 	void AttachWeapon(ABaseWeapon* inWeaponPointer, FName inSocketName);
 	UFUNCTION(BlueprintCallable, Category = "Equip")
@@ -67,22 +70,16 @@ public:
 	
 	
 private:
-	// TSubclassOf<UWeaponData>으로 하지 않으면 블루 프린트에서 안들어가짐
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="DataAsset",meta=(AllowPrivateAccess=true))
 	UWeaponData* CurrentWeaponDataAsset;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="DataAsset",meta=(AllowPrivateAccess=true))
 	UWeaponData* RequestWeaponDataAsset;
-
-	// CurrentWeaponDataAsset와 RequestWeaponDataAsset의 함수 호출등의 이유로 필요한 변수
-	//UWeaponData* CurrenDataAsset;
-	//UWeaponData* RequestDataAsset;
-	//ABaseWeapon* test;
-
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="WeaponPointer",meta=(AllowPrivateAccess=true))
 	ABaseWeapon* CurrentWeapon;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="WeaponPointer",meta=(AllowPrivateAccess=true))
 	ABaseWeapon* RequestWeapon;
-
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
 	bool CanAttack;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
@@ -102,9 +99,14 @@ private:
 	APortfolioCharacter* OwnerCharacter;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	TMap<EWeaponType,FWeaponPair> Weapons;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
+	ABaseWeapon* Shield;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
+	UWeaponData* ShieldDataAsset;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	bool Swapping;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	float GlobalTime;
-	
 };

@@ -27,6 +27,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual void EndAttack();
+	USkeletalMeshComponent* GetMesh();
 
 private:
 	// Default Scene Root Component

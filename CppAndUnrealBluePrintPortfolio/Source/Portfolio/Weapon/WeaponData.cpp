@@ -9,12 +9,12 @@ UWeaponData::UWeaponData()
 {
 }
 
-FName UWeaponData::GetHandleSocketName()
+FName UWeaponData::GetHandleSocketName() const
 {
 	return HandleSocketName;
 }
 
-FName UWeaponData::GetHolsterSocketName()
+FName UWeaponData::GetHolsterSocketName() const
 {
 	return HolsterSocketName;
 }
@@ -24,17 +24,28 @@ FAttack UWeaponData::GetAttackMontage(int Index)
 	return AttackMontages[Index];
 }
 
-FMontage UWeaponData::GetUnequipMontage()
+FMontage UWeaponData::GetUnequipMontage() const
 {
 	return UnequipMontage;
 }
 
-FMontage UWeaponData::GetEquipMontage()
+FMontage UWeaponData::GetEquipMontage() const
 {
 	return EquipMontage;
 }
 
-TSubclassOf<ABaseWeapon> UWeaponData::GetWeapon()
+TSubclassOf<ABaseWeapon> UWeaponData::GetWeaponClass() 
 {
 	return WeaponClass;
 }
+
+ABaseWeapon* UWeaponData::GetWeapon() const
+{
+	return NewObject<ABaseWeapon>(WeaponClass);
+}
+
+EWeaponType UWeaponData::GetWeaponType() const
+{
+	return WeaponType;
+}
+

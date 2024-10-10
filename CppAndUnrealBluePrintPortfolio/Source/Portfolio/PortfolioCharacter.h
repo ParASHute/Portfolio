@@ -54,7 +54,7 @@ class APortfolioCharacter : public ACharacter
 	UInputAction* LookAction;
 
 	// 웨폰 컴포넌트 추가
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,meta=(AllowPrivateAccess=true))
 	UWeaponComponent* WeaponComponent;
 
 	// 어빌리티 시스템 컴포넌트 추가
@@ -75,6 +75,8 @@ public:
 
 	// 웨폰 컴포넌트 게터
 	virtual class UWeaponComponent* GetWeaponComponent() const;
+
+	void HoldCamera(bool CameraHold);
 	
 protected:
 	// 초기 캐릭터 능력치 세팅(비긴플레이에서 세팅, 추후 컨트롤러로 보내서 HUD세팅까지 할 예정)

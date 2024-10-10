@@ -18,15 +18,18 @@ class PORTFOLIO_API UWeaponData : public UPrimaryDataAsset
 public:
 	UWeaponData();
 
-	FName GetHandleSocketName();
-	FName GetHolsterSocketName();
+	FName GetHandleSocketName() const;
+	FName GetHolsterSocketName() const;
 
 	FAttack GetAttackMontage(int Index);
 
-	FMontage GetUnequipMontage();
-	FMontage GetEquipMontage();
+	FMontage GetUnequipMontage() const;
+	FMontage GetEquipMontage() const;
 
-	TSubclassOf<ABaseWeapon> GetWeapon();
+	TSubclassOf<ABaseWeapon> GetWeaponClass();
+	ABaseWeapon* GetWeapon() const;
+
+	EWeaponType GetWeaponType() const;
 
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Socket",meta=(AllowPrivateAccess=true))

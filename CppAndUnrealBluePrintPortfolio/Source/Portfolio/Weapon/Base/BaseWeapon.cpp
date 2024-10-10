@@ -23,31 +23,26 @@ ABaseWeapon::ABaseWeapon()
 	Box = CreateDefaultSubobject<UBoxComponent>("Box");
 	Box->SetupAttachment(SkeletalMesh); // Attach StaticMesh
 	Box->SetCollisionProfileName(TEXT("OverlapAllDynamic")); // SetCollisionProfile
-
-	// Set OwnerCharacter
-    if (AActor* Owner = GetOwner())	// Onwer에 GetOner설정이 된다면
-	{
-		OwnerCharacter = Cast<APortfolioCharacter>(Owner); // OwnerCharacter에 Owner를 넣고
-
-		if (OwnerCharacter)	// 성공시 메시지
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Owner is APortfolioCharacter: %s"), *OwnerCharacter->GetName());
-		}
-		else // 실패시 메시지
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Owner is not APortfolioCharacter."));
-		}
-	}
-	else // Onwer에 GetOner설정이 실패시
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No Owner found."));
-	}
 }
 
 // Called when the game starts or when spawned
 void ABaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// OwnerCharacter에 GetOwner를 넣고
+	OwnerCharacter = Cast<APortfolioCharacter>(GetOwner());
+	
+	// OwnerCharacter
+	if (!OwnerCharacter)	// Onwer에 GetOner설정이 된다면
+	{
+		OwnerCharacter = Cast<APortfolioCharacter>(GetOwner());
+    	
+		if (!OwnerCharacter)	// 성공시 메시지
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Owner founded."));
+		}
+	}
 	
 }
 
@@ -60,5 +55,10 @@ void ABaseWeapon::Tick(float DeltaTime)
 
 void ABaseWeapon::EndAttack()
 {
+}
+
+USkeletalMeshComponent* ABaseWeapon::GetMesh()
+{
+	return SkeletalMesh;
 }
 

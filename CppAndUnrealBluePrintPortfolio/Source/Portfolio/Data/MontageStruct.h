@@ -13,7 +13,7 @@ struct  FAttack	// 공격용 몽타주(데미지를 가지고 있음)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* Montage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float PlayRate;
+	float PlayRate = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Damage;
 };
@@ -26,5 +26,5 @@ struct FMontage	// 일반 몽타주(데미지 미포함)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* Montage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float PlayRate;
+	float PlayRate = 1.0f;
 };
