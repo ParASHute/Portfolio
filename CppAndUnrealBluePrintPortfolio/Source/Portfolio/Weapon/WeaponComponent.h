@@ -61,13 +61,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Equip")
 	void AttachWeapon(ABaseWeapon* inWeaponPointer, FName inSocketName);
 	UFUNCTION(BlueprintCallable, Category = "Equip")
-	void SelectWeapon(EWeaponType inWeaponslot);
+	void SelectWeapon(EWeaponType inWeaponslot, bool Sword = true);
 	UFUNCTION(BlueprintCallable, Category = "Equip")
 	void UnEquipCurrentWeapon();
 	UFUNCTION(BlueprintCallable, Category = "Equip")
 	void EquipWeapon(UWeaponData* inWeaponDataAsset,ABaseWeapon* inWeaponPtr);
-
-	
+	// For Shield
+	UFUNCTION(BlueprintPure, Category = "Equip")
+	FName GetShieldHandleName();
+	UFUNCTION(BlueprintPure, Category = "Equip")
+	FName GetShieldHolsterName();
+	UFUNCTION(BlueprintCallable, Category = "Equip")
+	void ShieldAttach(FName AttachSocket);
 	
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="DataAsset",meta=(AllowPrivateAccess=true))

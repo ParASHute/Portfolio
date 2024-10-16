@@ -35,6 +35,11 @@ void UWeaponComponent::BeginPlay()
 
 	// 무기 스폰
 	SpawnWeapons();
+
+	// 방패 스폰
+	if(IsValid(ShieldDataAsset))
+		Shield = SpawnWeapon(ShieldDataAsset);
+	
 	
 	// AttachWeapons
 	for(auto& temp : Weapons)
@@ -44,6 +49,10 @@ void UWeaponComponent::BeginPlay()
 			AttachWeapon
 			(temp.Value.WeaponPointer, temp.Value.DataAsset->GetHolsterSocketName());
 		}
+	}
+	if(IsValid(Shield))
+	{
+		AttachWeapon(Shield, ShieldDataAsset->GetHolsterSocketName());
 	}
 }
 
@@ -208,7 +217,7 @@ void UWeaponComponent::AttachWeapon(ABaseWeapon* inWeaponPointer, FName inSocket
 	(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, inSocketName);
 }
 
-void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot)
+void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot, bool Sword)
 {
 	if(Swapping == false)
 	{
@@ -222,7 +231,16 @@ void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot)
 				}
 				else
 				{
-					AttachWeapon(CurrentWeapon, CurrentWeaponDataAsset->GetHolsterSocketName());
+					if(!Sword)
+					{
+						AttachWeapon(CurrentWeapon, CurrentWeaponDataAsset->GetHolsterSocketName());	
+					}
+					else
+					{
+						AttachWeapon(CurrentWeapon, CurrentWeaponDataAsset->GetHolsterSocketName());
+						AttachWeapon(Shield,ShieldDataAsset->GetHolsterSocketName());
+					}
+					
 					if(Weapons.Find(inWeaponslot))
 					{
 						EquipWeapon(Weapons.Find(inWeaponslot)->DataAsset
@@ -236,7 +254,7 @@ void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot)
 			if(Weapons.Find(inWeaponslot))
 			{
 				EquipWeapon(Weapons.Find(inWeaponslot)->DataAsset
-					, Weapons.Find(inWeaponslot)->WeaponPointer);
+						, Weapons.Find(inWeaponslot)->WeaponPointer);	
 			}
 			
 		}
@@ -266,3 +284,21 @@ void UWeaponComponent::EquipWeapon(UWeaponData* inWeaponDataAsset,ABaseWeapon* i
 		Swapping = false;
 	}
 }
+
+FName UWeaponComponent::GetShieldHandleName()
+{
+	return ShieldDataAsset->GetHandleSocketName();
+}
+
+FName UWeaponComponent::GetShieldHolsterName()
+{
+	return ShieldDataAsset->GetHolsterSocketName();
+}
+
+void UWeaponComponent::ShieldAttach(FName AttachSocket)
+{
+	Shield->AttachToComponent
+	(OwnerCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, AttachSocket);
+}
+
+
