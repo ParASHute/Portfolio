@@ -32,13 +32,19 @@ public:
 	UPROPERTY(BlueprintReadOnly,Category="Attributes",ReplicatedUsing=OnRep_Health)
 	FGameplayAttributeData CurrentHealth;
 	ATTRIBUTE_ACCESSORS(UMyAttributeSet, CurrentHealth);
-
 	UPROPERTY(BlueprintReadOnly,Category="Attributes",ReplicatedUsing=OnRep_Health)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UMyAttributeSet, MaxHealth);
 
+	UPROPERTY(BlueprintReadOnly,Category="Attributes",ReplicatedUsing=OnRep_Health)
+	FGameplayAttributeData CurrentStamina;
+	ATTRIBUTE_ACCESSORS(UMyAttributeSet, CurrentStamina);
+	UPROPERTY(BlueprintReadOnly,Category="Attributes",ReplicatedUsing=OnRep_Health)
+	FGameplayAttributeData MaxStamina;
+	ATTRIBUTE_ACCESSORS(UMyAttributeSet, MaxStamina);
+
 	FAttrChangeDelegate HealthChangeDelegate;
 
-	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 };

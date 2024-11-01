@@ -67,11 +67,6 @@ void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 
 // Notify
-bool UWeaponComponent::GetDrawing() const
-{
-	return Drawing;
-}
-
 EWeaponType UWeaponComponent::GetWeaponType() const
 {
 	if(IsValid(CurrentWeaponDataAsset))
@@ -109,7 +104,6 @@ void UWeaponComponent::SetEndEquip()
 	RequestWeapon = nullptr;
 	RequestWeaponDataAsset = nullptr;
 	Swapping = false;
-	CanAttack = true;
 }
 
 void UWeaponComponent::SetEndUnequip()
@@ -117,12 +111,10 @@ void UWeaponComponent::SetEndUnequip()
 	CurrentWeapon = nullptr;
 	CurrentWeaponDataAsset = nullptr;
 	Swapping = false;
-	CanAttack = true;
 }
 
 void UWeaponComponent::EndAttack()
 {
-	CanAttack = true;
 	CurrentWeapon->EndAttack();
 	if(IsValid(FireProjectile))
 	{
@@ -135,30 +127,6 @@ void UWeaponComponent::EndAttack()
 	}
 }
 
-void UWeaponComponent::ComboDetectsStart()
-{
-	ComboAreaEnable = true;
-}
-
-void UWeaponComponent::ComboDetectsEnd()
-{
-	ComboAreaEnable = false;
-}
-
-void UWeaponComponent::PlayNextCombo()
-{
-	if(Combo)
-	{
-		ComboAreaEnable = false;
-		UAnimMontage* montage = RequestWeaponDataAsset->GetAttackMontage(ComboIndex).Montage;
-		float playRate = RequestWeaponDataAsset->GetAttackMontage(ComboIndex).PlayRate;
-		
-		if(IsValid(montage))
-		{
-			OwnerCharacter->PlayAnimMontage(montage, playRate);
-		}
-	}
-}
 
 void UWeaponComponent::SpawnWeapons()
 {
@@ -231,14 +199,14 @@ void UWeaponComponent::SelectWeapon(EWeaponType inWeaponslot, bool Sword)
 				}
 				else
 				{
-					if(!Sword)
+					if(!Sword)	// Bow가 아닐때는 Sword&Shield가 장착된 상태일 태니
 					{
-						AttachWeapon(CurrentWeapon, CurrentWeaponDataAsset->GetHolsterSocketName());	
+						AttachWeapon(CurrentWeapon, CurrentWeaponDataAsset->GetHolsterSocketName());
+						AttachWeapon(Shield,ShieldDataAsset->GetHolsterSocketName());
 					}
 					else
 					{
 						AttachWeapon(CurrentWeapon, CurrentWeaponDataAsset->GetHolsterSocketName());
-						AttachWeapon(Shield,ShieldDataAsset->GetHolsterSocketName());
 					}
 					
 					if(Weapons.Find(inWeaponslot))
@@ -268,7 +236,7 @@ void UWeaponComponent::UnEquipCurrentWeapon()
 		OwnerCharacter->PlayAnimMontage
 		(CurrentWeaponDataAsset->GetUnequipMontage().Montage,
 			CurrentWeaponDataAsset->GetUnequipMontage().PlayRate);
-		Swapping = false;
+		Swapping = true;
 	}
 }
 
@@ -281,7 +249,7 @@ void UWeaponComponent::EquipWeapon(UWeaponData* inWeaponDataAsset,ABaseWeapon* i
 		OwnerCharacter->PlayAnimMontage
 		(inWeaponDataAsset->GetEquipMontage().Montage,
 			inWeaponDataAsset->GetEquipMontage().PlayRate);
-		Swapping = false;
+		Swapping = true;
 	}
 }
 

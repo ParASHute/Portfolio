@@ -13,6 +13,7 @@ UMyAnimInstance::UMyAnimInstance()
 {
 	WeaponComponent = nullptr;
 	OwnerCharacter = nullptr;
+	AbilitySystemComponent = nullptr;
 }
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaTime)
@@ -26,11 +27,18 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		WeaponComponent = OwnerCharacter->GetWeaponComponent();
 		if(IsValid(WeaponComponent))
 		{
-			SetBlendSpace();
-			SetDamageCauserDirection();
-			SetAimRotation();
-
-			//SetHandleLoation();
+			AbilitySystemComponent = OwnerCharacter->GetAbilitySystemComponent();
+			if(IsValid(AbilitySystemComponent))
+			{
+				SetBlendSpace();
+				SetDamageCauserDirection();
+				SetAimRotation();
+				SetHandleLocation();
+			}
+			else
+			{
+				AbilitySystemComponent = OwnerCharacter->GetAbilitySystemComponent();
+			}
 		}
 		else
 		{
@@ -38,6 +46,7 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaTime)
 			if(IsValid(WeaponComponent))
 				UE_LOG(LogTemp,Warning,TEXT("No WeaponComponent"));
 		}
+		
 			
 	}
 	else
@@ -73,13 +82,17 @@ void UMyAnimInstance::SetDamageCauserDirection()
 {
 }
 
-void UMyAnimInstance::SetHandleLoation()
+void UMyAnimInstance::SetHandleLocation()
 {
-	if(IsValid(WeaponComponent))
-		DrawBow = WeaponComponent->GetDrawing();
+	if(IsValid(AbilitySystemComponent))
+	{
+		DrawBow = AbilitySystemComponent->GetTagCount
+				(FGameplayTag::RequestGameplayTag(FName("Attack.DrawingBow"))) > 0 ? true : false;
+	}
+	
 	if(IsValid(WeaponComponent->GetCurrentWeapon()))
 	{
-		HandleLocation = WeaponComponent->GetCurrentWeapon()->GetMesh()->GetSocketLocation("handleSocket");
+		HandleLocation = WeaponComponent->GetCurrentWeapon()->GetMesh()->GetSocketLocation("HandleSocket");
 	}
 }
 

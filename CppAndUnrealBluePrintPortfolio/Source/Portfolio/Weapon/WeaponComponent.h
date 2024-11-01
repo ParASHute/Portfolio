@@ -30,7 +30,6 @@ public:
 	(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// Getter
-	bool GetDrawing() const;
 	EWeaponType GetWeaponType() const;
 	ABaseWeapon* GetCurrentWeapon() const;
 	
@@ -46,12 +45,6 @@ public:
 	void  SetEndUnequip();
 	UFUNCTION(BlueprintCallable, Category = "Notify")
 	void EndAttack();
-	UFUNCTION(BlueprintCallable, Category = "Notify")
-	void ComboDetectsStart();
-	UFUNCTION(BlueprintCallable, Category = "Notify")
-	void ComboDetectsEnd();
-	UFUNCTION(BlueprintCallable, Category = "Notify")
-	void PlayNextCombo();
 
 	// Function Called in Notify
 	UFUNCTION(BlueprintCallable, Category = "Equip")
@@ -86,17 +79,7 @@ private:
 	ABaseWeapon* RequestWeapon;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
-	bool CanAttack;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
-	bool ComboAreaEnable;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
-	bool Combo;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
-	bool Drawing;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
 	bool JumpAttack;
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
-	int ComboIndex;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Attack",meta=(AllowPrivateAccess=true))
 	ABaseProjectile* FireProjectile;
 

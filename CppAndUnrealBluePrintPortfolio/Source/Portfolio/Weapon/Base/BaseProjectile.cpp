@@ -8,8 +8,6 @@ ABaseProjectile::ABaseProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 
 	// Set Default Scene Root Component
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>("DefaultSceneRoot");
@@ -26,7 +24,6 @@ ABaseProjectile::ABaseProjectile()
 
 	// Set Projectile Movement Component
 	ProjectileMovement=CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovement");
-	ProjectileMovement->UpdatedComponent=Capsule; 
 	ProjectileMovement->bRotationFollowsVelocity = true; // Follow Fire Direction
 }
 

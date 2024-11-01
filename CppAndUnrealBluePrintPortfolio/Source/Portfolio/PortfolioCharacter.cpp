@@ -57,7 +57,7 @@ APortfolioCharacter::APortfolioCharacter()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 
-	WeaponComponent=CreateDefaultSubobject<UWeaponComponent>(TEXT("WeaponComponent"));
+	WeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("WeaponComponent"));
 
 	AbilitySystemComponent = CreateDefaultSubobject<UMyAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
@@ -255,6 +255,7 @@ void APortfolioCharacter::InitializeAttribute()
 	{
 		return;
 	}
+	/*
 	// 빨간색 로그 출력부
 	if(!DefaultAttributes)
 	{
@@ -266,12 +267,13 @@ void APortfolioCharacter::InitializeAttribute()
 
 	FGameplayEffectSpecHandle SpecHandle =
 		AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, 1, EffectContext);
-	
+
 	if(SpecHandle.IsValid())
 	{
 		AbilitySystemComponent->ApplyGameplayEffectSpecToTarget
 			(*SpecHandle.Data.Get(), AbilitySystemComponent);
 	}
+	*/
 }
 
 void APortfolioCharacter::AddStartupEffects()

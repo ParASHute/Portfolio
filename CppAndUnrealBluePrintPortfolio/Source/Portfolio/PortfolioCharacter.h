@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 
@@ -79,10 +80,12 @@ public:
 	void HoldCamera(bool CameraHold);
 	
 protected:
+	/*
 	// 초기 캐릭터 능력치 세팅(비긴플레이에서 세팅, 추후 컨트롤러로 보내서 HUD세팅까지 할 예정)
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	TSubclassOf<class UGameplayEffect> DefaultAttributes;
-
+	*/
+	
 	// 기본 체력, 마력 회복
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	TArray<TSubclassOf<class UGameplayEffect>> StartupEffects;

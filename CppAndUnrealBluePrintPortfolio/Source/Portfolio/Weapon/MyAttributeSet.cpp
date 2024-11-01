@@ -28,8 +28,11 @@ void UMyAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModC
 	Super::PostGameplayEffectExecute(Data);
 	if(Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
-		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(),0.0f,1000.0f));
-		HealthChangeDelegate.Broadcast(GetCurrentHealth(),Data.EffectSpec.StackCount);
+		SetCurrentHealth(FMath::Clamp(GetCurrentHealth(),0.0f,GetMaxHealth()));
+	}
+	if(Data.EvaluatedData.Attribute == GetCurrentStaminaAttribute())
+	{
+		SetCurrentStamina(FMath::Clamp(GetCurrentStamina(),0.0f,GetMaxStamina()));
 	}
 }
 

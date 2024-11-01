@@ -19,7 +19,7 @@ public:
 	
 	void SetBlendSpace();
 	void SetDamageCauserDirection();
-	void SetHandleLoation();
+	void SetHandleLocation();
 	void SetAimRotation();;
 
 private:
@@ -29,6 +29,8 @@ private:
 	// Components
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Component",meta=(AllowPrivateAccess=true))
 	UWeaponComponent* WeaponComponent;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Component",meta=(AllowPrivateAccess=true))
+	UMyAbilitySystemComponent* AbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
 	float Spd;

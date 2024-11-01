@@ -11,7 +11,10 @@ public class Portfolio : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", 
 			"InputCore", "EnhancedInput", 
-			"GameplayAbilities", "GameplayTags", "GameplayTasks"
+			// GAS추가
+			"GameplayAbilities", "GameplayTags", "GameplayTasks", 
+			// WidgetComponent추가
+			"UMG"
 		});
 	}
 }
