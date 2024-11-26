@@ -76,15 +76,11 @@ void APortfolioCharacter::BeginPlay()
 		AttributeSetVar = AbilitySystemComponent->GetSet<UMyAttributeSet>();
 		if(AttributeSetVar != nullptr)	// 위에서 할당한 값이 제대로 할당 됐다면
 		{
-			//  델리게이트로 HP변경시 호출
-			const_cast<UMyAttributeSet*>(AttributeSetVar)->HealthChangeDelegate.AddDynamic(this,
-				&APortfolioCharacter::OnHealthChangeNative);
+			
 
 			InitializeAttribute();
 			AddStartupEffects();
 		}
-
-		
 	}
 }
 
@@ -93,10 +89,6 @@ void APortfolioCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-void APortfolioCharacter::DestroyCharacter()
-{
-	Destroy();
-}
 
 //////////////////////////////////////////////////////////////////////////
 // Input
@@ -116,8 +108,8 @@ void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 		
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APortfolioCharacter::Move);
@@ -129,33 +121,6 @@ void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
-}
-
-void APortfolioCharacter::Death()
-{
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	GetCharacterMovement()->GravityScale = 0;
-	GetCharacterMovement()->Velocity = FVector(0);
-
-	if(IsValid(AbilitySystemComponent))
-	{
-		// 실행중인 어빌리티 다 취소
-		AbilitySystemComponent->CancelAbilities();
-		// 죽음 태그 추가ㅣ
-		FGameplayTag DeathEffectTag = FGameplayTag::RequestGameplayTag(FName("Death"));
-		// TryActivate실행 되면 테그가 들어가긴함
-		AbilitySystemComponent->AddLooseGameplayTag(DeathEffectTag);
-
-		// Death태그가 초기 설정한 어빌리티에 있을때 실행
-		FGameplayTagContainer GameplayTag{ DeathEffectTag };
-		bool bSuccess = AbilitySystemComponent->TryActivateAbilitiesByTag(GameplayTag);
-		if(bSuccess == false)
-			FinishDeath();
-	}
-}
-
-void APortfolioCharacter::FinishDeath()
-{
 }
 
 void APortfolioCharacter::Move(const FInputActionValue& Value)
@@ -196,42 +161,36 @@ void APortfolioCharacter::Look(const FInputActionValue& Value)
 
 //////////////////////////////////////////////////////////////////////////
 // Maked Function
-void APortfolioCharacter::SetRagDoll()
-{
-	GetMesh()->SetSimulatePhysics(true);
-	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("IgnoreOnlyPawn"));
-	
-	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &APortfolioCharacter::DestroyCharacter, 3.0f, false);
-}
-
-
 void APortfolioCharacter::CameraLock(bool cameraHold)
 {
-		GetCharacterMovement()->bOrientRotationToMovement = !cameraHold;
-		bUseControllerRotationYaw = cameraHold;
+	GetCharacterMovement()->bOrientRotationToMovement = cameraHold;
+	//CameraBoom->bUsePawnControlRotation = true;
+	bUseControllerRotationYaw = cameraHold;
 }
 
 void APortfolioCharacter::CameraUnLock(bool cameraHold)
 {
-		GetCharacterMovement()->bOrientRotationToMovement = cameraHold;
-		bUseControllerRotationYaw = !cameraHold;
+	GetCharacterMovement()->bOrientRotationToMovement = cameraHold;
+	//CameraBoom->bUsePawnControlRotation = true;
+	bUseControllerRotationYaw = !cameraHold;
 }
 
-void APortfolioCharacter::SetCameraRelativeYpos(float Ypos)
+void APortfolioCharacter::SetCameraRelativePos(float Xpos, float Ypos, float Zpos)
 {
 	// CameraComponent의 컴포넌트를 가져와 유효한지 확인
 	if (UCameraComponent* CameraComponent = FindComponentByClass<UCameraComponent>())
 	{
-		// 현재 위치를 가져와서 Y축만 업데이트
+		// 현재 위치를 가져와서 Z축만 업데이트
 		FVector NewLocation = CameraComponent->GetRelativeLocation();
+		NewLocation.X = Xpos;
 		NewLocation.Y = Ypos;
+		NewLocation.Z = Zpos;
 
 		// 상대 위치 업데이트
 		CameraComponent->SetRelativeLocation(NewLocation);
 	}
 }
+
 
 class UMyAbilitySystemComponent* APortfolioCharacter::GetAbilitySystemComponent() const
 {
@@ -247,6 +206,12 @@ void APortfolioCharacter::HoldCamera(bool CameraHold)
 {
 	GetCharacterMovement()->bOrientRotationToMovement =!CameraHold;
 	bUseControllerRotationYaw = CameraHold;
+}
+
+FTransform APortfolioCharacter::GetBone(FName SocketName)
+{
+	FTransform RetuenVal = GetMesh()->GetSocketTransform(SocketName,RTS_World);
+	return RetuenVal;
 }
 
 void APortfolioCharacter::InitializeAttribute()
@@ -379,44 +344,4 @@ void APortfolioCharacter::AddLoosGamePlayTag(FGameplayTag TagToAdd)
 void APortfolioCharacter::RemoveLoosGamePlayTag(FGameplayTag TagToRemove)
 {
 	AbilitySystemComponent->RemoveLooseGameplayTag(TagToRemove);
-}
-
-void APortfolioCharacter::OnHealthChangeNative(float Health, int32 StatckCount)
-{
-	OnHealthChanged(Health, StatckCount);
-	if(Health <= 0)
-	{
-		if(AbilitySystemComponent->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("Death"))) == false)
-		{
-			Death();
-		}
-	}
-}
-
-void APortfolioCharacter::OnHealthChanged(float Health, int32 StatckCount)
-{
-	if(Health <= 0)
-	{
-		SetRagDoll();
-		Death();
-	}
-}
-
-void APortfolioCharacter::HealthValues(float& Health, float& MaxHealth)
-{
-	if(AttributeSetVar)
-	{
-		Health = AttributeSetVar->GetCurrentHealth();
-		MaxHealth = AttributeSetVar->GetMaxHealth();
-	}
-}
-
-float APortfolioCharacter::GetCurrentHealth() const
-{
-	return AttributeSetVar->GetCurrentHealth();
-}
-
-float APortfolioCharacter::GetMaxHealth() const
-{
-	return AttributeSetVar->GetMaxHealth();
 }

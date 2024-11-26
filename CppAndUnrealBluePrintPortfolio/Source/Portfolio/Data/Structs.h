@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Portfolio/Weapon/Base/BaseWeapon.h"
-#include "Portfolio/Weapon/WeaponData.h"
 #include "Structs.generated.h"
 
+class ABaseWeapon;
+class UWeaponData;
+class APortfolioCharacter;
+
 USTRUCT(BlueprintType)
-struct FWeaponPair	// 순환 참조 방지를 위한 스트럭트 분리
+struct FWeaponPair
 {
 	GENERATED_BODY()
 	
@@ -27,4 +29,41 @@ struct FWeaponNotify
 	ABaseWeapon* RequestWeapon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FName SocketName;
+};
+
+USTRUCT(BlueprintType)
+struct FHitData
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	APortfolioCharacter* CharacterPointer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector Location;
+};
+
+
+// MontageStructs
+USTRUCT(BlueprintType)
+struct  FAttack	// 공격용 몽타주(데미지를 가지고 있음)
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* Montage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float PlayRate = 1.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Damage;
+};
+
+USTRUCT(BlueprintType)
+struct FMontage	// 일반 몽타주(데미지 미포함)
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* Montage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float PlayRate = 1.0f;
 };

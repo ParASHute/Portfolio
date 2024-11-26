@@ -34,6 +34,7 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaTime)
 				SetDamageCauserDirection();
 				SetAimRotation();
 				SetHandleLocation();
+				CheckTagJumpAttack();
 			}
 			else
 			{
@@ -104,4 +105,18 @@ void UMyAnimInstance::SetAimRotation()
 	AimRotation.Pitch = DeltaRotator.Pitch * -1;
 	AimRotation.Yaw = DeltaRotator.Yaw;
 	AimRotation.Roll = DeltaRotator.Roll;
+}
+
+void UMyAnimInstance::CheckTagJumpAttack()
+{
+	JumpAttackTagCount =
+		AbilitySystemComponent->GetGameplayTagCount
+			(FGameplayTag::RequestGameplayTag(FName("Attack.JumpAttack"))) > 0 ? true: false;
+
+	BulletTimeTag =
+		AbilitySystemComponent->GetGameplayTagCount
+			(FGameplayTag::RequestGameplayTag(FName("Attack.BulletTime"))) > 0 ? true: false;
+
+	JumpTag = AbilitySystemComponent->GetGameplayTagCount
+			(FGameplayTag::RequestGameplayTag(FName("State.Defence"))) > 0 ? true: false;
 }

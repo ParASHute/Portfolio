@@ -59,7 +59,7 @@ class APortfolioCharacter : public ACharacter
 	UWeaponComponent* WeaponComponent;
 
 	// 어빌리티 시스템 컴포넌트 추가
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="GAS",meta=(AllowPrivateAccess=true))
 	class UMyAbilitySystemComponent* AbilitySystemComponent;
 
 	// 캐릭터 관련 정보
@@ -78,6 +78,9 @@ public:
 	virtual class UWeaponComponent* GetWeaponComponent() const;
 
 	void HoldCamera(bool CameraHold);
+
+	UFUNCTION(BlueprintCallable)
+	FTransform GetBone(FName SocketName);
 	
 protected:
 	/*
@@ -129,36 +132,8 @@ public:
 	
 public:
 	APortfolioCharacter();
-
-// 속성 관련
-	// 체력 변경시 호출될 함수
-	UFUNCTION()
-	virtual void OnHealthChangeNative(float Health, int32 StatckCount);
-
-	// 블루프린트에서 내 체력 확인가능하도록
-	UFUNCTION(BlueprintCallable,Category="GAS")
-	void OnHealthChanged(float Health, int32 StatckCount);
-
-	// 현재 체력을 바로 뽑아줌
-	UFUNCTION(BlueprintCallable,Category="GAS")
-	void HealthValues(float& Health, float& MaxHealth);
-
-	UFUNCTION(BlueprintCallable,Category="GAS")
-	float GetCurrentHealth() const;
-
-	UFUNCTION(BlueprintCallable,Category="GAS")
-	float GetMaxHealth() const;
-
 	
 protected:
-
-	// 죽었을때
-	virtual void Death();
-
-	// 중금 어빌리티 세팅 안했을때
-	UFUNCTION(BlueprintCallable,Category="GAS")
-	void FinishDeath();
-
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
@@ -181,15 +156,12 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-	UFUNCTION(BlueprintCallable)
-	void SetRagDoll();
+	
 	UFUNCTION(BlueprintCallable)
 	void CameraLock(bool cameraHold);
 	UFUNCTION(BlueprintCallable)
 	void CameraUnLock(bool cameraHold);
 	UFUNCTION(BlueprintCallable)
-	void SetCameraRelativeYpos(float Ypos);
-	UFUNCTION(BlueprintCallable)
-	void DestroyCharacter();
+	void SetCameraRelativePos(float Xpos, float Ypos, float Zpos);
 };
 

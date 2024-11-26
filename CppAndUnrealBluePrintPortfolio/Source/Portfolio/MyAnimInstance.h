@@ -21,6 +21,7 @@ public:
 	void SetDamageCauserDirection();
 	void SetHandleLocation();
 	void SetAimRotation();;
+	void CheckTagJumpAttack();
 
 private:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
@@ -29,9 +30,15 @@ private:
 	// Components
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Component",meta=(AllowPrivateAccess=true))
 	UWeaponComponent* WeaponComponent;
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Component",meta=(AllowPrivateAccess=true))
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Component",meta=(BlueprintThreadSafe, AllowPrivateAccess=true))
 	UMyAbilitySystemComponent* AbilitySystemComponent;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
+	bool JumpAttackTagCount;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
+	bool JumpTag;	// 쉴드중에 점프 막기위해 만든 불리안(미사용변수)
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
+	bool BulletTimeTag;
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
 	float Spd;
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
@@ -42,9 +49,9 @@ private:
 	FVector Velocity;
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
 	EWeaponType WeaponType;
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="BlendSpace",meta=(AllowPrivateAccess=true))
 	float DamageCauserDirection;
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="BlendSpace",meta=(AllowPrivateAccess=true))
 	FVector DamageCauserLocation;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="BlendSpace",meta=(AllowPrivateAccess=true))

@@ -32,7 +32,9 @@ public:
 	// Getter
 	EWeaponType GetWeaponType() const;
 	ABaseWeapon* GetCurrentWeapon() const;
-	
+
+	UFUNCTION(BlueprintPure)
+	int FindCaurserDirection(AActor* Actor, TArray<FMontage> montages);
 
 	// Notities
 	UFUNCTION(BlueprintPure, Category = "Notify")
@@ -59,6 +61,7 @@ public:
 	void UnEquipCurrentWeapon();
 	UFUNCTION(BlueprintCallable, Category = "Equip")
 	void EquipWeapon(UWeaponData* inWeaponDataAsset,ABaseWeapon* inWeaponPtr);
+	
 	// For Shield
 	UFUNCTION(BlueprintPure, Category = "Equip")
 	FName GetShieldHandleName();

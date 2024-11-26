@@ -7,7 +7,7 @@
 #include "Portfolio/Weapon/Base/BaseProjectile.h"
 #include "Portfolio/Weapon/Base/BaseWeapon.h"
 #include "Portfolio/Data/Enums.h"
-#include "Portfolio/Data/MontageStruct.h"
+#include "Portfolio/Data/Structs.h"
 
 #include "WeaponData.generated.h"
 
@@ -30,6 +30,10 @@ public:
 	ABaseWeapon* GetWeapon() const;
 
 	EWeaponType GetWeaponType() const;
+
+	TArray<FMontage> GetHitMontages() const;
+
+	float GetWeaponDamage();
 
 private:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Socket",meta=(AllowPrivateAccess=true))
@@ -59,4 +63,6 @@ private:
 	TSubclassOf<ABaseWeapon> WeaponClass;
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
 	EWeaponType WeaponType;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess=true))
+	float WeaponDamage;
 };

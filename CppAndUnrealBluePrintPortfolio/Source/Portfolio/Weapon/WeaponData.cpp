@@ -49,3 +49,13 @@ EWeaponType UWeaponData::GetWeaponType() const
 	return WeaponType;
 }
 
+TArray<FMontage> UWeaponData::GetHitMontages() const
+{
+	return HitMontages;
+}
+
+float UWeaponData::GetWeaponDamage()
+{
+	return WeaponDamage;
+}
+

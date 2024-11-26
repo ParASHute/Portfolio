@@ -3,6 +3,8 @@
 
 #include "BaseWeapon.h"
 
+#include "AssetSelection.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Portfolio/PortfolioCharacter.h"	// Cpp 내 APortfolioCharacter의 불확실성 해결을 위한 헤더 선언
 
 // Sets default values
@@ -17,12 +19,7 @@ ABaseWeapon::ABaseWeapon()
 
 	// Set Skeletal Mesh Component
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMesh");
-	SkeletalMesh->SetupAttachment(RootComponent); // Attach RootComponent
-
-	// Set Box Collision Component
-	Box = CreateDefaultSubobject<UBoxComponent>("Box");
-	Box->SetupAttachment(SkeletalMesh); // Attach StaticMesh
-	Box->SetCollisionProfileName(TEXT("OverlapAllDynamic")); // SetCollisionProfile
+	SkeletalMesh->SetupAttachment(RootComponent); // Attach RootComponen
 }
 
 // Called when the game starts or when spawned
@@ -50,7 +47,6 @@ void ABaseWeapon::BeginPlay()
 void ABaseWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ABaseWeapon::EndAttack()
@@ -61,4 +57,44 @@ USkeletalMeshComponent* ABaseWeapon::GetMesh()
 {
 	return SkeletalMesh;
 }
+
+AActor* ABaseWeapon::Trace(/*FString TagName*/)
+{
+	const FVector StartLoc = SkeletalMesh->GetSocketLocation("StartSocket");
+	const FVector EndLoc = SkeletalMesh->GetSocketLocation("EndSocket");
+	const FVector BoxSize = {10, 10, 10};
+	
+	//충돌 검사할 오브젝트 타입
+	const TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes = SetObjectTypes(ECollisionChannel::ECC_GameTraceChannel1);
+	
+	//충돌 결과
+	FHitResult HitResults;
+	
+	// 무시할 객체
+	TArray<AActor*> ActorsTolgnore;
+	ActorsTolgnore.Add(Cast<AActor>(OwnerCharacter));
+	
+	bool Check = UKismetSystemLibrary::BoxTraceSingleForObjects
+	(GetWorld(), StartLoc, EndLoc, BoxSize, GetActorRotation(), ObjectTypes,
+	 false, ActorsTolgnore, EDrawDebugTrace::ForDuration, HitResults, true);
+	
+	/*
+	if (Check)
+	{
+		FGameplayTagContainer TagContainer;
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName(TagName)));
+		APortfolioCharacter* Temp = Cast<APortfolioCharacter>(HitResults.GetActor());
+		Temp->GetAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer);
+	}
+	*/
+	return HitResults.GetActor();
+}
+
+TArray<TEnumAsByte<EObjectTypeQuery>> ABaseWeapon::SetObjectTypes(ECollisionChannel ChannelName)
+{
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+	ObjectTypes.Add (UEngineTypes::ConvertToObjectType(ChannelName));
+	return ObjectTypes;
+}
+
 

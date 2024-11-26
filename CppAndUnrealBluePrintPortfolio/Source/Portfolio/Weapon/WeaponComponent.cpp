@@ -6,9 +6,11 @@
 
 #include "BlueprintEditor.h"
 #include "K2Node_SpawnActorFromClass.h"
+#include "KismetAnimationLibrary.h"
 #include "ShaderPrintParameters.h"
 #include "VisualizeTexture.h"
 #include "CookOnTheSide/CookOnTheFlyServer.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Portfolio/PortfolioCharacter.h"
 #include "UniversalObjectLocators/UniversalObjectLocatorUtils.h"
 
@@ -79,6 +81,31 @@ EWeaponType UWeaponComponent::GetWeaponType() const
 ABaseWeapon* UWeaponComponent::GetCurrentWeapon() const
 {
 	return CurrentWeapon;
+}
+
+int UWeaponComponent::FindCaurserDirection(AActor* Actor, TArray<FMontage> montages)
+{
+	int result = 0;
+	float Direction, Degree;
+	if(montages.Num() > 1)
+	{
+		Degree = 360.f / (float)montages.Num();
+		Direction = UKismetAnimationLibrary::CalculateDirection
+		( Actor->GetOwner()->GetActorLocation() - OwnerCharacter->GetActorLocation(),
+			{0.0, Actor->GetOwner()->GetActorRotation().Yaw,0.0 });
+
+		float Temp = (float)((int)(Direction + 360.0f) % 360) / (float)Degree;
+		
+		// Truncast가 이거임
+		result = UKismetMathLibrary::FTrunc(Temp);
+	}
+
+	else
+	{
+		result = 0;
+	}
+	
+	return result;
 }
 
 FWeaponNotify UWeaponComponent::GetRequest() const
