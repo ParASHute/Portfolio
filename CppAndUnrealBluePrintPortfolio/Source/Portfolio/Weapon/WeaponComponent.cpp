@@ -85,27 +85,41 @@ ABaseWeapon* UWeaponComponent::GetCurrentWeapon() const
 
 int UWeaponComponent::FindCaurserDirection(AActor* Actor, TArray<FMontage> montages)
 {
+	UE_LOG(LogTemp,Warning,TEXT("Find Start"));
 	int result = 0;
 	float Direction, Degree;
-	if(montages.Num() > 1)
+
+	if (Actor)
 	{
-		Degree = 360.f / (float)montages.Num();
-		Direction = UKismetAnimationLibrary::CalculateDirection
-		( Actor->GetOwner()->GetActorLocation() - OwnerCharacter->GetActorLocation(),
-			{0.0, Actor->GetOwner()->GetActorRotation().Yaw,0.0 });
+		if(montages.Num() > 1)
+		{
+			Degree = 360.f / (float)montages.Num();
+			Direction = UKismetAnimationLibrary::CalculateDirection
+			( Actor->GetOwner()->GetActorLocation() - OwnerCharacter->GetActorLocation(),
+				{0.0, Actor->GetOwner()->GetActorRotation().Yaw,0.0 });
 
-		float Temp = (float)((int)(Direction + 360.0f) % 360) / (float)Degree;
+			float Temp = (float)((int)(Direction + 360.0f) % 360) / (float)Degree;
 		
-		// Truncast가 이거임
-		result = UKismetMathLibrary::FTrunc(Temp);
-	}
+			// Truncast가 이거임
+			result = UKismetMathLibrary::FTrunc(Temp);
+			return result;	
+		}
 
+		else if (montages.Num() <= 0)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("NO Montage"));
+		}
+
+		else if(montages.Num() == 0)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Montage Array Index is 0"));
+		}
+	}
 	else
 	{
-		result = 0;
+		UE_LOG(LogTemp,Warning,TEXT("NO Actor"));
 	}
-	
-	return result;
+	return result;	
 }
 
 FWeaponNotify UWeaponComponent::GetRequest() const

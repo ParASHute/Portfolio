@@ -31,13 +31,13 @@ void ABaseWeapon::BeginPlay()
 	OwnerCharacter = Cast<APortfolioCharacter>(GetOwner());
 	
 	// OwnerCharacter
-	if (!OwnerCharacter)	// Onwer에 GetOner설정이 된다면
+	if (!OwnerCharacter)	// Onwer에 GetOner설정이 안된다면
 	{
 		OwnerCharacter = Cast<APortfolioCharacter>(GetOwner());
     	
-		if (!OwnerCharacter)	// 성공시 메시지
+		if (!OwnerCharacter)	// 실패시 메시지
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Owner founded."));
+			UE_LOG(LogTemp, Warning, TEXT("Owner Not founded."));
 		}
 	}
 	
@@ -77,6 +77,7 @@ AActor* ABaseWeapon::Trace(/*FString TagName*/)
 	bool Check = UKismetSystemLibrary::BoxTraceSingleForObjects
 	(GetWorld(), StartLoc, EndLoc, BoxSize, GetActorRotation(), ObjectTypes,
 	 false, ActorsTolgnore, EDrawDebugTrace::ForDuration, HitResults, true);
+	//EDrawDebugTrace::ForDuration == none으로 바꾸면 됨
 	
 	/*
 	if (Check)

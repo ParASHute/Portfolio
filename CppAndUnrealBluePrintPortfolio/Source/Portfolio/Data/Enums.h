@@ -13,6 +13,7 @@ enum class EWeaponType : uint8
 	Sword	UMETA(DisplayName = "Sword"),
 	Bow		UMETA(DisplayName = "Bow"),
 	Shield	UMETA(DisplayName = "Shield"),
+	Monster	UMETA(DisplayName = "Monster"),
 	
 	Max		UMETA(DisplayName = "Max"),
 };
