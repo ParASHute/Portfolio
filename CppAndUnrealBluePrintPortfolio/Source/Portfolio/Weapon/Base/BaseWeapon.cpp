@@ -3,7 +3,7 @@
 
 #include "BaseWeapon.h"
 
-#include "AssetSelection.h"
+// #include "AssetSelection.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Portfolio/PortfolioCharacter.h"	// Cpp 내 APortfolioCharacter의 불확실성 해결을 위한 헤더 선언
 
@@ -76,8 +76,9 @@ AActor* ABaseWeapon::Trace(/*FString TagName*/)
 	
 	bool Check = UKismetSystemLibrary::BoxTraceSingleForObjects
 	(GetWorld(), StartLoc, EndLoc, BoxSize, GetActorRotation(), ObjectTypes,
-	 false, ActorsTolgnore, EDrawDebugTrace::ForDuration, HitResults, true);
-	//EDrawDebugTrace::ForDuration == none으로 바꾸면 됨
+	 false, ActorsTolgnore, EDrawDebugTrace::None, HitResults, true);
+	//EDrawDebugTrace::ForDuration == 보여줌
+	//EDrawDebugTrace::None == 안보여줌
 	
 	/*
 	if (Check)
